@@ -3232,23 +3232,55 @@ function init(){
     fetchAll().then(function(ok){ if(ok) renderAll(); }).catch(function(){});
   },180000);
 }
-// ── ADMIN TRIGGER: escribir pasajeuno en el buscador ──
+// ── ADMIN TRIGGER: escribir "pasajeuno" en el buscador ──
 (function(){
   var SH="f960f1b48989f064b10086559c11dcd85967b524761aced9b763e61537550eff";
-  var SL=9; // length of secret word
   var buf="";
-  document.addEventListener("keyup",function(e){
-    var inp=document.querySelector(".nav-search input");
-    if(!inp||document.activeElement!==inp){buf="";return;}
-    if(e.key==="Escape"){buf="";return;}
-    if(e.key.length===1) buf+=e.key.toLowerCase();
-    if(buf.length>SL) buf=buf.slice(-SL);
-    if(buf.length===SL&&sha256(buf)===SH){
+  var timer=null;
+
+  function checkBuf(){
+    if(buf.length>=9 && sha256(buf.slice(-9))===SH){
       buf="";
-      inp.value="";
+      // Clear search inputs
+      document.querySelectorAll(".nav-search input,#mobSearch").forEach(function(i){i.value="";});
       openAdmin();
     }
+  }
+
+  // Method 1: keyup anywhere on document
+  document.addEventListener("keyup",function(e){
+    if(e.key.length===1){
+      buf+=e.key.toLowerCase();
+      if(buf.length>20) buf=buf.slice(-20);
+      if(timer) clearTimeout(timer);
+      timer=setTimeout(function(){buf="";},4000);
+      checkBuf();
+    }
+    if(e.key==="Escape") buf="";
   });
+
+  // Method 2: watch search input value directly (works on mobile too)
+  function watchSearch(){
+    var inps=document.querySelectorAll(".nav-search input");
+    inps.forEach(function(inp){
+      if(inp._adminWatched) return;
+      inp._adminWatched=true;
+      inp.addEventListener("input",function(){
+        var val=inp.value.toLowerCase();
+        if(sha256(val)===SH){
+          inp.value="";
+          openAdmin();
+        }
+      });
+    });
+  }
+  // Watch after DOM ready
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",watchSearch);
+  } else {
+    watchSearch();
+    setTimeout(watchSearch,1000);
+  }
 })();
 
 init();
