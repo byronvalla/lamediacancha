@@ -668,14 +668,12 @@ body{padding-bottom:60px}
    PROFESSIONAL DESIGN ENHANCEMENTS
    ═══════════════════════════════════════ */
 
-/* Refined CSS variables */
+/* Variable overrides (cascade over initial :root) */
 :root {
-  --r:#c8001c;--r2:#a8001a;--r3:#e8002a;
-  --gold:#d4920a;
+  --r:#c8001c;--r2:#a8001a;--r3:#e8002a;--gold:#d4920a;
   --sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.08);
   --sh2:0 4px 16px rgba(0,0,0,.08),0 16px 48px rgba(0,0,0,.12);
   --sh3:0 8px 32px rgba(0,0,0,.12),0 24px 64px rgba(0,0,0,.16);
-  --radius:14px;
   --transition:cubic-bezier(.25,.46,.45,.94);
 }
 
@@ -1439,16 +1437,16 @@ var TMAP = {
   "Rangers de Talca":"Rangers de Talca"
 };
 
-// Normalize unknown team names with fuzzy fallback
+// Normalize unknown team names — cached fuzzy fallback
+var _nnCache = {};
 function nn(raw) {
   if(!raw) return "";
-  if(TMAP[raw]) return TMAP[raw];
-  // Try case-insensitive
+  if(_nnCache[raw] !== undefined) return _nnCache[raw];
+  if(TMAP[raw]) return (_nnCache[raw] = TMAP[raw]);
   var low = raw.toLowerCase();
-  for(var k in TMAP) { if(k.toLowerCase() === low) return TMAP[k]; }
-  // Try partial match
-  for(var k2 in TMAP) { if(low.indexOf(k2.toLowerCase())>=0 || k2.toLowerCase().indexOf(low)>=0) return TMAP[k2]; }
-  return raw; // return as-is if no match
+  for(var k in TMAP){ if(k.toLowerCase()===low) return (_nnCache[raw]=TMAP[k]); }
+  for(var k2 in TMAP){ if(low.indexOf(k2.toLowerCase())>=0||k2.toLowerCase().indexOf(low)>=0) return (_nnCache[raw]=TMAP[k2]); }
+  return (_nnCache[raw] = raw);
 }
 
 var EMOJI = {
@@ -1632,10 +1630,11 @@ function setLogoOverride(team, url) {
   LOGOS[team] = url || LOGOS_DEFAULT[team];
 }
 
-// Preload all logos into browser image cache
+// Preload logos — retain references so GC doesn't collect them
+var _preloadCache = [];
 function preloadLogos() {
-  Object.keys(LOGOS).forEach(function(team) {
-    if(LOGOS[team]) { var img = new Image(); img.src = LOGOS[team]; }
+  _preloadCache = Object.keys(LOGOS).map(function(team){
+    var img = new Image(); if(LOGOS[team]) img.src = LOGOS[team]; return img;
   });
 }
 
@@ -1652,7 +1651,6 @@ function mkLogo(team, small) {
     img.onerror = function(){ el.classList.remove("loading"); el.textContent=emoji(team); };
     img.style.cssText="width:100%;height:100%;object-fit:contain;border-radius:50%";
     img.src = url; img.alt = team;
-    img.style.cssText = "width:100%;height:100%;object-fit:contain;border-radius:50%;";
   } else {
     el.classList.remove("loading");
     el.textContent = emoji(team);
@@ -1778,7 +1776,7 @@ function mkPlayerPh(player, small) {
   el.className = small?"gol-ph":"gf-ph";
   if(player.photo) {
     var img = document.createElement("img");
-    img.onerror = function(){ el.textContent=player.flag||"\u26BD"; };
+    img.loading="lazy"; img.onerror = function(){ el.textContent=player.flag||"\u26BD"; };
     img.src = player.photo; img.alt = player.name;
     el.appendChild(img);
   } else { el.textContent = player.flag||"\u26BD"; }
@@ -2280,27 +2278,51 @@ function renderStats(){
   renderGoles("statsGolesB",D.golPrimeraB,true);
 }
 
-function renderAll(){
-  renderTicker(); renderHero(); renderLiveStrip(); renderHomeMain();
-  renderTable("tblPrimera",D.primera.rows,"fp");
-  renderTable("tblPrimeraB",D.primerab.rows,"fp");
-  renderTable("tblT3N",D.t3norte.rows,"fp");
-  renderTable("tblT3C",D.t3centro.rows,"fp");
-  renderTable("tblT3S",D.t3sur.rows,"fp");
-  renderGoles("golPrimera",D.golPrimera,true);
-  renderGoles("golPrimera2",D.golPrimera,false);
-  renderGoles("golPrimeraB",D.golPrimeraB,true);
+// ─── Per-section lazy renderers ────────────────────────────────────
+var _sectionRenderers = {
+  "inicio": function(){ renderHomeMain(); },
+  "primera": function(){
+    renderTable("tblPrimera",D.primera.rows,"fp");
+    renderGoles("golPrimera",D.golPrimera,true);
+    renderGoles("golPrimera2",D.golPrimera,false);
+    renderResultados("resPSide",D.partidos.filter(function(m){return m.liga==="Primera Divisón";}));
+  },
+  "primerab": function(){
+    renderTable("tblPrimeraB",D.primerab.rows,"fp");
+    renderGoles("golPrimeraB",D.golPrimeraB,true);
+  },
+  "tercera": function(){
+    renderTable("tblT3N",D.t3norte.rows,"fp");
+    renderTable("tblT3C",D.t3centro.rows,"fp");
+    renderTable("tblT3S",D.t3sur.rows,"fp");
+  },
+  "seleccion": function(){
+    renderFixtureRoja();
+    renderAllNews("newsRoja",N.filter(function(n){return n.tag==="La Roja";}));
+  },
+  "traspasos": function(){ renderTransfers("all"); },
+  "estadisticas": function(){ renderStats(); },
+  "resultados": function(){
+    renderResultsPage();
+    renderResultados("resSidebar",D.partidos.filter(function(m){return m.liga==="Primera Divisón";}));
+    renderProxima("resProxima",D.proxima);
+    renderProxima("proxJornada",D.proxima);
+  },
+  "noticias": function(){ renderAllNews("allNews",N); }
+};
+
+var _currentSec = "inicio";
+
+function renderSec(sec){
+  var fn = _sectionRenderers[sec]; if(fn) fn();
   renderGoles("sideGoles",D.golPrimera,false);
-  renderResultados("resPSide",D.partidos.filter(function(m){return m.liga==="Primera Divisi\u00F3n";}));
-  renderResultados("resSidebar",D.partidos.filter(function(m){return m.liga==="Primera Divisi\u00F3n";}));
-  renderResultsPage();
-  renderProxima("resProxima",D.proxima);
-  renderProxima("proxJornada",D.proxima);
-  renderAllNews("allNews",N);
-  renderFixtureRoja();
-  renderAllNews("newsRoja",N.filter(function(n){return n.tag==="La Roja";}));
-  renderTransfers("all"); renderStats();
+  renderResultados("resPSide",D.partidos.filter(function(m){return m.liga==="Primera Divisón";}));
   var fu=gel("footerUpd"); if(fu) fu.textContent="Actualizado "+new Date().toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
+}
+
+function renderAll(){
+  renderTicker(); renderHero(); renderLiveStrip();
+  renderSec(_currentSec);
 }
 
 // ══════════════════════════════════════════════════════
@@ -2313,7 +2335,10 @@ function goSec(sec){
   SECS.forEach(function(s){var el=gel("sec-"+s);if(el)el.classList.toggle("active",s===sec);});
   document.querySelectorAll(".nb").forEach(function(b,i){b.classList.toggle("active",NAVS[i]===sec);});
   document.querySelectorAll(".mm-link").forEach(function(b,i){b.classList.toggle("active",NAVS[i]===sec);});
-  if(sec!=="articulo") window.scrollTo({top:0,behavior:"smooth"});
+  if(sec!=="articulo"){
+    window.scrollTo({top:0,behavior:"smooth"});
+    if(sec !== _currentSec){ _currentSec = sec; renderSec(sec); }
+  }
   initReveal();
 }
 function togMob(){ var m=gel("mobMenu");if(m)m.classList.toggle("open"); }
@@ -2335,10 +2360,15 @@ document.addEventListener("click",function(e){
     t=t.parentElement;
   }
 });
+var _revealIO = null;
 function initReveal(){
   if(!window.IntersectionObserver) return;
-  var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("ok");io.unobserve(e.target);}});},{threshold:0.08});
-  document.querySelectorAll(".rv:not(.ok)").forEach(function(el){io.observe(el);});
+  if(!_revealIO){
+    _revealIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("ok");_revealIO.unobserve(e.target);}});
+    },{threshold:0.08});
+  }
+  document.querySelectorAll(".rv:not(.ok)").forEach(function(el){_revealIO.observe(el);});
 }
 
 // ══════════════════════════════════════════════════════
@@ -2365,8 +2395,8 @@ function livePreview(inputId, previewId, isLogo) {
   var inp=gel(inputId), prev=gel(previewId); if(!inp||!prev) return;
   var url=inp.value.trim();
   if(url){
-    if(isLogo){prev.style.backgroundImage="url(\""+url+"\")";prev.textContent="";}
-    else{prev.style.backgroundImage="url(\""+url+"\")";prev.textContent="";}
+    prev.style.backgroundImage="url(\""+url+"\")";
+    prev.textContent="";
     prev.classList.add("has-img");
   } else {
     prev.style.backgroundImage="none"; prev.classList.remove("has-img");
