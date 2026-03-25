@@ -308,9 +308,9 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .ftw::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),rgba(212,0,32,.3),transparent);border-radius:16px 16px 0 0;z-index:1}
 .ft{width:100%;border-collapse:collapse}
 .ft thead tr{background:var(--r)}
-.ft th{padding:10px 14px;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.85);text-align:center}
+.ft th{padding:10px 8px;background:var(--r);color:#fff;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.5px;text-align:center;white-space:nowrap}
 .ft th:nth-child(2){text-align:left}
-.ft td{padding:11px 14px;font-size:13px;color:var(--ink);text-align:center;border-bottom:1px solid var(--line);transition:background .08s}
+.ft td{padding:11px 8px;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink);vertical-align:middle;text-align:center}
 .ft td:nth-child(2){text-align:left;font-weight:700;font-size:14px}
 .ft tr:last-child td{border-bottom:none}
 .ft tr:hover td{background:rgba(212,0,32,.04)}
@@ -371,13 +371,13 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .rg-h{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--r);font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff}
 .rg-h-inner{display:flex;align-items:center;gap:7px}
 .rg-h img{width:18px;height:18px;object-fit:contain;border-radius:3px}
-.r-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid rgba(0,120,40,.12);transition:.08s}
+.r-row{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line)}
 .r-row:last-child{border-bottom:none}
 .r-row:hover{background:rgba(212,0,32,.04)}
 .r-hm{text-align:right}.r-aw{text-align:left}
 .r-t{font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
 .r-hm .r-t{justify-content:flex-end}
-.r-m{font-size:10px;color:var(--muted);margin-top:2px}
+.r-m{font-family:var(--fh);font-size:10px;color:var(--muted);text-align:center;padding:2px 14px 8px;font-weight:600;letter-spacing:.5px}
 .r-sc{font-family:var(--fd);font-size:22px;letter-spacing:3px;color:#fff;background:#1a1a2e;border:2px solid #333;border-radius:7px;padding:5px 14px;text-align:center;min-width:72px;box-shadow:inset 0 2px 8px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.2)}
 .r-hr{font-family:var(--fd);font-size:16px;letter-spacing:1px;color:var(--muted);background:var(--w2);border:1.5px solid var(--line);border-radius:7px;padding:5px 14px;text-align:center;min-width:72px}
 .prox{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:9px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:.1s}
@@ -981,6 +981,8 @@ html{scroll-behavior:smooth}
 /* AD PLACEHOLDERS */
 .ad-banner{background:linear-gradient(135deg,var(--w2),var(--w3));border:1.5px dashed var(--line2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;min-height:90px;margin:16px 0}
 .ad-sidebar{min-height:250px;margin:16px 0}
+#tblCopaA th,#tblCopaB th,#tblCopaC th,#tblCopaD th{font-size:10px;padding:7px 6px}
+#tblCopaA td,#tblCopaB td,#tblCopaC td,#tblCopaD td{font-size:11px;padding:7px 6px}
 /* REVEAL */
 .rv{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
 .rv.ok{opacity:1;transform:none}
@@ -1226,6 +1228,20 @@ html{scroll-behavior:smooth}
 </div>
 
 <!-- INICIO -->
+<div id="apiStatusBar" style="display:none;background:rgba(0,0,0,.04);border-bottom:1px solid var(--line);padding:5px 0;transition:background .3s">
+  <div style="max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div id="apiDot" style="width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s"></div>
+      <span id="apiStatusText" style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted)">Conectando...</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span id="apiLastUpdate" style="font-family:var(--fh);font-size:10px;color:var(--muted);letter-spacing:.5px"></span>
+      <button onclick="manualRefresh()" id="refreshBtn" style="background:none;border:1px solid var(--line2);border-radius:6px;padding:4px 10px;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--muted);cursor:pointer">
+        <span id="refreshIcon">↻</span> Actualizar
+      </button>
+    </div>
+  </div>
+</div>
 <div id="sec-inicio" class="sec active">
   <div class="home-hero"><div class="wrap">
     <div class="hero-grid rv" id="heroGrid"></div>
@@ -1333,107 +1349,108 @@ html{scroll-behavior:smooth}
 
 <!-- NOTICIAS -->
 <div id="sec-copa" class="sec"><div class="wrap pg">
-<div style="background:linear-gradient(180deg,#0d4a3a 0%,var(--w2) 320px);padding:22px 0 0;margin:-26px -20px 0;padding:22px 20px 0"><div style="max-width:var(--max);margin:0 auto"><div style="background:linear-gradient(135deg,#0d4a3a,#1a6b5a);border-radius:16px;padding:22px 24px;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.15)"><div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,transparent 1px,transparent 60px);pointer-events:none"></div><div style="position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none"></div><div style="display:flex;align-items:center;gap:18px;position:relative;z-index:1;flex-wrap:wrap"><img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="" loading="lazy" referrerpolicy="no-referrer" style="width:70px;height:70px;object-fit:contain;background:rgba(255,255,255,.9);border-radius:50%;padding:8px;box-shadow:0 4px 20px rgba(0,0,0,.3);flex-shrink:0" onerror="this.style.display='none'"/><div style="flex:1;min-width:180px"><div style="font-family:var(--fd);font-size:clamp(18px,3vw,30px);letter-spacing:2px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)">COPA DE LA LIGA</div><div style="font-family:var(--fh);font-size:11px;color:rgba(255,255,255,.7);margin-top:3px;letter-spacing:.5px">Temporada 2026 &mdash; Nuevo torneo oficial</div><div style="display:flex;gap:7px;margin-top:11px;flex-wrap:wrap"><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px">🏔️ Cordillera de los Andes</span><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px">🏆 Cupo Libertadores 2027</span><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px">⚽ 4 grupos de 4</span><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px">📺 TNT Sports</span></div></div></div><div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:rgba(255,255,255,.82);line-height:1.7;position:relative;z-index:1">Nuevo torneo oficial 2026. Los 16 equipos de Primera se dividen en <b>4 grupos de 4</b>. Ganadores de cada grupo avanzan a <b>semifinales ida y vuelta</b>. El campe&oacute;n obtiene el <b>Chile 3 a la Copa Libertadores 2027</b> y clasifica a la Supercopa 2027.</div></div><div style="margin-bottom:22px"><div style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px">Grupos &mdash; Fase de grupos</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"><div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:14px"><div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#fff;margin-bottom:10px">GRUPO A</div><div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.85);line-height:2.1">Colo Colo<br/>U. Cat&oacute;lica<br/>D. La Serena<br/>U. de Concepci&oacute;n</div></div><div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:14px"><div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#fff;margin-bottom:10px">GRUPO B</div><div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.85);line-height:2.1">Universidad de Chile<br/>O&apos;Higgins<br/>Audax Italiano<br/>D. Limache</div></div><div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:14px"><div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#fff;margin-bottom:10px">GRUPO C</div><div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.85);line-height:2.1">&Ntilde;ublense<br/>Cobresal<br/>Uni&oacute;n La Calera<br/>Everton</div></div><div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:14px"><div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#fff;margin-bottom:10px">GRUPO D</div><div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.85);line-height:2.1">Huachipato<br/>Palestino<br/>D. Concepci&oacute;n<br/>Coquimbo Unido</div></div></div></div></div></div>
-<!-- LEAGUE INFO BANNER -->
-<div style="background:linear-gradient(135deg,#0d4a3a,#1a6b5a);border-radius:16px;padding:22px 24px;margin-bottom:22px;position:relative;overflow:hidden">
-  <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,transparent 1px,transparent 60px)"></div>
-  <div style="position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none"></div>
-  <div style="display:flex;align-items:center;gap:18px;position:relative;z-index:1;flex-wrap:wrap">
-    <img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="COPA DE LA LIGA" loading="lazy" style="width:70px;height:70px;object-fit:contain;background:rgba(255,255,255,.9);border-radius:50%;padding:8px;box-shadow:0 4px 20px rgba(0,0,0,.3);flex-shrink:0" onerror="this.style.display='none'"/>
-    <div style="flex:1;min-width:200px">
-      <div style="font-family:var(--fd);font-size:clamp(20px,3vw,32px);letter-spacing:2px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)">COPA DE LA LIGA</div>
-      <div style="font-family:var(--fh);font-size:12px;color:rgba(255,255,255,.7);margin-top:3px;letter-spacing:.5px">Temporada 2026 &mdash; Nuevo torneo oficial</div>
-      <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap"><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px;white-space:nowrap">🏔️ Inspirado en los Andes</span><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px;white-space:nowrap">🏆 Cupo Libertadores 2027</span><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px;white-space:nowrap">⚽ 16 equipos</span><span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:5px 12px;border-radius:20px;white-space:nowrap">📺 TNT Sports</span></div>
-    </div>
-  </div>
-  <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:rgba(255,255,255,.8);line-height:1.7;position:relative;z-index:1">Nuevo torneo oficial del f&uacute;tbol chileno 2026. Los 16 equipos de la Liga de Primera se dividen en <b>4 grupos de 4</b>. Los ganadores de cada grupo avanzan a <b>semifinales</b> (ida y vuelta), y el campe&oacute;n obtiene el <b>cupo Chile 3 a la Copa Libertadores 2027</b> adem&aacute;s de clasificar a la Supercopa 2027.</div>
-</div>
 
-<div style="margin-bottom:22px">
-  <div style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Grupos &mdash; Copa de la Liga 2026</div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
-    <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-      <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO A</div>
-      <div style="font-size:12px;font-weight:600;color:var(--ink);line-height:2">Colo Colo<br/>U. Católica<br/>Deportes La Serena<br/>U. de Concepción</div>
+  <!-- COPA BANNER -->
+  <div style="background:linear-gradient(135deg,#0d4a3a,#1a6b5a);border-radius:16px;padding:22px 24px;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.15)">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,transparent 1px,transparent 60px);pointer-events:none"></div>
+    <div style="display:flex;align-items:center;gap:18px;position:relative;z-index:1;flex-wrap:wrap">
+      <img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="Copa de la Liga" loading="lazy" referrerpolicy="no-referrer"
+        style="width:70px;height:70px;object-fit:contain;background:rgba(255,255,255,.92);border-radius:50%;padding:8px;box-shadow:0 4px 20px rgba(0,0,0,.3);flex-shrink:0" onerror="this.style.display='none'"/>
+      <div style="flex:1;min-width:160px">
+        <div style="font-family:var(--fd);font-size:clamp(18px,3vw,30px);letter-spacing:2px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)">COPA DE LA LIGA</div>
+        <div style="font-family:var(--fh);font-size:11px;color:rgba(255,255,255,.7);margin-top:3px">Temporada 2026 &mdash; Nuevo torneo oficial</div>
+        <div style="display:flex;gap:7px;margin-top:11px;flex-wrap:wrap">
+          <span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px">&#9968; Cordillera de los Andes</span>
+          <span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px">&#127942; Cupo Libertadores 2027</span>
+          <span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px">&#9917; 4 grupos de 4</span>
+          <span style="background:rgba(255,255,255,.15);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px">&#128250; TNT Sports</span>
+        </div>
+      </div>
     </div>
-    <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-      <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO B</div>
-      <div style="font-size:12px;font-weight:600;color:var(--ink);line-height:2">Universidad de Chile<br/>O&apos;Higgins<br/>Audax Italiano<br/>Deportes Limache</div>
-    </div>
-    <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-      <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO C</div>
-      <div style="font-size:12px;font-weight:600;color:var(--ink);line-height:2">Ñublense<br/>Cobresal<br/>Unión La Calera<br/>Everton</div>
-    </div>
-    <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-      <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO D</div>
-      <div style="font-size:12px;font-weight:600;color:var(--ink);line-height:2">Huachipato<br/>Palestino<br/>D. Concepción<br/>Coquimbo Unido</div>
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:rgba(255,255,255,.85);line-height:1.7;position:relative;z-index:1">
+      Nuevo torneo oficial 2026. Los 16 equipos de Primera se dividen en <b>4 grupos de 4</b>. Ganadores avanzan a <b>semifinales ida y vuelta</b>. El campe&oacute;n obtiene el <b>Chile 3 a la Copa Libertadores 2027</b> y clasifica a la Supercopa 2027.
     </div>
   </div>
-</div>
-  <div class="sh"><div class="st"><img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="" loading="lazy" style="width:30px;height:30px;object-fit:contain;border-radius:6px" onerror="this.remove()"/>Copa de la Liga 2026</div><span class="sbadge">&#127942; Temporada 2026</span></div>
-  
-  <!-- Info banner -->
-  <div style="background:linear-gradient(135deg,#0a2a4a,#1a4a1a);border-radius:16px;padding:22px 26px;margin-bottom:22px;display:flex;align-items:center;gap:20px;box-shadow:0 8px 32px rgba(0,0,0,.2)">
-    <img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="Copa de la Liga" loading="lazy" style="width:80px;height:72px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))" onerror="this.style.display='none'"/>
-    <div>
-      <div style="font-family:var(--fd);font-size:28px;letter-spacing:2px;color:#fff;margin-bottom:6px">COPA DE LA LIGA</div>
-      <div style="font-size:13px;color:rgba(255,255,255,.7);line-height:1.7">
-        Nuevo torneo oficial 2026 de la Primera Divisi&#xF3;n. 16 equipos compiten por un cupo directo a la
-        <b style="color:#f0b000">Copa Libertadores 2027</b>. Logo inspirado en la Cordillera de los Andes.
+
+  <!-- GRUPOS -->
+  <div style="margin-bottom:24px">
+    <div style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Grupos &mdash; Fase de grupos 2026</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
+        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO A</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">Colo Colo<br/>U. Cat&oacute;lica<br/>D. La Serena<br/>U. de Concepci&oacute;n</div>
       </div>
-      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
-        <span style="background:rgba(255,255,255,.12);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:5px">&#128308; 16 equipos</span>
-        <span style="background:rgba(240,176,0,.2);color:#f0b000;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:5px">&#127942; Cupo Libertadores 2027</span>
-        <span style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:5px">&#128250; TNT Sports</span>
+      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
+        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO B</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">Universidad de Chile<br/>O&apos;Higgins<br/>Audax Italiano<br/>D. Limache</div>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
+        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO C</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">&Ntilde;ublense<br/>Cobresal<br/>Uni&oacute;n La Calera<br/>Everton</div>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
+        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO D</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">Huachipato<br/>Palestino<br/>D. Concepci&oacute;n<br/>Coquimbo Unido</div>
       </div>
     </div>
   </div>
 
-  <!-- Fixture dates -->
+  <!-- SECTION HEADER -->
+  <div class="sh">
+    <div class="st">
+      <img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="" loading="lazy" style="width:24px;height:24px;object-fit:contain;border-radius:4px" onerror="this.remove()"/>
+      Copa de la Liga 2026
+    </div>
+    <span class="sbadge">&#127942; Temporada 2026</span>
+  </div>
+
+  <!-- FIXTURE + INFO -->
   <div class="p2c">
     <div>
-      <div class="sh"><div class="st" style="font-size:20px">Fixture</div></div>
+      <div class="sh"><div class="st" style="font-size:18px">Fixture</div></div>
       <div class="rg" style="margin-bottom:14px">
-        <div class="rg-h"><div class="rg-h-inner"><img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="" loading="lazy" style="width:18px;height:18px;object-fit:contain" onerror="this.remove()"/>Fecha 1 &#x2014; Marzo 2026</div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">Viernes 20 Mar &#183; 18:00 &#183; Estadio Nacional</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Uni&#xF3;n La Calera</div><div class="r-m">Viernes 20 Mar &#183; 20:30 &#183; Nicol&#xE1;s Chahu&#xE1;n</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Audax Italiano</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">S&#xE1;bado 21 Mar &#183; 12:00 &#183; CAP</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Deportes Concepci&#xF3;n</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Colo Colo</div><div class="r-m">S&#xE1;bado 21 Mar &#183; 18:00 &#183; Monumental</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Coquimbo Unido</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Cobresal</div><div class="r-m">S&#xE1;bado 21 Mar &#183; 20:30 &#183; El Cobre</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">&#xD1;ublense</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad Cat&#xF3;lica</div><div class="r-m">Domingo 22 Mar &#183; 18:00 &#183; Claro Arena</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">U. de Concepci&#xF3;n</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">O&#x2019;Higgins</div><div class="r-m">Domingo 22 Mar &#183; 20:30 &#183; El Teniente</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Deportes Limache</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Palestino</div><div class="r-m">Lunes 23 Mar &#183; 20:30 &#183; La Cisterna</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Everton</div></div></div>
+        <div class="rg-h"><div class="rg-h-inner">Fecha 1 &mdash; 20-23 Marzo 2026</div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">20 Mar &middot; 18:00</div></div><div class="r-hr">2 - 2</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Uni&oacute;n La Calera</div><div class="r-m">20 Mar &middot; 20:30</div></div><div class="r-hr">0 - 1</div><div class="r-aw"><div class="r-t">Audax Italiano</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">21 Mar &middot; 12:00</div></div><div class="r-hr">2 - 2</div><div class="r-aw"><div class="r-t">Deportes Concepci&oacute;n</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Colo Colo</div><div class="r-m">21 Mar &middot; 18:00</div></div><div class="r-hr">1 - 0</div><div class="r-aw"><div class="r-t">Coquimbo Unido</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Cobresal</div><div class="r-m">21 Mar &middot; 20:30</div></div><div class="r-hr">0 - 1</div><div class="r-aw"><div class="r-t">&Ntilde;ublense</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad Cat&oacute;lica</div><div class="r-m">22 Mar &middot; 18:00</div></div><div class="r-hr">1 - 0</div><div class="r-aw"><div class="r-t">U. de Concepci&oacute;n</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">O&apos;Higgins</div><div class="r-m">22 Mar &middot; 20:30</div></div><div class="r-hr">2 - 1</div><div class="r-aw"><div class="r-t">Deportes Limache</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Palestino</div><div class="r-m">23 Mar &middot; 20:30</div></div><div class="r-hr">1 - 1</div><div class="r-aw"><div class="r-t">Everton</div></div></div>
       </div>
       <div class="rg">
-        <div class="rg-h"><div class="rg-h-inner"><img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="" loading="lazy" style="width:18px;height:18px;object-fit:contain" onerror="this.remove()"/>Fecha 2 &#x2014; Marzo 2026</div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">Martes 24 Mar &#183; 18:00 &#183; Estadio Nacional</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Uni&#xF3;n La Calera</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Deportes Concepci&#xF3;n</div><div class="r-m">Martes 24 Mar &#183; 20:30 &#183; Ester Roa</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Colo Colo</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">&#xD1;ublense</div><div class="r-m">Mi&#xE9;rcoles 25 Mar &#183; 18:00 &#183; Nelson Oyarz&#xFA;n</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Universidad Cat&#xF3;lica</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">Mi&#xE9;rcoles 25 Mar &#183; 18:00 &#183; CAP</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Coquimbo Unido</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Audax Italiano</div><div class="r-m">Mi&#xE9;rcoles 25 Mar &#183; 20:30 &#183; La Florida</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Deportes Limache</div><div class="r-m">Jueves 26 Mar &#183; 18:00 &#183; Lucio Fari&#xF1;a</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Palestino</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">U. de Concepci&#xF3;n</div><div class="r-m">Jueves 26 Mar &#183; 20:30 &#183; Ester Roa</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">Cobresal</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Everton</div><div class="r-m">Jueves 26 Mar &#183; 20:30 &#183; Sausalito</div></div><div class="r-hr">&#x2014;</div><div class="r-aw"><div class="r-t">O&#x2019;Higgins</div></div></div>
+        <div class="rg-h"><div class="rg-h-inner">Fecha 2 &mdash; 24-26 Marzo 2026</div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">24 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Uni&oacute;n La Calera</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Deportes Concepci&oacute;n</div><div class="r-m">24 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Colo Colo</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">&Ntilde;ublense</div><div class="r-m">25 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Universidad Cat&oacute;lica</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">25 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Coquimbo Unido</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Audax Italiano</div><div class="r-m">25 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Deportes Limache</div><div class="r-m">26 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Palestino</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">U. de Concepci&oacute;n</div><div class="r-m">26 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Cobresal</div></div></div>
+        <div class="r-row"><div class="r-hm"><div class="r-t">Everton</div><div class="r-m">26 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">O&apos;Higgins</div></div></div>
       </div>
     </div>
-    <div>
-      <div class="sh"><div class="st" style="font-size:20px">Informaci&#xF3;n</div></div>
-      <div class="card" style="margin-bottom:14px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
         <div class="card-head"><div class="card-title">&#127942; Premio</div></div>
-        <div style="padding:16px;font-size:13px;line-height:1.7;color:var(--ink3)">
-          El campeón clasifica como <b>Chile 4</b> a la <b>Copa Libertadores 2027</b>.<br/><br/>
-          El logo fue diseñado con inspiración en la <b>Cordillera de los Andes</b> y una estrella solitaria representando a Chile.<br/><br/>
-          El torneo nace para saldar la deuda con <b>TNT Sports</b> y agregar más partidos al calendario anual.
+        <div style="padding:16px;font-size:13px;color:var(--ink3);line-height:1.8">
+          El campe&oacute;n clasifica al <b>Chile 3 Copa Libertadores 2027</b> y a la <b>Supercopa 2027</b>.<br/><br/>
+          Logo dise&ntilde;ado con inspiraci&oacute;n en la <b>Cordillera de los Andes</b>.<br/><br/>
+          Torneo creado para agregar partidos al calendario y cumplir contrato con <b>TNT Sports</b>.
         </div>
       </div>
       <div class="card">
-        <div class="card-head"><div class="card-title">&#128198; Equipos</div></div>
-        <div style="padding:14px">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Colo Colo</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Universidad de Chile</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Universidad Católica</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Ñublense</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Huachipato</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Audax Italiano</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Unión La Calera</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Deportes La Serena</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Coquimbo Unido</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Palestino</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Everton</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Cobresal</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>O’Higgins</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Deportes Limache</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>Deportes Concepción</div><div style="display:flex;align-items:center;gap:6px;padding:5px;border-radius:6px;background:var(--w2);font-size:12px;font-weight:600;color:var(--ink)"><span style="font-size:14px">⚽</span>U. de Concepción</div>          </div>
+        <div class="card-head"><div class="card-title">&#128337; Formato</div></div>
+        <div style="padding:16px;font-size:13px;color:var(--ink3);line-height:1.8">
+          <b>Fase de grupos:</b> 4 grupos de 4, todos contra todos, ida y vuelta.<br/>
+          <b>Semifinales:</b> 1&deg; vs 4&deg; y 2&deg; vs 3&deg; del ranking 2025, ida y vuelta.<br/>
+          <b>Final:</b> Partido &uacute;nico o ida y vuelta (por confirmar).
         </div>
       </div>
     </div>
   </div>
+
 </div></div>
 
 <div id="sec-noticias" class="sec"><div class="wrap pg">
@@ -1797,6 +1814,8 @@ html{scroll-behavior:smooth}
 var TSDB    = "https://www.thesportsdb.com/api/v1/json/123";
 var L1URL   = "https://www.thesportsdb.com/images/media/league/badge/x9m78e1768232019.png";
 var L2URL   = "https://www.thesportsdb.com/images/media/league/badge/56sn4v1682615803.png";
+var COPA_URL = "https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp";
+var ROJA_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Football_Federation_of_Chile_logo.svg/200px-Football_Federation_of_Chile_logo.svg.png";
 var ANFPURL = "data:image/png;base64,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";
 
 function sha256(str){
@@ -1867,37 +1886,28 @@ var currentAdminUser = null;
 // Updated at runtime from admin panel (stored in localStorage)
 // ══════════════════════════════════════════════════════
 var LOGOS_DEFAULT = {
-  'Colo Colo': 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Escudo_del_Club_Social_y_Deportivo_Colo-Colo.svg',
-  'Universidad de Chile': 'https://upload.wikimedia.org/wikipedia/commons/b/b5/Escudo_Universidad_de_Chile_2011.png',
-  'Universidad Católica': 'https://upload.wikimedia.org/wikipedia/commons/9/97/Club_Deportivo_Universidad_Cat%C3%B3lica_logo.svg',
-  'Ñublense': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Escudo_del_Club_Deportivo_%C3%91ublense.png',
-  'Huachipato': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Club_Deportivo_Huachipato.png',
-  'Audax Italiano': 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Audax_Italiano_La_Florida.png',
-  'Unión La Calera': 'https://upload.wikimedia.org/wikipedia/commons/9/91/Escudo_Club_de_F%C3%BAtbol_Uni%C3%B3n_La_Calera.svg',
-  'Deportes La Serena': 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Club_Deportes_La_Serena.png',
-  'Coquimbo Unido': 'https://upload.wikimedia.org/wikipedia/commons/3/3d/Escudo_Coquimbo_Unido.svg',
-  'Palestino': 'https://upload.wikimedia.org/wikipedia/commons/d/dc/Club_Deportivo_Palestino_crest.png',
-  'Everton': 'https://upload.wikimedia.org/wikipedia/commons/a/a7/Club_de_Deportes_Everton_de_Vi%C3%B1a_del_Mar.svg',
-  'Cobresal': 'https://upload.wikimedia.org/wikipedia/commons/8/82/Cobresal.png',
-  'O’Higgins': 'https://upload.wikimedia.org/wikipedia/commons/4/47/Escudo_CD_O%27Higgins.svg',
-  'Deportes Limache': 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Escudo_Club_de_Deportes_Limache.png',
-  'Deportes Concepción': 'https://upload.wikimedia.org/wikipedia/commons/6/63/Club_Deportes_Concepci%C3%B3n_logo.png',
-  'U. de Concepción': 'https://upload.wikimedia.org/wikipedia/commons/4/43/Universidad_de_Concepci%C3%B3n_FC.png',
-  'Cobreloa': 'https://upload.wikimedia.org/wikipedia/commons/1/17/Club_Deportivo_Cobreloa.png',
-  'Deportes Recoleta': 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Deportes_Recoleta.png',
-  'Deportes Puerto Montt': 'https://upload.wikimedia.org/wikipedia/commons/8/88/Escudo_Deportes_Puerto_Montt.png',
-  'Unión Española': 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Uni%C3%B3n_Espa%C3%B1ola_crest.png',
-  'Deportes Iquique': 'https://upload.wikimedia.org/wikipedia/commons/2/27/Club_de_Deportes_Iquique.png',
-  'Curicó Unido': 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Curico_unido.png',
-  'Deportes Temuco': 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Escudo_Deportes_Temuco.png',
-  'Magallanes': 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Escudo_Club_Social_y_de_F%C3%BAtbol_Magallanes.svg',
-  'Santiago Wanderers': 'https://upload.wikimedia.org/wikipedia/commons/7/76/SWanderers2019.png',
-  'Deportes Antofagasta': 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Club_de_Deportes_Antofagasta.png',
-  'San Marcos de Arica': 'https://upload.wikimedia.org/wikipedia/commons/e/e8/San_Marcos_de_Arica.png',
-  'Unión San Felipe': 'https://upload.wikimedia.org/wikipedia/commons/a/ab/Uni%C3%B3n_San_Felipe.png',
-  'Rangers de Talca': 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Rangers_de_Talca.png'
+  "Colo Colo":               "https://media.api-sports.io/football/teams/2288.png",
+  "Universidad de Chile":    "https://media.api-sports.io/football/teams/2290.png",
+  "Universidad Católica":    "https://media.api-sports.io/football/teams/2289.png",
+  "Ñublense":                "https://media.api-sports.io/football/teams/10270.png",
+  "Palestino":               "https://media.api-sports.io/football/teams/2294.png",
+  "Everton":                 "https://media.api-sports.io/football/teams/2300.png",
+  "Cobresal":                "https://media.api-sports.io/football/teams/2301.png",
+  "Huachipato":              "https://media.api-sports.io/football/teams/2295.png",
+  "Deportes Limache":        "https://media.api-sports.io/football/teams/10273.png",
+  "O'Higgins":               "https://media.api-sports.io/football/teams/2296.png",
+  "Deportes La Serena":      "https://media.api-sports.io/football/teams/2297.png",
+  "Deportes Concepción":     "https://media.api-sports.io/football/teams/10274.png",
+  "Coquimbo Unido":          "https://media.api-sports.io/football/teams/10271.png",
+  "Unión La Calera":         "https://media.api-sports.io/football/teams/2298.png",
+  "Audax Italiano":          "https://media.api-sports.io/football/teams/2293.png",
+  "U. de Concepción":        "https://media.api-sports.io/football/teams/2299.png",
+  "Unión Española":          "https://media.api-sports.io/football/teams/2292.png",
+  "San Luis":                "https://media.api-sports.io/football/teams/10272.png",
+  "Curicó Unido":            "https://media.api-sports.io/football/teams/10269.png",
+  "Puerto Montt":            "https://media.api-sports.io/football/teams/10275.png"
 };
-var LOGOS = {};  // merged at init
+var LOGOS = Object.assign({}, LOGOS_DEFAULT);  // merged at init
 
 // Canonical name used everywhere in the site
 // Maps ALL known TheSportsDB variants → our canonical name
@@ -2116,6 +2126,33 @@ var D = {
     {home:"Universidad Católica",hs:"2",as_:"2",away:"Everton",status:"fin",fecha:"13 Mar",hora:"",liga:"Primera División",min:""},
     {home:"Deportes Concepción",hs:"1",as_:"2",away:"Palestino",status:"fin",fecha:"13 Mar",hora:"",liga:"Primera División",min:""}
   ],
+
+  copa:{
+    grupoA:[
+      {pos:1,team:"Colo Colo",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
+      {pos:2,team:"Universidad Cat\u00F3lica",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
+      {pos:3,team:"D. La Serena",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
+      {pos:4,team:"U. de Concepci\u00F3n",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""}
+    ],
+    grupoB:[
+      {pos:1,team:"O\u2019Higgins",pj:1,pg:1,pe:0,pp:0,gf:2,gc:1,dif:1,pts:3,b:""},
+      {pos:2,team:"Universidad de Chile",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
+      {pos:3,team:"Audax Italiano",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
+      {pos:4,team:"D. Limache",pj:1,pg:0,pe:0,pp:1,gf:1,gc:2,dif:-1,pts:0,b:""}
+    ],
+    grupoC:[
+      {pos:1,team:"\u00D1ublense",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
+      {pos:2,team:"Uni\u00F3n La Calera",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""},
+      {pos:3,team:"Cobresal",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""},
+      {pos:4,team:"Everton",pj:1,pg:0,pe:1,pp:0,gf:1,gc:1,dif:0,pts:1,b:""}
+    ],
+    grupoD:[
+      {pos:1,team:"Palestino",pj:1,pg:0,pe:1,pp:0,gf:1,gc:1,dif:0,pts:1,b:""},
+      {pos:2,team:"Huachipato",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
+      {pos:3,team:"D. Concepci\u00F3n",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
+      {pos:4,team:"Coquimbo Unido",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""}
+    ]
+  },
   proxima:[
     {home:"Universidad de Chile",away:"Unión La Calera",hora:"18:00",fecha:"24 Mar",liga:"Copa de la Liga"},
     {home:"Deportes Concepción",away:"Colo Colo",hora:"20:30",fecha:"24 Mar",liga:"Copa de la Liga"},
@@ -2274,6 +2311,7 @@ function fetchLast(lid) {
       var isF=["FT","AET","PEN"].indexOf(s)>=0;
       return {
         home:nn(f.teams.home.name), away:nn(f.teams.away.name),
+        _homeLogo:f.teams.home.logo||"", _awayLogo:f.teams.away.logo||"",
         hs:f.goals.home!==null?String(f.goals.home):"",
         as_:f.goals.away!==null?String(f.goals.away):"",
         status:isL?"live":isF?"fin":"prog",
@@ -2336,6 +2374,13 @@ function fetchAll() {
       D.partidos = all;
       ok = true;
     }
+    // Extract team logos from fixture data
+    var matchLogos={};
+    (r[2]||[]).concat(r[3]||[]).concat(r[4]||[]).forEach(function(m){
+      if(m._homeLogo&&m.home) matchLogos[m.home]=m._homeLogo;
+      if(m._awayLogo&&m.away) matchLogos[m.away]=m._awayLogo;
+    });
+    if(Object.keys(matchLogos).length) applyApiLogos(matchLogos);
     // Merge upcoming
     var nx = (r[5]||[]).concat(r[6]||[]).concat(r[7]||[]);
     if(nx.length){ D.proxima = nx; ok=true; }
@@ -2469,29 +2514,33 @@ function renderTable(id, rows, pfx) {
   var c=gel(id); if(!c) return;
   var tbl=document.createElement("table"); tbl.className="ft"; tbl.style.cssText="width:100%;min-width:540px";
   var thead=document.createElement("thead");
-  thead.innerHTML="<tr><th style='width:36px;text-align:center'>#</th><th style='text-align:left;min-width:160px'>Equipo</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>DIF</th><th>PTS</th></tr>";
+  thead.innerHTML="<tr><th style='width:36px;text-align:center'>#</th><th style='text-align:left;min-width:150px'>Equipo</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>GF</th><th>GC</th><th>DIF</th><th>PTS</th></tr>";
   tbl.appendChild(thead);
   var tbody=document.createElement("tbody");
   rows.forEach(function(r){
     var tr=document.createElement("tr");
-    var bc=r.b||""; if(bc) tr.className=bc;
-    var dif=r.dif>0?"+"+r.dif:String(r.dif);
-    var difCol=r.dif>0?"color:#1a7a3a;font-weight:600":r.dif<0?"color:var(--r);font-weight:600":"color:var(--muted)";
-    // Position cell with colored badge
-    var posSpanStyle="font-family:var(--fd);font-size:13px;";
-    if(bc==="lib") posSpanStyle+="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:#1a7a3a;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700";
-    else if(bc==="cl") posSpanStyle+="width:22px;height:22px;border-radius:50%;background:rgba(0,100,210,.12);color:#0055a4;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700";
-    else if(bc==="desc") posSpanStyle+="width:22px;height:22px;border-radius:50%;background:rgba(212,0,32,.12);color:var(--r);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700";
-    else posSpanStyle+="color:var(--muted)";
-    // Team td with logo
+    var bc=r.b||"";
+    // Badge colors — matches actual data values
+    var isLib = bc==="b-lib"||bc==="lib"||bc==="b-cl"||bc==="b-asc";
+    var isCl2 = bc==="b-cl2"||bc==="cl";
+    var isDesc= bc==="b-rel"||bc==="desc"||bc==="b-desc";
+    var isPl  = bc==="b-pl"||bc==="b-pasc";
+    var posStyle="font-family:var(--fd);font-size:13px;";
+    if(isLib)  posStyle+="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:#1a7a3a;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700";
+    else if(isCl2) posStyle+="width:22px;height:22px;border-radius:50%;background:rgba(0,100,210,.12);color:#0055a4;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700";
+    else if(isDesc) posStyle+="width:22px;height:22px;border-radius:50%;background:rgba(212,0,32,.12);color:var(--r);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700";
+    else if(isPl) posStyle+="width:22px;height:22px;border-radius:50%;background:rgba(255,140,0,.12);color:#e07000;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700";
+    else posStyle+="color:var(--muted)";
     var teamTd=document.createElement("td"); teamTd.style.textAlign="left";
     var teamDiv=document.createElement("div"); teamDiv.style.cssText="display:flex;align-items:center;gap:9px";
     var logo=mkLogo(r.team,true); logo.style.cssText="width:28px;height:28px;border-radius:50%;flex-shrink:0";
-    var nameSpan=document.createElement("span"); nameSpan.style.cssText="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px"; nameSpan.textContent=r.team;
+    var nameSpan=document.createElement("span"); nameSpan.style.cssText="font-weight:600;font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px"; nameSpan.textContent=r.team;
     teamDiv.appendChild(logo); teamDiv.appendChild(nameSpan); teamTd.appendChild(teamDiv);
-    tr.innerHTML="<td style='text-align:center'><span style='"+posSpanStyle+"'>"+r.pos+"</span></td>";
+    var dif=r.dif>0?"+"+r.dif:String(r.dif);
+    var difCol=r.dif>0?"color:#1a7a3a;font-weight:600":r.dif<0?"color:var(--r);font-weight:600":"color:var(--muted)";
+    tr.innerHTML="<td style='text-align:center'><span style='"+posStyle+"'>"+r.pos+"</span></td>";
     tr.appendChild(teamTd);
-    tr.innerHTML+="<td>"+r.pj+"</td><td>"+r.pg+"</td><td>"+r.pe+"</td><td>"+r.pp+"</td><td>"+r.gf+"</td><td>"+r.gc+"</td><td style='"+difCol+"'>"+dif+"</td><td class='fpts'>"+r.pts+"</td>";
+    tr.innerHTML+="<td style='text-align:center;color:var(--ink)'>"+r.pj+"</td><td style='text-align:center;color:var(--ink)'>"+r.pg+"</td><td style='text-align:center;color:var(--ink)'>"+r.pe+"</td><td style='text-align:center;color:var(--ink)'>"+r.pp+"</td><td style='text-align:center;color:var(--ink)'>"+r.gf+"</td><td style='text-align:center;color:var(--ink)'>"+r.gc+"</td><td style='text-align:center;"+difCol+"'>"+dif+"</td><td class='fpts' style='text-align:center'>"+r.pts+"</td>";
     tbody.appendChild(tr);
   });
   tbl.appendChild(tbody);
@@ -2546,67 +2595,32 @@ function renderGoles(id, goles, full) {
   });
 }
 
-function renderProxima(id, arr) {
+function renderProxima(id, arr){
   var c=gel(id); if(!c) return; c.innerHTML="";
-  arr.slice(0,6).forEach(function(m){
-    var row=document.createElement("div"); row.className="prox"; row.setAttribute("data-goto","resultados");
-
-    var inf=document.createElement("div"); inf.style.cssText="flex:1;min-width:0;display:flex;align-items:center;gap:8px";
-
-    // Home logo + name
-    var hWrap=document.createElement("div"); hWrap.style.cssText="display:flex;align-items:center;gap:5px;flex:1;justify-content:flex-end;min-width:0";
-    var hName=document.createElement("span"); hName.className="prox-vs"; hName.style.cssText="text-align:right;font-size:12px";
-    hName.textContent=m.home;
-    var hLogo=mkLogo(m.home,true); hLogo.style.cssText="width:22px;height:22px;border-radius:50%;flex-shrink:0";
-    hWrap.appendChild(hName); hWrap.appendChild(hLogo);
-
-    // VS separator
-    var vs=document.createElement("span"); vs.style.cssText="font-family:var(--fd);font-size:11px;color:var(--muted);flex-shrink:0;padding:0 2px";
-    vs.textContent="vs";
-
-    // Away logo + name
-    var aWrap=document.createElement("div"); aWrap.style.cssText="display:flex;align-items:center;gap:5px;flex:1;min-width:0";
-    var aLogo=mkLogo(m.away,true); aLogo.style.cssText="width:22px;height:22px;border-radius:50%;flex-shrink:0";
-    var aName=document.createElement("span"); aName.className="prox-vs"; aName.style.cssText="font-size:12px";
-    aName.textContent=m.away;
-    aWrap.appendChild(aLogo); aWrap.appendChild(aName);
-
-    inf.appendChild(hWrap); inf.appendChild(vs); inf.appendChild(aWrap);
-    row.appendChild(inf);
-
-    var tm=document.createElement("div"); tm.style.cssText="text-align:right;flex-shrink:0;padding-left:10px";
-    tm.innerHTML="<div class='prox-h'>"+(m.hora||"")+"</div><div class='prox-f'>"+(m.fecha||"")+"</div>";
-    row.appendChild(tm);
-    c.appendChild(row);
-  });
-}
-
-function renderResultados(id, arr) {
-  var c=gel(id); if(!c) return; c.innerHTML="";
-  arr.slice(0,6).forEach(function(m){
-    var row=document.createElement("div"); row.className="rr";
-    var isLive=m.status==="live";
-
-    // Home
-    var hD=document.createElement("div"); hD.className="rr-h";
-    var hT=document.createElement("div"); hT.className="rr-t";
-    var hLogo=mkLogo(m.home,true); hLogo.style.cssText="width:20px;height:20px;border-radius:50%;flex-shrink:0";
-    hT.appendChild(document.createTextNode(m.home)); hT.appendChild(hLogo);
-    var hSub=document.createElement("div"); hSub.className="rr-d"; hSub.textContent=m.liga;
-    hD.appendChild(hT); hD.appendChild(hSub);
-
-    // Score
-    var sc=document.createElement("div"); sc.className="rr-sc"+(isLive?" live":"");
-    sc.textContent=m.hs+"-"+m.as_;
-
-    // Away
-    var aD=document.createElement("div"); aD.className="rr-a";
-    var aT=document.createElement("div"); aT.className="rr-t";
-    var aLogo=mkLogo(m.away,true); aLogo.style.cssText="width:20px;height:20px;border-radius:50%;flex-shrink:0";
-    aT.appendChild(aLogo); aT.appendChild(document.createTextNode(m.away));
-    aD.appendChild(aT);
-
-    row.appendChild(hD); row.appendChild(sc); row.appendChild(aD);
+  var show=(arr||[]).slice(0,8);
+  if(!show.length){
+    c.innerHTML="<div style='padding:16px;text-align:center;color:var(--muted);font-family:var(--fh);font-size:12px'>Sin pr\u00f3ximos partidos</div>";
+    return;
+  }
+  show.forEach(function(m){
+    var row=document.createElement("div"); row.className="r-row";
+    var hm=document.createElement("div"); hm.className="r-hm";
+    var ht=document.createElement("div"); ht.className="r-t";
+    var logo=mkLogo(m.home,true); logo.style.cssText="width:22px;height:22px;border-radius:50%;flex-shrink:0";
+    ht.appendChild(logo); ht.appendChild(document.createTextNode(m.home));
+    hm.appendChild(ht);
+    var sub=document.createElement("div"); sub.className="r-m";
+    sub.textContent=(m.liga||"")+" \u00B7 "+m.fecha;
+    hm.appendChild(sub); row.appendChild(hm);
+    var hr=document.createElement("div"); hr.className="r-hr";
+    hr.style.cssText="font-family:var(--fd);font-size:16px;color:var(--lc);letter-spacing:1px;text-align:center;min-width:50px";
+    hr.textContent=m.hora||"--:--";
+    row.appendChild(hr);
+    var aw=document.createElement("div"); aw.className="r-aw";
+    var at=document.createElement("div"); at.className="r-t";
+    var alogo=mkLogo(m.away,true); alogo.style.cssText="width:22px;height:22px;border-radius:50%;flex-shrink:0";
+    at.appendChild(alogo); at.appendChild(document.createTextNode(m.away));
+    aw.appendChild(at); row.appendChild(aw);
     c.appendChild(row);
   });
 }
@@ -2814,52 +2828,47 @@ function renderAllNews(id, arr) {
   });
 }
 
-function renderResultsPage() {
+function renderResultsPage(){
   var c=gel("resMain"); if(!c) return; c.innerHTML="";
-  var groups={};
-  D.partidos.forEach(function(m){if(!groups[m.liga])groups[m.liga]=[];groups[m.liga].push(m);});
-  Object.keys(groups).forEach(function(liga){
-    var lUrl=liga==="Primera Divisi\u00F3n"?L1URL:L2URL;
-    var box=document.createElement("div"); box.className="rg";
-    var head=document.createElement("div"); head.className="rg-h";
-    var inner=document.createElement("div"); inner.className="rg-h-inner";
-    var li=document.createElement("img"); li.src=lUrl; li.style.cssText="width:18px;height:18px;object-fit:contain;border-radius:3px"; li.onerror=function(){this.remove();}; inner.appendChild(li);
-    inner.appendChild(document.createTextNode(liga)); head.appendChild(inner);
-    head.appendChild(document.createTextNode("2026")); box.appendChild(head);
-    groups[liga].forEach(function(m){
-      var row=document.createElement("div"); row.className="r-row";
-      var isL=m.status==="live", isF=m.status==="fin";
-
-      // HOME SIDE
-      var hm=document.createElement("div"); hm.className="r-hm";
-      var hmT=document.createElement("div"); hmT.className="r-t";
-      // home logo
-      var hLogo=mkLogo(m.home,true);
-      hLogo.style.cssText="width:24px;height:24px;border-radius:50%;flex-shrink:0";
-      hmT.appendChild(document.createTextNode(m.home));
-      hmT.appendChild(hLogo);
-      var hmD=document.createElement("div"); hmD.className="r-m"; hmD.textContent=m.fecha||"";
-      hm.appendChild(hmT); hm.appendChild(hmD); row.appendChild(hm);
-
-      // SCORE
-      if(isL||isF){
-        var sc=document.createElement("div"); sc.className="r-sc"+(isL?" live":"");
-        sc.textContent=m.hs+"-"+m.as_; row.appendChild(sc);
+  // Group by liga
+  var ligas=["Copa de la Liga","Primera Divisi\u00F3n","Primera B"];
+  ligas.forEach(function(liga){
+    var matches=D.partidos.filter(function(m){return m.liga===liga;});
+    if(!matches.length) return;
+    var section=document.createElement("div"); section.style.marginBottom="20px";
+    // Liga header
+    var hdr=document.createElement("div");
+    hdr.style.cssText="background:var(--lc);color:#fff;font-family:var(--fd);font-size:14px;letter-spacing:1px;padding:10px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px";
+    hdr.textContent=liga; section.appendChild(hdr);
+    // Match rows
+    var wrap=document.createElement("div");
+    wrap.style.cssText="background:#fff;border:1.5px solid var(--line);border-top:none;border-radius:0 0 10px 10px;overflow:hidden";
+    matches.forEach(function(m,i){
+      var isF=m.status==="fin", isL=m.status==="live";
+      var row=document.createElement("div");
+      row.style.cssText="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);gap:10px";
+      if(i===matches.length-1) row.style.borderBottom="none";
+      // Home
+      var hDiv=document.createElement("div"); hDiv.style.cssText="display:flex;align-items:center;gap:8px;justify-content:flex-end";
+      hDiv.appendChild(document.createTextNode(m.home));
+      hDiv.appendChild(mkLogo(m.home,true));
+      // Score
+      var sc=document.createElement("div"); sc.style.cssText="text-align:center;min-width:70px";
+      if(isF||isL){
+        sc.innerHTML="<div style='font-family:var(--fd);font-size:20px;letter-spacing:2px;color:"+(isL?"var(--r)":"var(--ink)")+"'>"+m.hs+"-"+m.as_+"</div>"+
+          "<div style='font-family:var(--fh);font-size:9px;font-weight:700;color:"+(isL?"var(--r)":"var(--green)")+"'>"+(isL?"\u25CF EN VIVO":"FIN \u00B7 "+m.fecha)+"</div>";
       } else {
-        var hr=document.createElement("div"); hr.className="r-hr"; hr.textContent=m.hora||"--:--"; row.appendChild(hr);
+        sc.innerHTML="<div style='font-family:var(--fd);font-size:16px;color:var(--muted)'>"+(m.hora||"--:--")+"</div>"+
+          "<div style='font-family:var(--fh);font-size:9px;color:var(--muted)'>"+m.fecha+"</div>";
       }
-
-      // AWAY SIDE
-      var aw=document.createElement("div"); aw.className="r-aw";
-      var awT=document.createElement("div"); awT.className="r-t";
-      var aLogo=mkLogo(m.away,true);
-      aLogo.style.cssText="width:24px;height:24px;border-radius:50%;flex-shrink:0";
-      awT.appendChild(aLogo);
-      awT.appendChild(document.createTextNode(m.away));
-      aw.appendChild(awT); row.appendChild(aw);
-      box.appendChild(row);
+      // Away
+      var aDiv=document.createElement("div"); aDiv.style.cssText="display:flex;align-items:center;gap:8px";
+      aDiv.appendChild(mkLogo(m.away,true));
+      aDiv.appendChild(document.createTextNode(m.away));
+      row.appendChild(hDiv); row.appendChild(sc); row.appendChild(aDiv);
+      wrap.appendChild(row);
     });
-    c.appendChild(box);
+    section.appendChild(wrap); c.appendChild(section);
   });
 }
 
@@ -2916,44 +2925,106 @@ function filtTrans(f,btn){
   if(btn) btn.classList.add("active");
 }
 
+function renderResultados(id, matches){
+  var c=gel(id||"resPSide2"); if(!c) return; c.innerHTML="";
+  var list=matches||D.partidos.filter(function(m){return m.liga==="Primera División";});
+  list.slice(0,5).forEach(function(m){
+    var row=document.createElement("div"); row.style.cssText="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line)";
+    var hLogo=mkLogo(m.home,true); hLogo.style.cssText="width:22px;height:22px;border-radius:50%;flex-shrink:0";
+    var teams=document.createElement("div"); teams.style.cssText="flex:1;min-width:0;display:flex;align-items:center;gap:5px;font-size:12px";
+    teams.innerHTML='<span style="font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">'+m.home+'</span><span style="color:var(--muted);flex-shrink:0">vs</span><span style="font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">'+m.away+'</span>';
+    var score=document.createElement("div"); score.style.cssText="font-family:var(--fd);font-size:15px;color:var(--lc);font-weight:700;flex-shrink:0;min-width:36px;text-align:center";
+    score.textContent=(m.status==="fin"||m.status==="live")?(m.hs+"-"+m.as_):(m.hora||"—");
+    row.appendChild(hLogo); row.appendChild(teams); row.appendChild(score);
+    c.appendChild(row);
+  });
+  if(!list.length){
+    c.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--fh)">Sin resultados</div>';
+  }
+}
 function renderStats(){
-  var rows=D.primera.rows;
+  var rows = D.primera.rows||[];
+  // Stats numbers
   var tg=gel("statsGlobal");
-  if(tg){tg.innerHTML=[
-    {n:rows.reduce(function(s,r){return s+r.gf;},0),l:"Goles totales",s:"Primera Divisi\u00F3n"},
-    {n:rows.length,l:"Equipos",s:"Primera Divisi\u00F3n"},
-    {n:D.golPrimera.length?D.golPrimera[0].goles:0,l:"M\u00E1x. goleador",s:D.golPrimera.length?D.golPrimera[0].name:""},
-    {n:7,l:"Fechas jugadas",s:"Temporada 2026"}
-  ].map(function(s){return "<div class='stat-box'><div class='stat-n'>"+s.n+"</div><div class='stat-l'>"+s.l+"</div><div class='stat-s'>"+s.s+"</div></div>";}).join("");}
-  renderGoles("statsGoles",D.golPrimera,true);
-  var at=gel("statsAtaque");
-  if(at){at.innerHTML="";rows.slice().sort(function(a,b){return b.gf-a.gf;}).slice(0,6).forEach(function(r,i){var row=document.createElement("div");row.className="gf-row";row.innerHTML="<div class='gf-rk "+(i===0?"r1":i===1?"r2":i===2?"r3":"")+"'>"+(i+1)+"</div>";row.appendChild(mkLogo(r.team,true));var inf=document.createElement("div");inf.className="gf-i";inf.innerHTML="<div class='gf-n'>"+r.team+"</div><div class='gf-c'>"+r.pj+" PJ</div>";row.appendChild(inf);var gd=document.createElement("div");gd.className="gf-g";gd.innerHTML=r.gf+"<small>gls</small>";row.appendChild(gd);at.appendChild(row);});}
-  var df=gel("statsDefensa");
-  if(df){df.innerHTML="";rows.slice().sort(function(a,b){return a.gc-b.gc;}).slice(0,6).forEach(function(r,i){var row=document.createElement("div");row.className="gf-row";row.innerHTML="<div class='gf-rk "+(i===0?"r1":i===1?"r2":i===2?"r3":"")+"'>"+(i+1)+"</div>";row.appendChild(mkLogo(r.team,true));var inf=document.createElement("div");inf.className="gf-i";inf.innerHTML="<div class='gf-n'>"+r.team+"</div><div class='gf-c'>"+r.pj+" PJ</div>";row.appendChild(inf);var gd=document.createElement("div");gd.className="gf-g";gd.innerHTML=r.gc+"<small>enc</small>";row.appendChild(gd);df.appendChild(row);});}
-  renderGoles("statsGolesB",D.golPrimeraB,true);
+  if(tg){
+    var totalGoles=rows.reduce(function(s,r){return s+(parseInt(r.gf)||0);},0);
+    var topGolJ=D.golPrimera.length?D.golPrimera[0].name:"—";
+    var topGolG=D.golPrimera.length?D.golPrimera[0].goles:0;
+    tg.innerHTML=
+      "<div class='stat-box'><div class='stat-n'>"+totalGoles+"</div><div class='stat-l'>Goles</div></div>"+
+      "<div class='stat-box' style='border-top-color:var(--gold)'><div class='stat-n' style='color:var(--gold)'>"+topGolG+"</div><div class='stat-l'>Máx. goleador</div></div>"+
+      "<div class='stat-box' style='border-top-color:var(--green)'><div class='stat-n' style='color:var(--green);font-size:14px'>"+topGolJ+"</div><div class='stat-l'>Goleador líder</div></div>";
+  }
+  // Best attack
+  var sa=gel("statsAtaque");
+  if(sa && rows.length){
+    sa.innerHTML="";
+    var sorted=[].concat(rows).sort(function(a,b){return (b.gf||0)-(a.gf||0);}).slice(0,5);
+    sorted.forEach(function(r,i){
+      var row=document.createElement("div"); row.className="gf-row";
+      var rnk=document.createElement("div"); rnk.style.cssText="font-family:var(--fd);font-size:14px;color:var(--muted);min-width:24px;text-align:center"; rnk.textContent=i+1;
+      var logo=mkLogo(r.team,true); logo.style.cssText="width:28px;height:28px;border-radius:50%;flex-shrink:0";
+      var info=document.createElement("div"); info.style.flex="1";
+      info.innerHTML="<div class='gf-n'>"+r.team+"</div><div class='gf-c'>"+r.gf+" goles a favor</div>";
+      var val=document.createElement("div"); val.style.cssText="font-family:var(--fd);font-size:22px;color:var(--lc);font-weight:700;min-width:36px;text-align:right"; val.textContent=r.gf;
+      row.appendChild(rnk); row.appendChild(logo); row.appendChild(info); row.appendChild(val);
+      sa.appendChild(row);
+    });
+  }
+  // Best defense
+  var sd=gel("statsDefensa");
+  if(sd && rows.length){
+    sd.innerHTML="";
+    var sortedD=[].concat(rows).sort(function(a,b){return (a.gc||0)-(b.gc||0);}).slice(0,5);
+    sortedD.forEach(function(r,i){
+      var row=document.createElement("div"); row.className="gf-row";
+      var rnk=document.createElement("div"); rnk.style.cssText="font-family:var(--fd);font-size:14px;color:var(--muted);min-width:24px;text-align:center"; rnk.textContent=i+1;
+      var logo=mkLogo(r.team,true); logo.style.cssText="width:28px;height:28px;border-radius:50%;flex-shrink:0";
+      var info=document.createElement("div"); info.style.flex="1";
+      info.innerHTML="<div class='gf-n'>"+r.team+"</div><div class='gf-c'>"+r.gc+" goles en contra</div>";
+      var val=document.createElement("div"); val.style.cssText="font-family:var(--fd);font-size:22px;color:var(--green);font-weight:700;min-width:36px;text-align:right"; val.textContent=r.gc;
+      row.appendChild(rnk); row.appendChild(logo); row.appendChild(info); row.appendChild(val);
+      sd.appendChild(row);
+    });
+  }
+  // Goleadores in stats section
+  var sg=gel("statsGoles");
+  if(sg){ renderGoles("statsGoles",D.golPrimera,true); }
+  var sgb=gel("statsGolesB");
+  if(sgb){ renderGoles("statsGolesB",D.golPrimeraB,true); }
 }
 
 function renderAll(){
-  renderTicker(); renderHero(); renderLiveStrip(); renderHomeMain();
-  renderTable("tblPrimera",D.primera.rows,"fp");
-  renderTable("tblPrimeraB",D.primerab.rows,"fp");
-  renderTable("tblT3N",D.t3norte.rows,"fp");
-  renderTable("tblT3C",D.t3centro.rows,"fp");
-  renderTable("tblT3S",D.t3sur.rows,"fp");
-  renderGoles("golPrimera",D.golPrimera,true);
-  renderGoles("golPrimera2",D.golPrimera,false);
-  renderGoles("golPrimeraB",D.golPrimeraB,true);
-  renderGoles("sideGoles",D.golPrimera,false);
-  renderResultados("resPSide",D.partidos.filter(function(m){return m.liga==="Primera Divisi\u00F3n";}));
-  renderResultados("resSidebar",D.partidos.filter(function(m){return m.liga==="Primera Divisi\u00F3n";}));
+  renderTicker();
+  renderHero();
+  renderLiveStrip();
+  renderHomeMain();
+  // Tables
+  renderTable("tblPrimera",   D.primera.rows,  "fp");
+  renderTable("tblPrimeraB",  D.primerab.rows, "fp");
+  renderTable("tblT3N",       D.t3norte.rows,  "fp");
+  renderTable("tblT3C",       D.t3centro.rows, "fp");
+  renderTable("tblT3S",       D.t3sur.rows,    "fp");
+  // Goleadores
+  renderGoles("golPrimera",  D.golPrimera, true);
+  renderGoles("golPrimera2", D.golPrimera, false);
+  renderGoles("golPrimeraB", D.golPrimeraB||[], true);
+  renderGoles("sideGoles",   D.golPrimera, false);
+  renderGoles("statsGoles",  D.golPrimera, true);
+  renderGoles("statsGolesB", D.golPrimeraB||[], true);
+  // Results
+  renderResultados("resPSide2",   D.partidos.filter(function(m){return m.liga==="Primera División";}));
+  renderResultados("resSidebar",  D.partidos.filter(function(m){return m.liga==="Primera División";}));
   renderResultsPage();
-  renderProxima("resProxima",D.proxima);
-  renderProxima("proxJornada",D.proxima);
-  renderAllNews("allNews",N);
+  renderProxima("resProxima", D.proxima);
+  // Stats
+  // Misc
+  renderTransfers();
   renderFixtureRoja();
-  renderAllNews("newsRoja",N.filter(function(n){return n.tag==="La Roja";}));
-  renderTransfers("all"); renderStats();
-  var fu=gel("footerUpd"); if(fu) fu.textContent="Actualizado "+new Date().toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
+  renderStats();
+  var t=new Date(); var h=t.getHours().toString().padStart(2,"0");
+  var m=t.getMinutes().toString().padStart(2,"0");
+  var upd=gel("apiLastUpdate"); if(upd) upd.textContent="Act. "+h+":"+m;
 }
 
 // ══════════════════════════════════════════════════════
@@ -3095,29 +3166,6 @@ function showLoginErr(msg){
   // Shake animation
   el.style.animation="none";
   setTimeout(function(){el.style.animation="shake .4s ease";},10);
-}
-
-function showChangePw(){
-  var cp=gel("changePwPanel");
-  if(cp) cp.style.display=cp.style.display==="none"?"block":"none";
-}
-function doChangePw(){
-  var email=(gel("cpEmail").value||"").trim().toLowerCase();
-  var pw1=gel("cpNewPw").value, pw2=gel("cpNewPw2").value;
-  var msg=gel("cpMsg"); msg.style.display="block";
-  var user=ADMIN_USERS[email]||ADMIN_EDITORS[email];
-  if(!user){msg.style.background="rgba(212,0,32,.08)";msg.style.color="var(--r)";msg.textContent="❌ Email no registrado";return;}
-  if(pw1.length<8){msg.style.background="rgba(212,0,32,.08)";msg.style.color="var(--r)";msg.textContent="❌ Mínimo 8 caracteres";return;}
-  if(pw1!==pw2){msg.style.background="rgba(212,0,32,.08)";msg.style.color="var(--r)";msg.textContent="❌ Las contraseñas no coinciden";return;}
-  user.pw=sha256(pw1);
-  // Save
-  var saved={};
-  Object.keys(ADMIN_USERS).forEach(function(k){saved[k]=ADMIN_USERS[k].pw;});
-  Object.keys(ADMIN_EDITORS).forEach(function(k){saved[k]=ADMIN_EDITORS[k].pw;});
-  localStorage.setItem("lmc_admin_pws",JSON.stringify(saved));
-  msg.style.background="rgba(0,153,64,.08)";msg.style.color="var(--green)";
-  msg.textContent="✔ Contraseña actualizada correctamente";
-  gel("cpNewPw").value=""; gel("cpNewPw2").value="";
 }
 
 // ── USER MANAGEMENT (superadmin only) ──
@@ -3405,16 +3453,6 @@ function mobNavActive(btn){
 // ADMIN PANEL — FULL FUNCTIONS
 // ══════════════════════════════════════════════════════
 
-function adminTabSwitch(tab, btn) {
-  document.querySelectorAll(".admin-section").forEach(function(s){ s.classList.remove("active"); });
-  document.querySelectorAll(".admin-tab").forEach(function(b){ b.classList.remove("active"); });
-  var sec = gel("adminSec-" + tab);
-  if(sec) sec.classList.add("active");
-  if(btn) btn.classList.add("active");
-  if(tab === "usuarios") renderAdminUsers();
-  if(tab === "tablas") renderAdminTableRows("p1");
-}
-
 // ── NEWS ADMIN ──
 function renderAdminNews() {
   var list = gel("adminNewsList"); if(!list) return; list.innerHTML = "";
@@ -3642,21 +3680,6 @@ goSec = function(sec){
 
 
 // ── API STATUS BADGE ──
-function showApiStatus(ok, msg) {
-  var el = gel("apiStatusBadge");
-  if(!el){
-    el = document.createElement("div"); el.id = "apiStatusBadge";
-    el.style.cssText = "position:fixed;bottom:14px;left:14px;z-index:88;font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;cursor:pointer;transition:opacity .3s;box-shadow:0 2px 8px rgba(0,0,0,.25)";
-    el.onclick = function(){ this.style.display="none"; };
-    document.body.appendChild(el);
-  }
-  el.style.display = "block";
-  el.style.background = ok ? "rgba(0,153,64,.92)" : "rgba(212,0,32,.92)";
-  el.style.color = "#fff";
-  el.textContent = (ok ? "✓ API EN VIVO" : "✗ DATOS LOCALES") + (msg ? " · " + msg : "");
-  setTimeout(function(){ el.style.opacity = "0.35"; }, 5000);
-}
-
 // ── FETCH WITH TIMEOUT ──
 function apiFetch(url, opts) {
   var controller = null, timer = null;
@@ -3830,12 +3853,6 @@ function startAutoRefresh(){
   }, 30000); // check every 30s, refresh based on interval
 }
 
-
-
-function openPhotoHelper(playerName){
-  var url = "https://www.google.com/search?q=" + encodeURIComponent(playerName + " futbolista chileno foto") + "&tbm=isch";
-  window.open(url, "_blank");
-}
 
 
 // ══════════════════════════════════════════════════════
@@ -4060,37 +4077,24 @@ function showPlayerCard(p){
 
 function init(){
   initLogos();
-  preloadLogos();
+  if(typeof preloadLogos==="function") preloadLogos();
   loadTableOverrides();
-  var loader=gel("loader");
-  setTimeout(function(){
-    if(loader){loader.classList.add("hide");setTimeout(function(){if(loader)loader.style.display="none";initReveal();},700);}
-  },2800);
+  loadSavedResults();
+  // Render IMMEDIATELY — no waiting for loader
   renderAll();
   setLeagueTheme("inicio");
-  function runApiUpdate(){
-    fetchAll().then(function(ok){
-      if(ok) renderAll();
-      showApiStatus(ok, ok?(D.primera.rows.length+" equipos"):"sin datos");
-    }).catch(function(e){ showApiStatus(false,"error"); });
-  }
-  // Fire after DOM ready but don't block paint
-  // Wait for page to fully render before any network requests
-  function startApi(){
-    if(window.requestIdleCallback){
-      requestIdleCallback(runApiUpdate, {timeout:3000});
-    } else {
-      setTimeout(runApiUpdate, 800);
-    }
-  }
-  if(document.readyState==="complete"){
-    startApi();
+  // Start API after render
+  startAutoRefresh();
+  // Loader fade out fast
+  var loader=gel("loader");
+  if(loader){
+    setTimeout(function(){
+      loader.classList.add("hide");
+      setTimeout(function(){loader.style.display="none"; initReveal();},300);
+    },600);
   } else {
-    window.addEventListener("load", startApi);
+    initReveal();
   }
-  setInterval(function(){
-    fetchAll().then(function(ok){ if(ok) renderAll(); }).catch(function(){});
-  },180000);
 }
 // ── ADMIN TRIGGER: escribir "pasajeuno" en el buscador ──
 (function(){
