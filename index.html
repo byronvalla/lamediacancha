@@ -234,7 +234,7 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 /* LIVE STRIP */
 .live-strip{margin-top:18px;background:#fff;border:2px solid var(--r);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(212,0,32,.1);position:relative}
 .live-strip::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(0,120,40,.3),transparent);pointer-events:none}
-.ls-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--r)}
+.ls-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--lc);transition:background .3s}
 .ls-badge{display:flex;align-items:center;gap:8px;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
 .ls-ver{font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.75);background:none;cursor:pointer;transition:.12s}
 .ls-ver:hover{color:#fff}
@@ -243,17 +243,17 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .mc:last-child{border-right:none}
 .mc:hover{background:var(--w2)}
 .mc-live::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--r)}
-.mc-liga{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:4px}
+.mc-liga{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:4px;margin-bottom:10px;justify-content:center}
 .mc-liga img{width:13px;height:13px;object-fit:contain}
 .mc-teams{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:8px}
 .mc-team{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0}
-.mc-tname{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
-.mc-score{font-family:var(--fd);font-size:28px;color:var(--ink);letter-spacing:2px;line-height:1}
+.mc-tname{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--ink);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px;margin-top:3px}
+.mc-score{font-family:var(--fd);font-size:26px;color:var(--ink);letter-spacing:2px;line-height:1;text-align:center}
 .mc-score.live{color:var(--r);animation:lp 1.8s infinite}
 @keyframes lp{0%,100%{opacity:1}50%{opacity:.55}}
 .mc-sep{font-family:var(--fd);font-size:20px;color:var(--muted)}
 .mc-status{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:4px}
-.ms-live{color:var(--r);animation:blink 1.3s infinite}.ms-fin{color:var(--green)}.ms-prog{color:var(--muted)}
+.ms-live{color:var(--r);animation:blink 1.3s infinite}.ms-fin{color:var(--green);font-weight:700}.ms-prog{color:var(--muted)}
 
 /* HOME BODY */
 .home-main{display:grid;grid-template-columns:1fr 1fr 260px;gap:20px;padding:26px 0}
@@ -355,7 +355,7 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .gf-rk.r1{color:var(--gold)}.gf-rk.r2{color:#6699cc}.gf-rk.r3{color:#b07040}
 .gf-ph{width:42px;height:42px;border-radius:50%;background:var(--w3);border:2px solid var(--line);overflow:hidden;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
 .gf-ph img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.gf-i{flex:1;position:relative;z-index:1}.gf-n{font-size:13px;font-weight:700;color:var(--ink)}.gf-c{font-size:11px;color:var(--muted);margin-top:1px}
+.gf-i{flex:1;position:relative;z-index:1}.gf-n{font-size:13px;font-weight:700;color:var(--ink);line-height:1.2}.gf-c{font-size:11px;color:var(--muted);font-family:var(--fh);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .gf-g{font-family:var(--fd);font-size:26px;color:var(--r);letter-spacing:1px;position:relative;z-index:1}
 .gf-g small{font-family:var(--f);font-size:10px;color:var(--muted);margin-left:2px}
 
@@ -375,7 +375,7 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .r-row:last-child{border-bottom:none}
 .r-row:hover{background:rgba(212,0,32,.04)}
 .r-hm{text-align:right}.r-aw{text-align:left}
-.r-t{font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.r-t{font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
 .r-hm .r-t{justify-content:flex-end}
 .r-m{font-size:10px;color:var(--muted);margin-top:2px}
 .r-sc{font-family:var(--fd);font-size:22px;letter-spacing:3px;color:#fff;background:#1a1a2e;border:2px solid #333;border-radius:7px;padding:5px 14px;text-align:center;min-width:72px;box-shadow:inset 0 2px 8px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.2)}
@@ -925,10 +925,7 @@ html{scroll-behavior:smooth}
 }
 
 /* Ticker text clarity */
-.t-item{
-  font-weight:800;
-  letter-spacing:.3px;
-}
+.t-item{display:flex;align-items:center;gap:6px;padding:0 20px;white-space:nowrap;font-weight:800;letter-spacing:.3px;color:#fff}
 
 /* Section title underline */
 .sh{
@@ -2101,22 +2098,35 @@ var D = {
     {rank:5,name:"Gonzalo Sosa",club:"Cobreloa",goles:3,flag:"\uD83C\uDDE6\uD83C\uDDF7",photo:""}
   ],
   partidos:[
-    {home:"Colo Colo",hs:"2",as_:"0",away:"Huachipato",status:"fin",fecha:"16 Mar",hora:"",liga:"Primera Divisi\u00F3n",min:""},
-    {home:"Uni\u00F3n La Calera",hs:"3",as_:"3",away:"O\u2019Higgins",status:"fin",fecha:"16 Mar",hora:"",liga:"Primera Divisi\u00F3n",min:""},
-    {home:"Cobresal",hs:"2",as_:"5",away:"Deportes Limache",status:"fin",fecha:"15 Mar",hora:"",liga:"Primera Divisi\u00F3n",min:""},
-    {home:"\u00D1ublense",hs:"2",as_:"2",away:"Deportes La Serena",status:"fin",fecha:"15 Mar",hora:"",liga:"Primera Divisi\u00F3n",min:""},
-    {home:"Coquimbo Unido",hs:"0",as_:"1",away:"Universidad de Chile",status:"fin",fecha:"15 Mar",hora:"",liga:"Primera Divisi\u00F3n",min:""},
-    {home:"Universidad Cat\u00F3lica",hs:"2",as_:"2",away:"Everton",status:"fin",fecha:"14 Mar",hora:"",liga:"Primera Divisi\u00F3n",min:""},
-    {home:"Cobreloa",hs:"2",as_:"1",away:"Deportes Iquique",status:"fin",fecha:"13 Mar",hora:"",liga:"Primera B",min:""},
-    {home:"Deportes Recoleta",hs:"2",as_:"0",away:"Uni\u00F3n San Felipe",status:"fin",fecha:"13 Mar",liga:"Primera B",hora:"",min:""}
+    // Copa de la Liga Fecha 1
+    {home:"Universidad de Chile",hs:"2",as_:"2",away:"Deportes La Serena",status:"fin",fecha:"20 Mar",hora:"18:00",liga:"Copa de la Liga",min:""},
+    {home:"Unión La Calera",hs:"0",as_:"1",away:"Audax Italiano",status:"fin",fecha:"20 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
+    {home:"Huachipato",hs:"2",as_:"2",away:"Deportes Concepción",status:"fin",fecha:"21 Mar",hora:"12:00",liga:"Copa de la Liga",min:""},
+    {home:"Colo Colo",hs:"1",as_:"0",away:"Coquimbo Unido",status:"fin",fecha:"21 Mar",hora:"18:00",liga:"Copa de la Liga",min:""},
+    {home:"Cobresal",hs:"0",as_:"1",away:"Ñublense",status:"fin",fecha:"21 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
+    {home:"Universidad Católica",hs:"1",as_:"0",away:"U. de Concepción",status:"fin",fecha:"22 Mar",hora:"18:00",liga:"Copa de la Liga",min:""},
+    {home:"O'Higgins",hs:"2",as_:"1",away:"Deportes Limache",status:"fin",fecha:"22 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
+    {home:"Palestino",hs:"1",as_:"1",away:"Everton",status:"fin",fecha:"23 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
+    // Liga de Primera — últimas fechas
+    {home:"Colo Colo",hs:"2",as_:"0",away:"Huachipato",status:"fin",fecha:"16 Mar",hora:"",liga:"Primera División",min:""},
+    {home:"Unión La Calera",hs:"3",as_:"3",away:"O'Higgins",status:"fin",fecha:"16 Mar",hora:"",liga:"Primera División",min:""},
+    {home:"Cobresal",hs:"2",as_:"5",away:"Deportes Limache",status:"fin",fecha:"15 Mar",hora:"",liga:"Primera División",min:""},
+    {home:"Ñublense",hs:"2",as_:"2",away:"Deportes La Serena",status:"fin",fecha:"14 Mar",hora:"",liga:"Primera División",min:""},
+    {home:"Coquimbo Unido",hs:"0",as_:"1",away:"Universidad de Chile",status:"fin",fecha:"14 Mar",hora:"",liga:"Primera División",min:""},
+    {home:"Universidad Católica",hs:"2",as_:"2",away:"Everton",status:"fin",fecha:"13 Mar",hora:"",liga:"Primera División",min:""},
+    {home:"Deportes Concepción",hs:"1",as_:"2",away:"Palestino",status:"fin",fecha:"13 Mar",hora:"",liga:"Primera División",min:""}
   ],
   proxima:[
-    {home:"Deportes Concepci\u00F3n",away:"Colo Colo",hora:"18:00",fecha:"05 Abr",liga:"Primera Divisi\u00F3n"},
-    {home:"Coquimbo Unido",away:"Cobresal",hora:"18:00",fecha:"05 Abr",liga:"Primera Divisi\u00F3n"},
-    {home:"Universidad de Chile",away:"Deportes La Serena",hora:"20:00",fecha:"05 Abr",liga:"Primera Divisi\u00F3n"},
-    {home:"Deportes Limache",away:"Uni\u00F3n La Calera",hora:"20:00",fecha:"05 Abr",liga:"Primera Divisi\u00F3n"},
-    {home:"O\u2019Higgins",away:"Audax Italiano",hora:"18:00",fecha:"05 Abr",liga:"Primera Divisi\u00F3n"},
-    {home:"Universidad Cat\u00F3lica",away:"Palestino",hora:"20:00",fecha:"05 Abr",liga:"Primera Divisi\u00F3n"}
+    {home:"Universidad de Chile",away:"Unión La Calera",hora:"18:00",fecha:"24 Mar",liga:"Copa de la Liga"},
+    {home:"Deportes Concepción",away:"Colo Colo",hora:"20:30",fecha:"24 Mar",liga:"Copa de la Liga"},
+    {home:"Ñublense",away:"Universidad Católica",hora:"18:00",fecha:"25 Mar",liga:"Copa de la Liga"},
+    {home:"Huachipato",away:"Coquimbo Unido",hora:"18:00",fecha:"25 Mar",liga:"Copa de la Liga"},
+    {home:"Audax Italiano",away:"Deportes La Serena",hora:"20:30",fecha:"25 Mar",liga:"Copa de la Liga"},
+    {home:"Deportes Limache",away:"Palestino",hora:"18:00",fecha:"26 Mar",liga:"Copa de la Liga"},
+    {home:"U. de Concepción",away:"Cobresal",hora:"20:30",fecha:"26 Mar",liga:"Copa de la Liga"},
+    {home:"Everton",away:"O'Higgins",hora:"20:30",fecha:"26 Mar",liga:"Copa de la Liga"},
+    {home:"Deportes Concepción",away:"Colo Colo",hora:"20:30",fecha:"05 Abr",liga:"Primera División"},
+    {home:"Coquimbo Unido",away:"Cobresal",hora:"18:00",fecha:"05 Abr",liga:"Primera División"}
   ],
   traspasos:[
     {jugador:"Alexis S\u00E1nchez",de:"Udinese (ITA)",a:"Colo Colo",valor:"Libre",tipo:"llegada",fecha:"Mar 2026"},
@@ -2230,7 +2240,7 @@ function applyApiLogos(apiLogoMap) {
 // ══════════════════════════════════════════════════════
 function fetchStandings(lid) {
   var afId=lid===4627?207:208;
-  return apiFetch("https://v3.football.api-sports.io/standings?league="+afId+"&season=2025",
+  return apiFetch("https://v3.football.api-sports.io/standings?league="+afId+"&season=2026",
     {headers:{"x-apisports-key":_ak()}})
   .then(function(r){return r.json();})
   .then(function(j){
@@ -2248,56 +2258,89 @@ function fetchStandings(lid) {
 }
 
 function fetchLast(lid) {
-  var afId=lid===4627?207:208;
-  var liga=lid===4627?"Primera División":"Primera B";
-  return apiFetch("https://v3.football.api-sports.io/fixtures?league="+afId+"&season=2025&last=10",
-    {headers:{"x-apisports-key":_ak()}})
-  .then(function(r){return r.json();})
+  var afId = lid===4627?207: lid===4899?208: lid===9999?1199:207;
+  var liga = lid===4627?"Primera División":
+             lid===4899?"Primera B":
+             lid===9999?"Copa de la Liga":"Primera División";
+  return apiFetch(
+    "https://v3.football.api-sports.io/fixtures?league="+afId+"&season=2026&last=10",
+    {headers:{"x-apisports-key":_ak()}}
+  ).then(function(r){return r.json();})
   .then(function(j){
     if(!j.response||!j.response.length) return [];
     return j.response.map(function(f){
       var s=f.fixture.status.short;
-      var isL=["1H","2H","HT","ET","P"].indexOf(s)>=0, isF=s==="FT"||s==="AET"||s==="PEN";
-      return {home:nn(f.teams.home.name),away:nn(f.teams.away.name),
-        hs:f.goals.home!==null?String(f.goals.home):"",as_:f.goals.away!==null?String(f.goals.away):"",
-        status:isL?"live":isF?"fin":"prog",fecha:fmtDate(f.fixture.date),
-        hora:f.fixture.date?f.fixture.date.slice(11,16):"",liga:liga,
-        min:f.fixture.status.elapsed?String(f.fixture.status.elapsed):""};
+      var isL=["1H","2H","HT","ET","P"].indexOf(s)>=0;
+      var isF=["FT","AET","PEN"].indexOf(s)>=0;
+      return {
+        home:nn(f.teams.home.name), away:nn(f.teams.away.name),
+        hs:f.goals.home!==null?String(f.goals.home):"",
+        as_:f.goals.away!==null?String(f.goals.away):"",
+        status:isL?"live":isF?"fin":"prog",
+        fecha:fmtDate(f.fixture.date),
+        hora:f.fixture.date?f.fixture.date.slice(11,16):"",
+        liga:liga,
+        min:f.fixture.status.elapsed?String(f.fixture.status.elapsed):""
+      };
     });
   }).catch(function(){return [];});
 }
 
 function fetchNext(lid) {
-  var afId=lid===4627?207:208;
-  var liga=lid===4627?"Primera División":"Primera B";
-  return apiFetch("https://v3.football.api-sports.io/fixtures?league="+afId+"&season=2025&next=8",
-    {headers:{"x-apisports-key":_ak()}})
-  .then(function(r){return r.json();})
+  var afId = lid===4627?207: lid===4899?208: lid===9999?1199:207;
+  var liga = lid===4627?"Primera División":
+             lid===4899?"Primera B":
+             lid===9999?"Copa de la Liga":"Primera División";
+  return apiFetch(
+    "https://v3.football.api-sports.io/fixtures?league="+afId+"&season=2026&next=6",
+    {headers:{"x-apisports-key":_ak()}}
+  ).then(function(r){return r.json();})
   .then(function(j){
     if(!j.response||!j.response.length) return [];
     return j.response.map(function(f){
-      return {home:nn(f.teams.home.name),away:nn(f.teams.away.name),
-        hora:f.fixture.date?f.fixture.date.slice(11,16):"--:--",fecha:fmtDate(f.fixture.date),liga:liga};
+      return {
+        home:nn(f.teams.home.name), away:nn(f.teams.away.name),
+        hora:f.fixture.date?f.fixture.date.slice(11,16):"--:--",
+        fecha:fmtDate(f.fixture.date), liga:liga
+      };
     });
   }).catch(function(){return [];});
 }
 
 function fetchAll() {
-  // Check data priority — if manual, don't overwrite with API
   var priority = loadSt("lmc_data_priority","api");
   if(priority === "manual") return Promise.resolve(false);
   return Promise.all([
-    fetchStandings(4627), fetchStandings(4899),
-    fetchLast(4627), fetchLast(4899),
-    fetchNext(4627), fetchNext(4899),
-    fetchTopScorers()
+    fetchStandings(4627),   // Primera División table
+    fetchStandings(4899),   // Primera B table
+    fetchLast(4627),        // Primera últimos resultados
+    fetchLast(4899),        // Primera B últimos
+    fetchLast(9999),        // Copa de la Liga últimos
+    fetchNext(4627),        // Primera próximos
+    fetchNext(4899),        // Primera B próximos
+    fetchNext(9999),        // Copa próximos
+    fetchTopScorers()       // Goleadores
   ]).then(function(r){
-    var ok=false;
-    if(r[0]&&r[0].length){D.primera.rows=r[0];ok=true;}
-    if(r[1]&&r[1].length){D.primerab.rows=r[1];ok=true;}
-    var p=r[2].concat(r[3]); if(p.length) D.partidos=p;
-    var nx=r[4].concat(r[5]); if(nx.length) D.proxima=nx;
-    if(r[6]&&r[6].length) D.golPrimera=r[6];
+    var ok = false;
+    if(r[0]&&r[0].length){ D.primera.rows=r[0]; ok=true; }
+    if(r[1]&&r[1].length){ D.primerab.rows=r[1]; ok=true; }
+    // Merge all results — live games get priority (sorted first)
+    var all = (r[2]||[]).concat(r[3]||[]).concat(r[4]||[]);
+    if(all.length){
+      // Sort: live first, then by date desc
+      all.sort(function(a,b){
+        if(a.status==="live"&&b.status!=="live") return -1;
+        if(b.status==="live"&&a.status!=="live") return 1;
+        return 0;
+      });
+      D.partidos = all;
+      ok = true;
+    }
+    // Merge upcoming
+    var nx = (r[5]||[]).concat(r[6]||[]).concat(r[7]||[]);
+    if(nx.length){ D.proxima = nx; ok=true; }
+    // Goleadores
+    if(r[8]&&r[8].length){ D.golPrimera=r[8]; ok=true; }
     return ok;
   });
 }
@@ -2612,31 +2655,63 @@ function renderHero() {
 
 function renderLiveStrip() {
   var c=gel("matchCards"); if(!c) return; c.innerHTML="";
-  var liveM=D.partidos.filter(function(m){return m.status==="live";}).slice(0,2);
-  var finM=D.partidos.filter(function(m){return m.status==="fin";}).slice(0,1);
-  var proxM=D.proxima.slice(0,1).map(function(m){return {home:m.home,away:m.away,hora:m.hora,fecha:m.fecha,liga:m.liga,status:"prog",hs:"",as_:"",min:""};});
-  var items=liveM.concat(finM).concat(proxM).slice(0,4);
+  // Priority: live > recent (fin) > upcoming
+  var liveM = D.partidos.filter(function(m){return m.status==="live";});
+  var finM  = D.partidos.filter(function(m){return m.status==="fin";}).slice(0,3);
+  var proxM = (D.proxima||[]).slice(0,2).map(function(m){
+    return {home:m.home,away:m.away,hora:m.hora,fecha:m.fecha,liga:m.liga,status:"prog",hs:"",as_:"",min:""};
+  });
+  var items = liveM.concat(finM).concat(proxM).slice(0,5);
+  if(!items.length){
+    var empty=document.createElement("div"); empty.className="mc";
+    empty.style.cssText="flex:1;text-align:center;padding:20px;color:var(--muted);font-family:var(--fh);font-size:12px";
+    empty.textContent="Sin partidos disponibles — actualizando..."; c.appendChild(empty); return;
+  }
   items.forEach(function(m){
-    var isL=m.status==="live",isF=m.status==="fin";
-    var lUrl=m.liga==="Primera Divisi\u00F3n"?L1URL:L2URL;
+    var isL=m.status==="live", isF=m.status==="fin";
+    var lUrl = m.liga==="Primera División"||m.liga==="Primera Divisi\u00F3n"?L1URL:
+               m.liga==="Primera B"?L2URL:
+               m.liga==="Copa de la Liga"?COPA_URL:L1URL;
     var card=document.createElement("div"); card.className="mc"+(isL?" mc-live":""); card.setAttribute("data-goto","resultados");
+    // Liga header
     var lg=document.createElement("div"); lg.className="mc-liga";
-    var li=document.createElement("img"); li.src=lUrl; li.onerror=function(){this.remove();}; lg.appendChild(li);
-    lg.appendChild(document.createTextNode(m.liga)); card.appendChild(lg);
+    var li=document.createElement("img"); li.src=lUrl; li.loading="lazy"; li.onerror=function(){this.style.display="none";}; lg.appendChild(li);
+    lg.appendChild(document.createTextNode(m.liga||"Chile")); card.appendChild(lg);
+    // Teams
     var teams=document.createElement("div"); teams.className="mc-teams";
+    // Home
     var hT=document.createElement("div"); hT.className="mc-team";
-    hT.appendChild(mkMcLogo(m.home));
-    var hn=document.createElement("div"); hn.className="mc-tname"; hn.textContent=m.home; hT.appendChild(hn); teams.appendChild(hT);
-    var scoreW=document.createElement("div");
-    if(isL||isF){var sc=document.createElement("div");sc.className="mc-score"+(isL?" live":"");sc.textContent=m.hs+"-"+m.as_;scoreW.appendChild(sc);}
-    else{var sep=document.createElement("div");sep.className="mc-sep";sep.textContent=m.hora||"-";scoreW.appendChild(sep);}
+    var hLogo=mkMcLogo(m.home); hT.appendChild(hLogo);
+    var hn=document.createElement("div"); hn.className="mc-tname"; hn.textContent=m.home; hT.appendChild(hn);
+    teams.appendChild(hT);
+    // Score/time
+    var scoreW=document.createElement("div"); scoreW.style.cssText="flex-shrink:0;text-align:center";
+    if(isL){
+      var sc=document.createElement("div"); sc.className="mc-score live";
+      sc.textContent=m.hs+"-"+m.as_;
+      scoreW.appendChild(sc);
+      if(m.min){var mn=document.createElement("div");mn.style.cssText="font-family:var(--fh);font-size:10px;font-weight:700;color:var(--r);margin-top:2px";mn.textContent=m.min+"'";scoreW.appendChild(mn);}
+    } else if(isF){
+      var sc2=document.createElement("div"); sc2.className="mc-score";
+      sc2.style.cssText="font-family:var(--fd);font-size:26px;color:var(--ink);letter-spacing:2px;line-height:1";
+      sc2.textContent=m.hs+"-"+m.as_; scoreW.appendChild(sc2);
+    } else {
+      var sep=document.createElement("div"); sep.className="mc-sep";
+      sep.innerHTML="<div style='font-family:var(--fd);font-size:18px;color:var(--muted);letter-spacing:1px'>"+(m.hora||"--:--")+"</div><div style='font-family:var(--fh);font-size:9px;color:var(--muted);margin-top:1px'>"+(m.fecha||"")+"</div>";
+      scoreW.appendChild(sep);
+    }
     teams.appendChild(scoreW);
+    // Away
     var aT=document.createElement("div"); aT.className="mc-team";
-    aT.appendChild(mkMcLogo(m.away));
-    var an=document.createElement("div"); an.className="mc-tname"; an.textContent=m.away; aT.appendChild(an); teams.appendChild(aT);
-    card.appendChild(teams);
+    var aLogo=mkMcLogo(m.away); aT.appendChild(aLogo);
+    var an=document.createElement("div"); an.className="mc-tname"; an.textContent=m.away; aT.appendChild(an);
+    teams.appendChild(aT); card.appendChild(teams);
+    // Status badge
     var st=document.createElement("div"); st.className="mc-status "+(isL?"ms-live":isF?"ms-fin":"ms-prog");
-    st.textContent=isL?("\u25CF "+(m.min||"")+"'"):isF?"Final":(m.fecha||"Programado"); card.appendChild(st);
+    if(isL) st.innerHTML="<span style='color:var(--r)'>\u25CF</span> EN VIVO "+(m.min?m.min+"'":"");
+    else if(isF) st.textContent="Final \u2022 "+m.fecha;
+    else st.textContent=(m.fecha?m.fecha+" \u2022 ":"")+(m.hora||"Programado");
+    card.appendChild(st);
     c.appendChild(card);
   });
   var ld=gel("lsDate");
@@ -3600,7 +3675,7 @@ function apiFetch(url, opts) {
 
 // ── TOP SCORERS ──
 function fetchTopScorers() {
-  return apiFetch("https://v3.football.api-sports.io/players/topscorers?league=207&season=2025",
+  return apiFetch("https://v3.football.api-sports.io/players/topscorers?league=207&season=2026",
     {headers:{"x-apisports-key":_ak()}})
   .then(function(r){ return r.json(); })
   .then(function(j){
