@@ -2046,30 +2046,38 @@ var currentAdminUser = null;
 // Updated at runtime from admin panel (stored in localStorage)
 // ══════════════════════════════════════════════════════
 var LOGOS_DEFAULT = {
-  "Colo Colo": "https://media.api-sports.io/football/teams/2288.png",
-  "Universidad de Chile": "https://media.api-sports.io/football/teams/2290.png",
-  "Universidad Católica": "https://media.api-sports.io/football/teams/2289.png",
-  "Ñublense": "https://media.api-sports.io/football/teams/2304.png",
-  "O'Higgins": "https://media.api-sports.io/football/teams/2296.png",
-  "O’Higgins": "https://media.api-sports.io/football/teams/2296.png",
-  "Palestino": "https://media.api-sports.io/football/teams/2294.png",
-  "Huachipato": "https://media.api-sports.io/football/teams/2295.png",
-  "Audax Italiano": "https://media.api-sports.io/football/teams/2293.png",
-  "Coquimbo Unido": "https://media.api-sports.io/football/teams/2302.png",
-  "Unión La Calera": "https://media.api-sports.io/football/teams/2298.png",
-  "Cobresal": "https://media.api-sports.io/football/teams/2301.png",
-  "Deportes Limache": "https://media.api-sports.io/football/teams/10273.png",
-  "Deportes La Serena": "https://media.api-sports.io/football/teams/2297.png",
-  "U. de Concepción": "https://media.api-sports.io/football/teams/2299.png",
-  "Deportes Concepción": "https://media.api-sports.io/football/teams/10274.png",
-  "Everton": "https://media.api-sports.io/football/teams/2300.png",
-  "Unión Española": "https://media.api-sports.io/football/teams/2292.png",
-  "San Luis": "https://media.api-sports.io/football/teams/10272.png",
-  "Curicó Unido": "https://media.api-sports.io/football/teams/10269.png",
-  "Magallanes": "https://media.api-sports.io/football/teams/10276.png",
-  "Rangers": "https://media.api-sports.io/football/teams/10271.png",
-  "Deportes Antofagasta": "https://media.api-sports.io/football/teams/10270.png",
-  "Provincial Osorno": "https://media.api-sports.io/football/teams/10275.png"
+  "Colo Colo":              "https://media.api-sports.io/football/teams/2288.png",
+  "Colo-Colo":              "https://media.api-sports.io/football/teams/2288.png",
+  "Universidad de Chile":   "https://media.api-sports.io/football/teams/2290.png",
+  "U. de Chile":            "https://media.api-sports.io/football/teams/2290.png",
+  "Universidad Cat\u00F3lica": "https://media.api-sports.io/football/teams/2289.png",
+  "U. Cat\u00F3lica":      "https://media.api-sports.io/football/teams/2289.png",
+  "\u00D1ublense":         "https://media.api-sports.io/football/teams/2304.png",
+  "Nublense":               "https://media.api-sports.io/football/teams/2304.png",
+  "O\u2019Higgins":        "https://media.api-sports.io/football/teams/2296.png",
+  "O'Higgins":              "https://media.api-sports.io/football/teams/2296.png",
+  "Palestino":              "https://media.api-sports.io/football/teams/2294.png",
+  "Huachipato":             "https://media.api-sports.io/football/teams/2295.png",
+  "Audax Italiano":         "https://media.api-sports.io/football/teams/2293.png",
+  "Coquimbo Unido":         "https://media.api-sports.io/football/teams/2302.png",
+  "Uni\u00F3n La Calera":  "https://media.api-sports.io/football/teams/2298.png",
+  "Union La Calera":        "https://media.api-sports.io/football/teams/2298.png",
+  "Cobresal":               "https://media.api-sports.io/football/teams/2301.png",
+  "Deportes Limache":       "https://media.api-sports.io/football/teams/10273.png",
+  "Deportes La Serena":     "https://media.api-sports.io/football/teams/2297.png",
+  "U. de Concepci\u00F3n": "https://media.api-sports.io/football/teams/2299.png",
+  "Universidad de Concepci\u00F3n": "https://media.api-sports.io/football/teams/2299.png",
+  "Deportes Concepci\u00F3n": "https://media.api-sports.io/football/teams/10274.png",
+  "Everton":                "https://media.api-sports.io/football/teams/2300.png",
+  "Uni\u00F3n Espa\u00F1ola": "https://media.api-sports.io/football/teams/2292.png",
+  "San Luis":               "https://media.api-sports.io/football/teams/10272.png",
+  "Curi\u00F3 Unido":      "https://media.api-sports.io/football/teams/10269.png",
+  "Magallanes":             "https://media.api-sports.io/football/teams/2291.png",
+  "Rangers":                "https://media.api-sports.io/football/teams/10268.png",
+  "Cobreloa":               "https://media.api-sports.io/football/teams/2303.png",
+  "Deportes Iquique":       "https://media.api-sports.io/football/teams/2305.png",
+  "Santiago Wanderers":     "https://media.api-sports.io/football/teams/2306.png",
+  "Deportes Antofagasta":   "https://media.api-sports.io/football/teams/2307.png"
 };
 var LOGOS = Object.assign({}, LOGOS_DEFAULT);
 
@@ -2384,15 +2392,17 @@ function initLogos() {
 
 function getLogo(team) {
   if(!team) return null;
-  // Direct match first
+  // Direct match
   if(LOGOS[team]) return LOGOS[team];
-  // Normalize: try replacing common unicode escapes
+  // Normalize unicode and apostrophes
   var norm = team
-    .replace(/\u00D1/g,"\u00D1").replace(/\u00F3/g,"\u00F3")
-    .replace(/\u00FA/g,"\u00FA").replace(/\u00E9/g,"\u00E9")
-    .replace(/\u00F1/g,"\u00F1").replace(/\u00E1/g,"\u00E1")
-    .replace(/\u2019/g,"'").replace(/'/g,"'");
-  return LOGOS[norm] || LOGOS_DEFAULT[norm] || null;
+    .replace(/\u2019/g, "'")
+    .replace(/'/g, "'");
+  if(LOGOS[norm]) return LOGOS[norm];
+  // Try LOGOS_DEFAULT directly
+  if(LOGOS_DEFAULT[team]) return LOGOS_DEFAULT[team];
+  if(LOGOS_DEFAULT[norm]) return LOGOS_DEFAULT[norm];
+  return null;
 }
 
 function setLogoOverride(team, url) {
