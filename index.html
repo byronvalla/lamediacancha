@@ -1793,30 +1793,50 @@ html{scroll-behavior:smooth}
 
         <!-- LOGOS -->
         <div class="admin-section" id="adminSec-logos">
-          <div style="margin-bottom:14px">
-            <b style="font-family:var(--fh)">Gestionar logos de equipos</b>
-            <div style="font-size:12px;color:var(--muted);margin-top:4px">Haz clic en "Cambiar URL" para pegar la URL de imagen del escudo que quieras usar. El borde verde indica un logo personalizado. Los logos vienen por defecto de Wikipedia.</div>
-          </div>
-          <!-- Logo edit form -->
-          <div class="admin-form" id="logoEditForm">
-            <div style="font-family:var(--fh);font-size:15px;font-weight:700;margin-bottom:14px">Cambiar logo: <span id="logoEditTeamName" style="color:var(--r)"></span></div>
-            <div class="af-row">
-              <label class="af-label">URL del escudo</label>
-              <input class="af-input" id="lfUrl" placeholder="https://upload.wikimedia.org/..." oninput="livePreview('lfUrl','lfPreview',true)"/>
-              <div class="logo-preview" id="lfPreview">&#26BD;</div>
-              <div class="af-hint">Pega la URL directa de la imagen. PNG o SVG con fondo transparente funcionan mejor. Puedes usar Wikipedia, escudos.com, el sitio oficial del club, etc.</div>
+          <div style="margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <div>
+              <b style="font-family:var(--fh);font-size:14px">&#127973; Escudos de Equipos</b>
+              <div style="font-size:12px;color:var(--muted);margin-top:3px">Sube imagen desde tu PC o pega una URL. Puedes agregar, editar y eliminar equipos.</div>
             </div>
-            <div style="display:flex;gap:10px;margin-top:6px">
-              <button class="admin-btn-save" onclick="saveLogo()">&#10003; Guardar Logo</button>
-              <button class="admin-btn admin-btn-edit" style="margin-top:14px" onclick="resetLogo()">Restaurar original</button>
-              <button class="admin-btn admin-btn-del" style="margin-top:14px" onclick="closeLogoForm()">Cancelar</button>
+            <button class="admin-btn admin-btn-new" onclick="openAddTeamForm()">&#43; Nuevo equipo</button>
+          </div>
+
+          <!-- FORM -->
+          <div id="teamLogoForm" style="display:none;background:var(--w2);border:1.5px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px">
+            <div style="font-family:var(--fh);font-size:13px;font-weight:700;margin-bottom:14px" id="teamFormTitle">Agregar Equipo</div>
+            <input type="hidden" id="tfOrigName"/>
+            <div class="af-2col">
+              <div class="af-row">
+                <label class="af-label">Nombre del equipo</label>
+                <input class="af-input" id="tfName" placeholder="Ej: Colo Colo"/>
+              </div>
+              <div class="af-row">
+                <label class="af-label">URL del escudo</label>
+                <input class="af-input" id="tfUrl" placeholder="https://... (opcional si subes archivo)" oninput="previewTeamLogo()"/>
+              </div>
+            </div>
+            <div class="af-row" style="margin-top:10px">
+              <label class="af-label">&#128190; O sube imagen desde tu PC (PNG, JPG, SVG)</label>
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px">
+                <label style="display:inline-flex;align-items:center;gap:6px;background:var(--lc);color:#fff;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;padding:9px 18px;border-radius:8px;cursor:pointer;transition:.2s;border:none">
+                  &#128247; Seleccionar imagen
+                  <input type="file" id="tfFile" accept="image/*,image/svg+xml" style="display:none" onchange="handleTeamFileUpload(this)"/>
+                </label>
+                <span id="tfFileName" style="font-size:12px;color:var(--muted);font-family:var(--fh);flex:1">Ningún archivo seleccionado</span>
+                <div id="tfPreview" style="width:60px;height:60px;border-radius:10px;background:var(--w3);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;flex-shrink:0">&#9974;</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+              <button class="admin-btn admin-btn-new" onclick="saveTeamLogo()">&#10003; Guardar</button>
+              <button class="admin-btn" style="color:var(--muted);border-color:var(--line2);margin-top:0;padding:8px 16px" onclick="closeTeamForm()">Cancelar</button>
+              <button class="admin-btn admin-btn-del" id="tfDeleteBtn" style="display:none;margin-top:0" onclick="deleteTeamLogo()">&#128465; Eliminar</button>
             </div>
           </div>
-          <div class="logo-grid" id="logoGrid"></div>
+
+          <!-- GRID -->
+          <div id="logoGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px"></div>
         </div>
 
-
-        <!-- USUARIOS (superadmin only) -->
         <div class="admin-section" id="adminSec-usuarios">
           <div style="background:rgba(212,0,32,.05);border:1.5px solid rgba(212,0,32,.15);border-radius:10px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px">
             <span style="font-size:20px">&#128081;</span>
@@ -3906,27 +3926,184 @@ function saveOpin() {
 var editingLogoTeam = null;
 function renderAdminLogos() {
   var c = gel("logoGrid"); if(!c) return; c.innerHTML = "";
+  // Merge all known teams
   var teamSet = {};
-  Object.keys(LOGOS_DEFAULT).forEach(function(k){ teamSet[k]=1; });
+  Object.keys(LOGOS_DEFAULT).forEach(function(k){ if(k.length>2) teamSet[k]=1; });
+  Object.keys(LOGOS).forEach(function(k){ if(k.length>2) teamSet[k]=1; });
   D.primera.rows.forEach(function(r){ teamSet[r.team]=1; });
   D.primerab.rows.forEach(function(r){ teamSet[r.team]=1; });
-  var teams = Object.keys(teamSet).sort(function(a,b){ return a.localeCompare(b,"es"); });
-  var overrides = loadSt("lmc_logos_override", {});
-  teams.forEach(function(team) {
-    var url = getLogo(team);
+  var overrides = loadSt("lmc_logos_override",{});
+  Object.keys(overrides).forEach(function(k){ teamSet[k]=1; });
+  var teams = Object.keys(teamSet).sort(function(a,b){return a.localeCompare(b,"es");});
+
+  teams.forEach(function(team){
+    var url = getLogo(team)||"";
     var hasOverride = !!overrides[team];
-    var card = document.createElement("div"); card.className = "logo-card";
-    var imgDiv = document.createElement("div"); imgDiv.className = "logo-card-img";
-    if(url) imgDiv.style.backgroundImage="url(\""+url+"\")"; else imgDiv.textContent=emoji(team);
-    if(hasOverride) imgDiv.style.outline="2px solid var(--green)";
-    card.appendChild(imgDiv);
-    var name = document.createElement("div"); name.className = "logo-card-name"; name.textContent = team;
-    card.appendChild(name);
-    var editBtn = document.createElement("div"); editBtn.className = "logo-card-edit"; editBtn.textContent = "Cambiar URL";
-    (function(t){ editBtn.onclick = function(){ openEditLogo(t); }; })(team);
-    card.appendChild(editBtn);
+    var card = document.createElement("div");
+    card.style.cssText = "background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:.15s;position:relative"+(hasOverride?";border-color:var(--lc)":"");
+    card.onclick = function(){ openEditTeamForm(team); };
+
+    // Logo preview
+    var logoDiv = document.createElement("div");
+    logoDiv.style.cssText = "width:56px;height:56px;margin:0 auto 8px;border-radius:8px;overflow:hidden;background:var(--w3);display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid var(--line2)";
+    if(url){
+      var img = document.createElement("img");
+      img.src = url; img.referrerPolicy = "no-referrer";
+      img.style.cssText = "width:100%;height:100%;object-fit:contain";
+      img.onerror = function(){ logoDiv.textContent=emoji(team); };
+      logoDiv.appendChild(img);
+    } else {
+      logoDiv.textContent = emoji(team);
+    }
+    card.appendChild(logoDiv);
+
+    // Team name
+    var nameEl = document.createElement("div");
+    nameEl.style.cssText = "font-size:11px;font-weight:700;font-family:var(--fh);color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap";
+    nameEl.textContent = team;
+    card.appendChild(nameEl);
+
+    // Override badge
+    if(hasOverride){
+      var badge = document.createElement("div");
+      badge.style.cssText = "position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--lc)";
+      badge.title = "Logo personalizado";
+      card.appendChild(badge);
+    }
     c.appendChild(card);
   });
+}
+
+function openAddTeamForm(){
+  gel("teamFormTitle").textContent = "Agregar Equipo";
+  gel("tfOrigName").value = "";
+  gel("tfName").value = "";
+  gel("tfUrl").value = "";
+  gel("tfFileName").textContent = "Ningún archivo seleccionado";
+  gel("tfPreview").innerHTML = "&#128247;";
+  gel("tfDeleteBtn").style.display = "none";
+  gel("teamLogoForm").style.display = "block";
+  gel("tfName").focus();
+}
+
+function openEditTeamForm(team){
+  gel("teamFormTitle").textContent = "Editar: " + team;
+  gel("tfOrigName").value = team;
+  gel("tfName").value = team;
+  var url = getLogo(team)||"";
+  // Only show URL if it's an http URL (not base64)
+  gel("tfUrl").value = url.indexOf("data:")===-1 ? url : "";
+  gel("tfFileName").textContent = url.indexOf("data:")===0 ? "Imagen subida" : "Ningún archivo seleccionado";
+  // Show preview
+  var prev = gel("tfPreview"); prev.innerHTML = "";
+  if(url){
+    var img = document.createElement("img");
+    img.src = url; img.referrerPolicy = "no-referrer";
+    img.style.cssText = "width:100%;height:100%;object-fit:contain";
+    img.onerror = function(){ prev.textContent = emoji(team); };
+    prev.appendChild(img);
+  } else { prev.textContent = emoji(team); }
+  gel("tfDeleteBtn").style.display = "inline-flex";
+  gel("teamLogoForm").style.display = "block";
+  gel("tfName").focus();
+}
+
+function closeTeamForm(){
+  gel("teamLogoForm").style.display = "none";
+}
+
+function previewTeamLogo(){
+  var url = (gel("tfUrl").value||"").trim();
+  var prev = gel("tfPreview"); prev.innerHTML = "";
+  if(url){
+    var img = document.createElement("img");
+    img.src = url; img.referrerPolicy = "no-referrer";
+    img.style.cssText = "width:100%;height:100%;object-fit:contain";
+    img.onerror = function(){ prev.textContent = "❌"; };
+    prev.appendChild(img);
+  }
+}
+
+function handleTeamFileUpload(input){
+  if(!input.files||!input.files[0]) return;
+  var file = input.files[0];
+  gel("tfFileName").textContent = file.name;
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var b64 = e.target.result; // data:image/...;base64,...
+    // Show preview
+    var prev = gel("tfPreview"); prev.innerHTML = "";
+    var img = document.createElement("img");
+    img.src = b64;
+    img.style.cssText = "width:100%;height:100%;object-fit:contain";
+    prev.appendChild(img);
+    // Store in URL field as base64
+    gel("tfUrl").value = b64;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveTeamLogo(){
+  var origName = (gel("tfOrigName").value||"").trim();
+  var newName = (gel("tfName").value||"").trim();
+  var url = (gel("tfUrl").value||"").trim();
+
+  if(!newName){ alert("Ingresa el nombre del equipo"); return; }
+
+  var overrides = loadSt("lmc_logos_override",{});
+
+  // If name changed, remove old entry
+  if(origName && origName !== newName){
+    delete overrides[origName];
+    delete LOGOS[origName];
+    delete LOGOS_DEFAULT[origName];
+  }
+
+  // Save new logo
+  if(url){
+    overrides[newName] = url;
+    LOGOS[newName] = url;
+    LOGOS_DEFAULT[newName] = url;
+  } else if(!origName){
+    // New team with no logo
+    LOGOS_DEFAULT[newName] = "";
+  }
+
+  // If name changed, copy logo to new name
+  if(origName && origName !== newName && LOGOS[origName]){
+    LOGOS[newName] = LOGOS[origName];
+    LOGOS_DEFAULT[newName] = LOGOS_DEFAULT[origName]||"";
+  }
+
+  saveSt("lmc_logos_override", overrides);
+  closeTeamForm();
+  renderAdminLogos();
+  // Update all logos on page
+  document.querySelectorAll("[data-logo]").forEach(function(el){
+    var t = el.getAttribute("data-logo");
+    if(t === newName || t === origName){
+      var newEl = mkLogo(newName, el.offsetWidth <= 30);
+      if(el.parentNode) el.parentNode.replaceChild(newEl, el);
+    }
+  });
+  // Toast
+  var toast = document.createElement("div");
+  toast.style.cssText = "position:fixed;top:80px;right:20px;z-index:9999;background:rgba(0,153,64,.95);color:#fff;font-family:var(--fh);font-size:13px;font-weight:700;padding:12px 20px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.2)";
+  toast.textContent = "\u2714 Guardado: " + newName;
+  document.body.appendChild(toast);
+  setTimeout(function(){ toast.remove(); }, 2500);
+}
+
+function deleteTeamLogo(){
+  var name = (gel("tfOrigName").value||"").trim();
+  if(!name || !confirm("¿Eliminar el equipo \""+name+"\"?")) return;
+  var overrides = loadSt("lmc_logos_override",{});
+  delete overrides[name];
+  delete LOGOS[name];
+  delete LOGOS_DEFAULT[name];
+  saveSt("lmc_logos_override", overrides);
+  closeTeamForm();
+  renderAdminLogos();
 }
 function openEditLogo(team) {
   editingLogoTeam = team;
