@@ -1222,6 +1222,335 @@ html{scroll-behavior:smooth}
   .ft th,.ft td{padding:6px 4px;font-size:11px}
   .logo-grid{grid-template-columns:repeat(2,1fr)}
 }.match-cards{grid-template-columns:1fr 1fr}.tg{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr}.tab{padding:7px 10px;font-size:11px}.news-grid-3{grid-template-columns:1fr 1fr}.art-related-grid{grid-template-columns:1fr}.af-2col,.af-3col{grid-template-columns:1fr}.logo-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
+/* ═══════════════════════════════════════
+   PROFESSIONAL DESIGN ENHANCEMENTS
+   ═══════════════════════════════════════ */
+
+/* Variable overrides (cascade over initial :root) */
+:root {
+  --r:#c8001c;--r2:#a8001a;--r3:#e8002a;--gold:#d4920a;
+  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.08);
+  --sh2:0 4px 16px rgba(0,0,0,.08),0 16px 48px rgba(0,0,0,.12);
+  --sh3:0 8px 32px rgba(0,0,0,.12),0 24px 64px rgba(0,0,0,.16);
+  --transition:cubic-bezier(.25,.46,.45,.94);
+}
+
+/* Body and base */
+body {
+  font-feature-settings:"kern","liga","calt";
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+
+/* Topbar refined */
+.topbar {
+  height:3px;
+  background:linear-gradient(90deg,#0055a4 33.33%,#fff 33.33%,#fff 66.66%,var(--r) 66.66%);
+}
+
+/* Nav improvements */
+nav {
+  border-bottom:2px solid var(--r);
+  box-shadow:0 1px 0 rgba(0,0,0,.06),0 4px 20px rgba(0,0,0,.08);
+}
+.nav-inner { height:60px; gap:4px; }
+.nav-logo-name { font-size:22px; letter-spacing:2px; }
+.nav-logo-img {
+  width:42px; height:42px; border-radius:8px;
+  box-shadow:0 2px 8px rgba(200,0,28,.3),0 1px 3px rgba(0,0,0,.15);
+}
+.nb {
+  font-size:11.5px;
+  padding:8px 11px;
+  border-radius:7px;
+  transition:color .15s var(--transition),background .15s var(--transition);
+}
+.nb.active::after { height:2px; background:var(--r); bottom:-2px; border-radius:0; }
+.nav-vivo {
+  border-radius:8px;
+  font-size:11px;
+  letter-spacing:1px;
+  box-shadow:0 2px 12px rgba(200,0,28,.35);
+  transition:all .2s var(--transition);
+}
+.nav-vivo:hover { transform:translateY(-1px); box-shadow:0 4px 20px rgba(200,0,28,.45); }
+.nav-search { border-radius:8px; }
+
+/* Ticker improvements */
+.ticker { height:32px; border-bottom:2px solid rgba(0,0,0,.15); }
+.ticker-lbl { font-size:10px; letter-spacing:2.5px; }
+.ticker-item { font-size:11.5px; }
+
+/* Home hero */
+.home-hero { padding:18px 0 0; background:#f4f4f6; }
+
+/* Main hero card */
+.hmain {
+  border-radius:16px;
+  box-shadow:var(--sh2);
+  min-height:460px;
+}
+.hmain:hover {
+  transform:translateY(-4px);
+  box-shadow:var(--sh3);
+}
+.hmain-ov {
+  background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.4) 45%,rgba(0,0,0,.05) 80%);
+}
+.hmain-title {
+  font-size:clamp(20px,2.4vw,34px);
+  letter-spacing:.3px;
+  text-shadow:0 2px 8px rgba(0,0,0,.4);
+}
+.htag {
+  font-size:9.5px;
+  letter-spacing:2px;
+  padding:4px 11px;
+  border-radius:4px;
+  background:var(--r);
+  box-shadow:0 2px 8px rgba(200,0,28,.4);
+}
+.hmain-exc { font-size:13px; color:rgba(255,255,255,.75); }
+
+/* Small news cards */
+.hcard {
+  border-radius:13px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+  transition:all .22s var(--transition);
+  max-height:none;
+  min-height:110px;
+}
+.hcard:hover {
+  transform:translateY(-3px);
+  box-shadow:var(--sh2);
+  border-color:rgba(200,0,28,.25);
+}
+.hcard-title { font-size:13.5px; font-weight:700; line-height:1.35; }
+.hcard-tag { font-size:9px; letter-spacing:2px; font-weight:800; }
+
+/* Live strip */
+.live-strip {
+  border-radius:18px;
+  border:1.5px solid rgba(200,0,28,.3);
+  box-shadow:0 4px 24px rgba(200,0,28,.1);
+}
+.ls-head { padding:14px 20px; }
+.ls-badge { font-size:11px; letter-spacing:2px; }
+.mc-score { font-size:30px; }
+.mc-tname { font-size:11.5px; }
+
+/* Section headings */
+.st {
+  font-size:clamp(18px,2.5vw,26px);
+  letter-spacing:2.5px;
+}
+.st::before { width:4px; height:22px; border-radius:2px; }
+
+/* News cards */
+.nc {
+  border-radius:14px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+  transition:all .22s var(--transition);
+}
+.nc:hover {
+  transform:translateY(-4px);
+  box-shadow:var(--sh2);
+  border-color:rgba(200,0,28,.2);
+}
+.nc-title { font-size:14.5px; font-weight:700; line-height:1.35; color:#111; }
+.nc-title-main { font-size:17px; }
+.nc-img-main { height:210px; }
+.nc-img-sm { height:140px; }
+.nc-tag { font-size:9px; letter-spacing:2px; font-weight:800; border-radius:4px; }
+
+/* Card base */
+.card {
+  border-radius:14px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+}
+.card-head {
+  padding:12px 18px;
+  background:#fafafa;
+  border-bottom:1px solid #eee;
+}
+.card-title { font-size:12px; letter-spacing:1px; }
+
+/* Tables */
+.ftw {
+  border-radius:16px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh2);
+  position:relative;
+}
+.ft thead tr { background:linear-gradient(135deg,#c8001c,#a50017); }
+.ft th { font-size:9.5px; letter-spacing:2px; padding:11px 14px; }
+.ft td { padding:12px 14px; font-size:13.5px; }
+.ft td:nth-child(2) { font-size:14px; }
+.fpts { font-size:18px; font-weight:700; }
+
+/* Opinion cards */
+.opin-card {
+  border-radius:14px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+  transition:all .2s var(--transition);
+}
+.opin-card:hover {
+  transform:translateX(4px);
+  border-color:rgba(200,0,28,.3);
+  box-shadow:var(--sh2);
+}
+.opin-title { font-size:14.5px; }
+
+/* Results */
+.rg {
+  border-radius:14px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+}
+.rg-h { background:linear-gradient(135deg,#c8001c,#a50017); }
+.r-sc {
+  border-radius:8px;
+  font-size:24px;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+}
+
+/* Tabs */
+.tabs {
+  border-radius:10px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+  padding:5px;
+}
+.tab {
+  border-radius:7px;
+  font-size:11.5px;
+  padding:9px 18px;
+}
+.tab.active { box-shadow:0 2px 12px rgba(200,0,28,.3); }
+
+/* Stat boxes */
+.stat-box {
+  border-radius:14px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+  border-top:3px solid var(--r);
+  padding:20px;
+}
+.stat-box:hover { transform:translateY(-3px); box-shadow:var(--sh2); }
+.stat-n { font-size:40px; }
+.stat-l { letter-spacing:2px; font-size:10.5px; }
+
+/* Selection banner */
+.sel-banner {
+  border-radius:18px;
+  background:linear-gradient(135deg,#c8001c 0%,#8c0014 40%,#003d80 100%);
+  box-shadow:0 8px 36px rgba(200,0,28,.28),0 2px 8px rgba(0,0,0,.12);
+  padding:30px 36px;
+}
+.sel-nombre { font-size:clamp(30px,4.5vw,52px); letter-spacing:4px; }
+.sel-st { border-radius:10px; padding:12px 18px; }
+.sel-st-n { font-size:26px; }
+
+/* Transfer cards */
+.tc2 {
+  border-radius:14px;
+  border:1px solid #e8e8ec;
+  box-shadow:var(--sh);
+  transition:all .2s var(--transition);
+}
+.tc2:hover { transform:translateY(-3px); box-shadow:var(--sh2); }
+
+/* Footer */
+footer {
+  background:linear-gradient(180deg,#0e0e10 0%,#050508 100%);
+  border-top:3px solid var(--r);
+  padding:44px 20px 24px;
+}
+.fb { padding-top:16px; font-size:11.5px; }
+.fc-l { font-size:13.5px; color:rgba(255,255,255,.45); }
+.fc-l:hover { color:rgba(255,255,255,.9); }
+.fd2 { font-size:12.5px; color:rgba(255,255,255,.45); line-height:1.75; }
+
+/* Mobile bottom nav */
+.mob-nav-bar {
+  border-top:1.5px solid rgba(200,0,28,.3);
+  box-shadow:0 -2px 20px rgba(0,0,0,.1);
+}
+.mob-nav-item { font-size:9px; letter-spacing:.8px; }
+.mob-nav-icon { font-size:20px; }
+
+/* Goleadores */
+.gf-row:hover { background:rgba(200,0,28,.04); }
+.gf-n { font-size:14px; }
+.gf-g { font-size:28px; }
+
+/* Article page */
+.art-title { letter-spacing:.5px; }
+.art-hero-bg { border-radius:16px; height:420px; }
+.art-body { font-size:17px; line-height:1.85; }
+.art-body h2 { font-size:28px; }
+.art-body blockquote {
+  border-radius:0 12px 12px 0;
+  padding:18px 24px;
+  background:rgba(200,0,28,.04);
+}
+
+/* Focus states for accessibility */
+a:focus-visible,button:focus-visible {
+  outline:2px solid var(--r);
+  outline-offset:2px;
+  border-radius:4px;
+}
+
+/* Hover shimmer on main hero */
+.hmain::after {
+  content:'';
+  position:absolute;
+  top:0;left:-100%;
+  width:50%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
+  transform:skewX(-15deg);
+  transition:left .6s var(--transition);
+  pointer-events:none;
+  z-index:5;
+}
+.hmain:hover::after { left:150%; }
+
+/* Better scrollbar */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:#f0f0f2; }
+::-webkit-scrollbar-thumb { background:rgba(200,0,28,.35); border-radius:99px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(200,0,28,.6); }
+
+/* Admin panel improvements */
+.admin-panel { border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.35); }
+.admin-header { background:linear-gradient(135deg,#111,#1e1e22); }
+
+/* Smooth section transitions */
+.sec.active { animation:secIn .3s var(--transition) both; }
+@keyframes secIn { from{opacity:.3;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+/* Better image placeholder */
+img { background-color:#f0f0f2; }
+
+/* Gradient underline on section links */
+.slink {
+  border-radius:7px;
+  font-size:11px;
+  padding:6px 13px;
+  transition:all .15s var(--transition);
+}
+.slink:hover { transform:translateY(-1px); }
+
+/* Improve scrollable list items */
+.nli:hover { padding-left:6px; }
+.nli { transition:padding .15s var(--transition); }
+
 </style>
 
 <script type="application/ld+json">
@@ -2184,16 +2513,16 @@ var TMAP = {
   "Rangers de Talca":"Rangers de Talca"
 };
 
-// Normalize unknown team names with fuzzy fallback
+// Normalize unknown team names — cached fuzzy fallback
+var _nnCache = {};
 function nn(raw) {
   if(!raw) return "";
-  if(TMAP[raw]) return TMAP[raw];
-  // Try case-insensitive
+  if(_nnCache[raw] !== undefined) return _nnCache[raw];
+  if(TMAP[raw]) return (_nnCache[raw] = TMAP[raw]);
   var low = raw.toLowerCase();
-  for(var k in TMAP) { if(k.toLowerCase() === low) return TMAP[k]; }
-  // Try partial match
-  for(var k2 in TMAP) { if(low.indexOf(k2.toLowerCase())>=0 || k2.toLowerCase().indexOf(low)>=0) return TMAP[k2]; }
-  return raw; // return as-is if no match
+  for(var k in TMAP){ if(k.toLowerCase()===low) return (_nnCache[raw]=TMAP[k]); }
+  for(var k2 in TMAP){ if(low.indexOf(k2.toLowerCase())>=0||k2.toLowerCase().indexOf(low)>=0) return (_nnCache[raw]=TMAP[k2]); }
+  return (_nnCache[raw] = raw);
 }
 
 var EMOJI = {
@@ -2432,7 +2761,8 @@ function setLogoOverride(team, url) {
   LOGOS[team] = url || LOGOS_DEFAULT[team];
 }
 
-// Preload all logos into browser image cache
+// Preload logos — retain references so GC doesn't collect them
+var _preloadCache = [];
 function preloadLogos() {
   Object.keys(LOGOS).forEach(function(team) {
     if(LOGOS[team]) { var img = new Image(); img.referrerPolicy="no-referrer"; img.src = LOGOS[team]; }
@@ -3374,6 +3704,11 @@ function renderAll(){
   var upd=gel("apiLastUpdate"); if(upd) upd.textContent="Act. "+h+":"+m;
 }
 
+function renderAll(){
+  renderTicker(); renderHero(); renderLiveStrip();
+  renderSec(_currentSec);
+}
+
 // ══════════════════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════════════════
@@ -3384,7 +3719,10 @@ function goSec(sec){
   SECS.forEach(function(s){var el=gel("sec-"+s);if(el)el.classList.toggle("active",s===sec);});
   document.querySelectorAll(".nb").forEach(function(b,i){b.classList.toggle("active",NAVS[i]===sec);});
   document.querySelectorAll(".mm-link").forEach(function(b,i){b.classList.toggle("active",NAVS[i]===sec);});
-  if(sec!=="articulo") window.scrollTo({top:0,behavior:"smooth"});
+  if(sec!=="articulo"){
+    window.scrollTo({top:0,behavior:"smooth"});
+    if(sec !== _currentSec){ _currentSec = sec; renderSec(sec); }
+  }
   initReveal();
 }
 function togMob(){ var m=gel("mobMenu");if(m)m.classList.toggle("open"); }
@@ -3406,6 +3744,7 @@ document.addEventListener("click",function(e){
     t=t.parentElement;
   }
 });
+var _revealIO = null;
 function initReveal(){
   // Show all reveal elements immediately as fallback
   function showAll(){
