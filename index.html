@@ -36,7 +36,8 @@
 @font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2')}
 
 /* ── LOGO WHITE BG FIX ── */
-.tlog img,.mc-logo img,.gol-ph img,.gf-ph img{mix-blend-mode:multiply}
+.tlog img{border-radius:6px;mix-blend-mode:multiply}
+.gol-ph img,.gf-ph img{mix-blend-mode:multiply}
 /* ── LIVE MATCH INDICATORS ── */
 @keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.2)}}
 .live-badge{display:inline-flex;align-items:center;gap:4px;background:var(--r);color:#fff;font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:1.5px;padding:3px 8px;border-radius:20px;vertical-align:middle}
@@ -184,14 +185,14 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .api-local{background:rgba(232,160,0,.1);color:var(--gold)}
 
 /* LOGO with loading animation */
-.tlog{border-radius:6px;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.tlog{border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
 .tlog:hover{transform:scale(1.15)}
 .tlog img{width:100%;height:100%;object-fit:contain;border-radius:50%}
 .tlog.loading::after{content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(90deg,var(--w3) 25%,var(--line2) 50%,var(--w3) 75%);background-size:200% 100%;animation:shimmer .8s infinite linear}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .tlog img{width:100%;height:100%;object-fit:contain;border-radius:50%}
-.mc-logo{border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.mc-logo img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+.mc-logo{border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mc-logo img{width:100%;height:100%;object-fit:contain;border-radius:50%;mix-blend-mode:multiply}
 
 /* HERO */
 .home-hero{padding:22px 0 0;background:var(--w2);position:relative}
@@ -2798,16 +2799,16 @@ function mkLogo(team, small) {
   el.className = "tlog";
   el.setAttribute("data-logo", team);
   var sz = small ? "28px" : "36px";
-  el.style.cssText = "width:"+sz+";height:"+sz+";border-radius:6px;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border:none";
+  el.style.cssText = "width:"+sz+";height:"+sz+";border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;border:none";
   var url = getLogo(team);
   if(url) {
     var img = document.createElement("img");
     img.referrerPolicy = "no-referrer";
     img.loading = "eager";
     img.alt = team;
-    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;mix-blend-mode:multiply";
+    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;border-radius:6px;mix-blend-mode:multiply";
     img.onerror = function(){ 
-      el.style.cssText += ";font-size:12px;border-radius:6px";
+      el.style.cssText += ";font-size:12px";
       el.textContent = emoji(team); 
       this.remove();
     };
@@ -2815,7 +2816,7 @@ function mkLogo(team, small) {
     img.src = url;
     el.appendChild(img);
   } else {
-    el.style.cssText += ";font-size:14px;border-radius:6px";
+    el.style.cssText += ";font-size:14px";
     el.textContent = emoji(team);
   }
   return el;
@@ -2825,14 +2826,14 @@ function mkMcLogo(team) {
   var el = document.createElement("div");
   el.className = "mc-logo";
   el.setAttribute("data-logo", team);
-  el.style.cssText = "width:44px;height:44px;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent";
+  el.style.cssText = "width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0";
   var url = getLogo(team);
   if(url) {
     var img = document.createElement("img");
     img.referrerPolicy = "no-referrer";
     img.loading = "eager";
     img.alt = team;
-    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;mix-blend-mode:multiply";
+    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;border-radius:50%;mix-blend-mode:multiply";
     img.onerror = function(){ 
       el.textContent=emoji(team); 
       this.remove(); 
