@@ -394,17 +394,18 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .rr-sc{font-family:var(--fd);font-size:15px;letter-spacing:1.5px;color:var(--ink);background:var(--w2);border:1.5px solid var(--line2);border-radius:5px;padding:2px 8px;text-align:center;min-width:48px}
 .rg{background:#fff;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
 .rg-h{background:var(--lc);transition:background .3s;padding:0}
-.rg-h-inner{display:flex;align-items:center;gap:8px;padding:10px 16px;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;color:#fff;text-transform:uppercase}
+.rg-h-inner{display:flex;align-items:center;gap:8px;padding:11px 16px;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;color:#fff;text-transform:uppercase}
 .rg-h img{width:18px;height:18px;object-fit:contain;border-radius:3px}
-.r-row{display:flex;align-items:center;gap:6px;padding:11px 16px;border-bottom:1px solid var(--line);transition:background .15s}
+.r-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--line);transition:background .15s}
 .r-row:last-child{border-bottom:none}
 .r-row:hover{background:rgba(212,0,32,.04)}
-.r-hm{text-align:right}.r-aw{text-align:left}
-.r-t{font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
-.r-hm .r-t{justify-content:flex-end}
-.r-m{font-family:var(--fh);font-size:10px;color:var(--muted);text-align:center;padding:2px 14px 8px;font-weight:600;letter-spacing:.5px}
+.r-hm{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.r-aw{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.r-t{font-size:13px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:7px}
+.r-hm .r-t{flex-direction:row-reverse}
+.r-m{font-family:var(--fh);font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;padding:0}
 .r-sc{font-family:var(--fd);font-size:22px;letter-spacing:3px;color:#fff;background:#1a1a2e;border:2px solid #333;border-radius:7px;padding:5px 14px;text-align:center;min-width:72px;box-shadow:inset 0 2px 8px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.2)}
-.r-hr{font-family:var(--fd);font-size:20px;letter-spacing:2px;color:var(--ink);flex-shrink:0;min-width:56px;text-align:center;background:var(--w2);border-radius:8px;padding:4px 10px}
+.r-hr{font-family:var(--fd);font-size:18px;letter-spacing:2px;color:var(--ink);flex-shrink:0;min-width:64px;text-align:center;background:var(--w2);border-radius:8px;padding:5px 10px;border:1.5px solid var(--line2)}
 .prox{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:9px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:.1s}
 .prox:last-child{border-bottom:none}
 .prox:hover{background:rgba(212,0,32,.03)}
@@ -1223,7 +1224,8 @@ html{scroll-behavior:smooth}
   .mc:nth-child(n+2){display:none}
   .mc-score{font-size:22px}
   /* PARTIDOS */
-  .r-row{gap:6px}
+  .r-row{gap:4px;padding:9px 12px}
+  .r-t{font-size:11px}
   .r-sc{font-size:16px;padding:4px 8px;min-width:52px}
   .r-t{font-size:12px}
   /* FOOTER */
@@ -5176,6 +5178,48 @@ function refreshReveal(){
   },100);
 }
 
+function injectFixtureLogos(){
+  // Inject team logos into static HTML .r-row fixture rows
+  document.querySelectorAll(".r-row").forEach(function(row){
+    var hmDiv = row.querySelector(".r-hm");
+    var awDiv = row.querySelector(".r-aw");
+    if(!hmDiv || !awDiv) return;
+    var hmT = hmDiv.querySelector(".r-t");
+    var awT = awDiv.querySelector(".r-t");
+    if(!hmT || !awT) return;
+    // Only inject once
+    if(hmT.querySelector("img,div[data-logo]")) return;
+    var hmName = hmT.textContent.trim();
+    var awName = awT.textContent.trim();
+    // Home logo (appended — row-reverse puts it to right of name)
+    var hmUrl = getLogo(hmName);
+    if(hmUrl){
+      var hEl = document.createElement("div");
+      hEl.style.cssText = "width:26px;height:26px;border-radius:6px;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:#f5f5f7";
+      var hImg = document.createElement("img");
+      hImg.referrerPolicy = "no-referrer";
+      hImg.style.cssText = "width:82%;height:82%;object-fit:contain;display:block";
+      hImg.src = hmUrl;
+      hImg.onerror = function(){ hEl.remove(); };
+      hEl.appendChild(hImg);
+      hmT.appendChild(hEl);
+    }
+    // Away logo (prepended — appears left of name)
+    var awUrl = getLogo(awName);
+    if(awUrl){
+      var aEl = document.createElement("div");
+      aEl.style.cssText = "width:26px;height:26px;border-radius:6px;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;background:#f5f5f7";
+      var aImg = document.createElement("img");
+      aImg.referrerPolicy = "no-referrer";
+      aImg.style.cssText = "width:82%;height:82%;object-fit:contain;display:block";
+      aImg.src = awUrl;
+      aImg.onerror = function(){ aEl.remove(); };
+      aEl.appendChild(aImg);
+      awT.insertBefore(aEl, awT.firstChild);
+    }
+  });
+}
+
 function init(){
   initLogos();
   if(typeof preloadLogos==="function") preloadLogos();
@@ -5184,6 +5228,7 @@ function init(){
   loadPlayerPhotos();
   // Render IMMEDIATELY — no waiting for loader
   renderAll();
+  injectFixtureLogos();
   setLeagueTheme("inicio");
   // Start API after render
   startAutoRefresh();
