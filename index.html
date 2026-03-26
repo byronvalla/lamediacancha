@@ -34,6 +34,25 @@
 @font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2')}
+
+/* ── LIVE MATCH INDICATORS ── */
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.2)}}
+.live-badge{display:inline-flex;align-items:center;gap:4px;background:var(--r);color:#fff;font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:1.5px;padding:3px 8px;border-radius:20px;vertical-align:middle}
+.live-badge::before{content:'';width:6px;height:6px;background:#fff;border-radius:50%;animation:livePulse 1s infinite;flex-shrink:0}
+.match-live-row{border-left:3px solid var(--r)!important;background:rgba(200,0,28,.04)!important}
+/* ── ADMIN JUGADORES ── */
+.jug-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.jug-card{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
+.jug-card:hover{border-color:var(--lc)}
+.jug-top{display:flex;align-items:center;gap:10px}
+.jug-ph-wrap{width:46px;height:46px;flex-shrink:0}
+.jug-info{flex:1;min-width:0}
+.jug-name{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jug-club{font-family:var(--fh);font-size:10px;color:var(--muted);margin-top:2px}
+.jug-goles{font-family:var(--fd);font-size:11px;color:var(--lc);font-weight:700;margin-top:3px}
+.jug-url{font-size:10px;border:1.5px solid var(--line);border-radius:7px;padding:5px 8px;width:100%;font-family:var(--fh);background:var(--bg);color:var(--ink);outline:none;box-sizing:border-box;transition:border-color .2s}
+.jug-url:focus{border-color:var(--lc)}
+.jug-league-hdr{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--lc);margin:16px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--lc)}
 </style>
 <link rel="dns-prefetch" href="https://upload.wikimedia.org"/>
 <link rel="dns-prefetch" href="https://images.unsplash.com"/>
@@ -2000,6 +2019,7 @@ img { background-color:#f0f0f2; }
       <div class="admin-tab" id="adminUserTab" style="display:none" onclick="adminTabSwitch('usuarios',this)">&#128101; Usuarios</div>
       <div class="admin-tab" onclick="adminTabSwitch('resultados',this)">&#9917; Resultados</div>
       <div class="admin-tab" onclick="adminTabSwitch('traspasos',this)">&#128257; Traspasos</div>
+      <div class="admin-tab" onclick="adminTabSwitch('jugadores',this)">&#128248; Jugadores</div>
     </div>
     <div class="admin-body">
 
@@ -2311,6 +2331,7 @@ img { background-color:#f0f0f2; }
         <!-- TRASPASOS ADMIN -->
         <div class="admin-section" id="adminSec-traspasos">
         </div>
+        <div class="admin-section" id="adminSec-jugadores"></div>
       </div><!-- /adminLoggedBox -->
     </div>
   </div>
@@ -2957,7 +2978,7 @@ function fetchAll() {
     var nx = (r[5]||[]).concat(r[6]||[]).concat(r[7]||[]);
     if(nx.length){ D.proxima = nx; ok=true; }
     // Goleadores
-    if(r[8]&&r[8].length){ D.golPrimera=r[8]; ok=true; }
+    if(r[8]&&r[8].length){ D.golPrimera=r[8]; applyPlayerPhotos(D.golPrimera); ok=true; }
     return ok;
   });
 }
@@ -3446,6 +3467,14 @@ function renderAllNews(id, arr) {
 
 function renderResultsPage(){
   var c=gel("resMain"); if(!c) return; c.innerHTML="";
+  // Show live games banner if any
+  var live=D.partidos.filter(function(m){return m.status==="live";});
+  if(live.length){
+    var banner=document.createElement("div");
+    banner.style.cssText="background:var(--r);color:#fff;border-radius:12px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px";
+    banner.innerHTML="<span class='live-badge'>EN VIVO</span><span style='font-family:var(--fd);font-size:13px;font-weight:700'>"+live.length+" partido"+(live.length>1?"s":"")+" en curso ahora</span><span style='margin-left:auto;font-family:var(--fh);font-size:10px;opacity:.8'>Se actualiza cada 30 seg.</span>";
+    c.appendChild(banner);
+  }
   // Group by liga
   var ligas=["Copa de la Liga","Primera Divisi\u00F3n","Primera B"];
   ligas.forEach(function(liga){
@@ -3453,17 +3482,20 @@ function renderResultsPage(){
     if(!matches.length) return;
     var section=document.createElement("div"); section.style.marginBottom="20px";
     // Liga header
+    var liveInLiga=matches.some(function(m){return m.status==="live";});
     var hdr=document.createElement("div");
     hdr.style.cssText="background:var(--lc);color:#fff;font-family:var(--fd);font-size:14px;letter-spacing:1px;padding:10px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px";
-    hdr.textContent=liga; section.appendChild(hdr);
+    hdr.textContent=liga;
+    if(liveInLiga){ var lb=document.createElement("span"); lb.className="live-badge"; lb.style.cssText="margin-left:auto;font-size:8px"; lb.textContent="EN VIVO"; hdr.appendChild(lb); }
+    section.appendChild(hdr);
     // Match rows
     var wrap=document.createElement("div");
     wrap.style.cssText="background:#fff;border:1.5px solid var(--line);border-top:none;border-radius:0 0 10px 10px;overflow:hidden";
     matches.forEach(function(m,i){
       var isF=m.status==="fin", isL=m.status==="live";
       var row=document.createElement("div");
-      row.style.cssText="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);gap:10px";
-      if(i===matches.length-1) row.style.borderBottom="none";
+      row.className = isL ? "match-live-row" : "";
+      row.style.cssText="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);gap:10px"+(i===matches.length-1?";border-bottom:none":"");
       // Home
       var hDiv=document.createElement("div"); hDiv.style.cssText="display:flex;align-items:center;gap:8px;justify-content:flex-end";
       hDiv.appendChild(document.createTextNode(m.home));
@@ -3471,8 +3503,9 @@ function renderResultsPage(){
       // Score
       var sc=document.createElement("div"); sc.style.cssText="text-align:center;min-width:70px";
       if(isF||isL){
+        var minTxt = isL && m.min ? "<div style='font-family:var(--fh);font-size:9px;color:var(--r);font-weight:700;margin-top:2px'>"+m.min+"'</div>" : "";
         sc.innerHTML="<div style='font-family:var(--fd);font-size:20px;letter-spacing:2px;color:"+(isL?"var(--r)":"var(--ink)")+"'>"+m.hs+"-"+m.as_+"</div>"+
-          "<div style='font-family:var(--fh);font-size:9px;font-weight:700;color:"+(isL?"var(--r)":"var(--green)")+"'>"+(isL?"\u25CF EN VIVO":"FIN \u00B7 "+m.fecha)+"</div>";
+          (isL?"<span class='live-badge' style='font-size:8px;margin-top:3px;display:inline-flex'>EN VIVO</span>"+minTxt:"<div style='font-family:var(--fh);font-size:9px;font-weight:700;color:var(--green)'>FIN \u00B7 "+m.fecha+"</div>");
       } else {
         sc.innerHTML="<div style='font-family:var(--fd);font-size:16px;color:var(--muted)'>"+(m.hora||"--:--")+"</div>"+
           "<div style='font-family:var(--fh);font-size:9px;color:var(--muted)'>"+m.fecha+"</div>";
@@ -4616,6 +4649,7 @@ function adminTabSwitch(tab,btn){
   if(tab==="usuarios") renderAdminUsers();
   if(tab==="tablas") renderAdminTableRows("p1");
   if(tab==="traspasos") renderAdminTraspasos();
+  if(tab==="jugadores") renderAdminJugadores();
   if(tab==="resultados"){
     renderAdminResults();
     var dl=gel("teamsList");
@@ -4717,7 +4751,7 @@ function startAutoRefresh(){
     var priority = loadSt("lmc_data_priority","api");
     if(priority==="manual") return;
     var liveCount = D.partidos.filter(function(m){return m.status==="live";}).length;
-    var interval = liveCount > 0 ? 60 : 180;
+    var interval = liveCount > 0 ? 30 : 180;
     if(!window._lastRefreshTime || (Date.now()-window._lastRefreshTime)/1000 >= interval){
       window._lastRefreshTime = Date.now();
       fetchAll().then(function(ok){
@@ -5105,6 +5139,7 @@ function init(){
   if(typeof preloadLogos==="function") preloadLogos();
   loadTableOverrides();
   loadSavedResults();
+  loadPlayerPhotos();
   // Render IMMEDIATELY — no waiting for loader
   renderAll();
   setLeagueTheme("inicio");
@@ -5121,6 +5156,119 @@ function init(){
     initReveal();
   }
 }
+
+// ══════════════════════════════════════════════════════
+// PLAYER PHOTOS — persistence + admin
+// ══════════════════════════════════════════════════════
+var _playerPhotos = {};
+
+function loadPlayerPhotos(){
+  try{
+    _playerPhotos = JSON.parse(localStorage.getItem("lmc_player_photos")||"{}");
+    applyPlayerPhotos(D.golPrimera);
+    applyPlayerPhotos(D.golPrimeraB);
+  }catch(e){}
+}
+
+function applyPlayerPhotos(arr){
+  if(!arr) return;
+  arr.forEach(function(g){
+    if(_playerPhotos[g.name]) g.photo = _playerPhotos[g.name];
+  });
+}
+
+function savePlayerPhoto(name, url){
+  if(url) _playerPhotos[name] = url;
+  else delete _playerPhotos[name];
+  localStorage.setItem("lmc_player_photos", JSON.stringify(_playerPhotos));
+}
+
+function renderAdminJugadores(){
+  var sec = gel("adminSec-jugadores"); if(!sec) return;
+  sec.innerHTML = "";
+
+  var title = document.createElement("div");
+  title.style.cssText = "font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px";
+  title.textContent = "Fotos de Jugadores";
+  sec.appendChild(title);
+
+  var hint = document.createElement("p");
+  hint.style.cssText = "font-family:var(--fh);font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.6";
+  hint.innerHTML = "Pega la URL de la foto de cada jugador. Los cambios se aplican en tiempo real y se guardan localmente.<br>Puedes usar imágenes de <b>api-sports.io</b>, Wikipedia, o cualquier URL pública.";
+  sec.appendChild(hint);
+
+  function mkLeagueSection(title, arr, leagueKey){
+    if(!arr || !arr.length) return null;
+    var hdr = document.createElement("div");
+    hdr.className = "jug-league-hdr";
+    hdr.textContent = title;
+    sec.appendChild(hdr);
+
+    var grid = document.createElement("div");
+    grid.className = "jug-grid";
+
+    arr.forEach(function(g){
+      var card = document.createElement("div");
+      card.className = "jug-card";
+
+      // Top: photo + info
+      var top = document.createElement("div");
+      top.className = "jug-top";
+
+      var phWrap = document.createElement("div");
+      phWrap.className = "jug-ph-wrap";
+      var phEl = mkPlayerPh(g, false);
+      phEl.style.cssText = "width:46px;height:46px;border-radius:50%;flex-shrink:0";
+      phWrap.appendChild(phEl);
+
+      var info = document.createElement("div");
+      info.className = "jug-info";
+      var nm = document.createElement("div"); nm.className = "jug-name"; nm.textContent = g.name;
+      var cl = document.createElement("div"); cl.className = "jug-club"; cl.textContent = g.club;
+      var gl = document.createElement("div"); gl.className = "jug-goles";
+      gl.textContent = g.goles + " goles · #" + g.rank;
+      info.appendChild(nm); info.appendChild(cl); info.appendChild(gl);
+
+      top.appendChild(phWrap); top.appendChild(info);
+      card.appendChild(top);
+
+      // URL input
+      var urlInp = document.createElement("input");
+      urlInp.type = "text";
+      urlInp.className = "jug-url";
+      urlInp.value = g.photo || "";
+      urlInp.placeholder = "https://... URL de la foto";
+
+      (function(inp, phW, gObj){
+        inp.addEventListener("input", function(){
+          var url = inp.value.trim();
+          gObj.photo = url;
+          savePlayerPhoto(gObj.name, url);
+          // Live preview
+          phW.innerHTML = "";
+          var newPh = mkPlayerPh(gObj, false);
+          newPh.style.cssText = "width:46px;height:46px;border-radius:50%;flex-shrink:0";
+          phW.appendChild(newPh);
+          // Re-render goleadores list
+          renderGoles("golPrimera",  D.golPrimera,    true);
+          renderGoles("golPrimera2", D.golPrimera,    false);
+          renderGoles("golPrimeraB", D.golPrimeraB||[], true);
+          renderGoles("sideGoles",   D.golPrimera,    false);
+          renderGoles("statsGoles",  D.golPrimera,    true);
+          renderGoles("statsGolesB", D.golPrimeraB||[], true);
+        });
+      })(urlInp, phWrap, g);
+
+      card.appendChild(urlInp);
+      grid.appendChild(card);
+    });
+    sec.appendChild(grid);
+  }
+
+  mkLeagueSection("Primera División", D.golPrimera, "primera");
+  mkLeagueSection("Primera B", D.golPrimeraB, "primerab");
+}
+
 // ── ADMIN TRIGGER: escribir "pasajeuno" en el buscador ──
 (function(){
   var SH="f960f1b48989f064b10086559c11dcd85967b524761aced9b763e61537550eff";
