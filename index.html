@@ -35,6 +35,8 @@
 @font-face{font-family:'Inter';font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2')}
 @font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2')}
 
+/* ── LOGO WHITE BG FIX ── */
+.tlog img,.mc-logo img,.gol-ph img,.gf-ph img{mix-blend-mode:multiply}
 /* ── LIVE MATCH INDICATORS ── */
 @keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.2)}}
 .live-badge{display:inline-flex;align-items:center;gap:4px;background:var(--r);color:#fff;font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:1.5px;padding:3px 8px;border-radius:20px;vertical-align:middle}
@@ -2803,9 +2805,9 @@ function mkLogo(team, small) {
     img.referrerPolicy = "no-referrer";
     img.loading = "eager";
     img.alt = team;
-    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block";
+    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;mix-blend-mode:multiply";
     img.onerror = function(){ 
-      el.style.cssText += ";background:#f5f5f5;border:1px solid #eee;font-size:12px;border-radius:6px";
+      el.style.cssText += ";font-size:12px;border-radius:6px";
       el.textContent = emoji(team); 
       this.remove();
     };
@@ -2813,7 +2815,7 @@ function mkLogo(team, small) {
     img.src = url;
     el.appendChild(img);
   } else {
-    el.style.cssText += ";background:#f5f5f5;border:1px solid #eee;font-size:14px;border-radius:6px";
+    el.style.cssText += ";font-size:14px;border-radius:6px";
     el.textContent = emoji(team);
   }
   return el;
@@ -2830,9 +2832,8 @@ function mkMcLogo(team) {
     img.referrerPolicy = "no-referrer";
     img.loading = "eager";
     img.alt = team;
-    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block";
+    img.style.cssText = "width:100%;height:100%;object-fit:contain;display:block;mix-blend-mode:multiply";
     img.onerror = function(){ 
-      el.style.background="#f5f5f5"; 
       el.textContent=emoji(team); 
       this.remove(); 
     };
@@ -3392,9 +3393,9 @@ function renderTicker() {
       var isLive=m.status==="live";
       // Home logo
       var hLogo=document.createElement("div");
-      hLogo.style.cssText="width:18px;height:18px;border-radius:4px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15)";
+      hLogo.style.cssText="width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center";
       var hUrl=getLogo(m.home);
-      if(hUrl){var hI=document.createElement("img");hI.src=hUrl;hI.referrerPolicy="no-referrer";hI.style.cssText="width:100%;height:100%;object-fit:contain";hI.onerror=function(){hLogo.textContent=emoji(m.home);this.remove();};hLogo.appendChild(hI);}
+      if(hUrl){var hI=document.createElement("img");hI.src=hUrl;hI.referrerPolicy="no-referrer";hI.style.cssText="width:22px;height:22px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 0 1px rgba(0,0,0,.3))";hI.onerror=function(){hLogo.textContent=emoji(m.home);this.remove();};hLogo.appendChild(hI);}
       else{hLogo.textContent=emoji(m.home);hLogo.style.fontSize="11px";}
       // Home name
       var hName=document.createElement("b"); hName.textContent=m.home;
@@ -3406,9 +3407,9 @@ function renderTicker() {
       var aName=document.createElement("b"); aName.textContent=m.away;
       // Away logo
       var aLogo=document.createElement("div");
-      aLogo.style.cssText="width:18px;height:18px;border-radius:4px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15)";
+      aLogo.style.cssText="width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center";
       var aUrl=getLogo(m.away);
-      if(aUrl){var aI=document.createElement("img");aI.src=aUrl;aI.referrerPolicy="no-referrer";aI.style.cssText="width:100%;height:100%;object-fit:contain";aI.onerror=function(){aLogo.textContent=emoji(m.away);this.remove();};aLogo.appendChild(aI);}
+      if(aUrl){var aI=document.createElement("img");aI.src=aUrl;aI.referrerPolicy="no-referrer";aI.style.cssText="width:22px;height:22px;object-fit:contain;mix-blend-mode:multiply;filter:drop-shadow(0 0 1px rgba(0,0,0,.3))";aI.onerror=function(){aLogo.textContent=emoji(m.away);this.remove();};aLogo.appendChild(aI);}
       else{aLogo.textContent=emoji(m.away);aLogo.style.fontSize="11px";}
       // Live dot
       if(isLive){var ld=document.createElement("span");ld.style.cssText="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:blink 1s infinite;flex-shrink:0";it.appendChild(ld);}
