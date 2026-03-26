@@ -2276,6 +2276,26 @@ img { background-color:#f0f0f2; }
 
           <!-- GRID -->
           <div id="logoGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px"></div>
+
+          <!-- BULK IMPORT FROM ANFP -->
+          <div style="margin-top:20px;background:var(--w2);border:1.5px solid var(--line);border-radius:14px;padding:18px">
+            <div style="font-family:var(--fh);font-size:13px;font-weight:700;margin-bottom:6px">&#128279; Importar escudos desde ANFP.cl (en masa)</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.7">
+              <b>Paso 1:</b> Abre <a href="https://www.anfp.cl/clubes/" target="_blank" style="color:var(--r)">anfp.cl/clubes</a> &rarr; presiona <b>F12</b> &rarr; pesta&#xF1;a <b>Consola</b><br>
+              <b>Paso 2:</b> Copia y pega el script de abajo, presiona Enter<br>
+              <b>Paso 3:</b> Copia el JSON que aparece y p&#xE9;galo en el campo de abajo
+            </div>
+            <div style="background:#0f1117;border-radius:8px;padding:12px;margin-bottom:12px;position:relative;overflow:auto">
+              <button onclick="copyAnfpScript(this)" style="position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-family:var(--fh);font-size:10px;font-weight:700;padding:4px 10px;border-radius:5px;cursor:pointer;letter-spacing:.5px;z-index:2">COPIAR</button>
+              <pre id="anfpScript" style="color:#7effd4;font-family:'Courier New',monospace;font-size:10px;margin:0;white-space:pre-wrap;line-height:1.6;padding-right:60px">(function(){var out={};document.querySelectorAll('a[href*="/clubes/"]').forEach(function(a){var img=a.querySelector('img');if(img){var src=img.src||img.getAttribute('data-src')||'';var nm=(img.alt||a.textContent||'').trim().replace(/\s+/g,' ');if(nm&&src&&src.indexOf('data:')<0)out[nm]=src;}});document.querySelectorAll('img').forEach(function(img){var src=img.src||img.getAttribute('data-src')||'';var nm=(img.alt||'').trim();if(nm&&src&&src.indexOf('data:')<0&&src.match(/escudo|logo|badge|club|equipo/i))out[nm]=src;});console.log(JSON.stringify(out,null,2));return out;})();</pre>
+            </div>
+            <textarea id="anfpImportJson" style="width:100%;height:90px;font-family:monospace;font-size:11px;padding:10px;border:1.5px solid var(--line);border-radius:8px;resize:vertical;box-sizing:border-box" placeholder='{"Colo Colo":"https://www.anfp.cl/wp-content/uploads/.../escudo.png","Universidad de Chile":"https://..."}'></textarea>
+            <div id="anfpImportMsg" style="display:none;font-family:var(--fh);font-size:12px;padding:8px 12px;border-radius:6px;margin-top:8px"></div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="admin-btn admin-btn-new" onclick="applyBulkLogos()">&#10003; Aplicar logos</button>
+              <button class="admin-btn" style="color:var(--muted);border-color:var(--line2);padding:8px 14px;margin-top:0" onclick="gel('anfpImportJson').value=''">Limpiar</button>
+            </div>
+          </div>
         </div>
 
         <div class="admin-section" id="adminSec-usuarios">
@@ -4902,6 +4922,39 @@ function openEditLogo(team) {
   gel("logoEditForm").classList.add("open");
 }
 function closeLogoForm(){ gel("logoEditForm").classList.remove("open"); editingLogoTeam = null; }
+
+// Copy ANFP extractor script to clipboard
+function copyAnfpScript(btn){
+  var pre = gel("anfpScript");
+  if(!pre) return;
+  if(navigator.clipboard){ navigator.clipboard.writeText(pre.textContent).then(function(){ if(btn){btn.textContent="✓ Copiado!";setTimeout(function(){btn.textContent="COPIAR";},2000);} }); }
+  else { var ta=document.createElement("textarea"); ta.value=pre.textContent; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); if(btn){btn.textContent="✓ Copiado!";setTimeout(function(){btn.textContent="COPIAR";},2000);} }
+}
+
+// Apply logos in bulk from pasted JSON (team name → URL)
+function applyBulkLogos(){
+  var raw = (gel("anfpImportJson")||{}).value||"";
+  var msg = gel("anfpImportMsg"); if(msg) msg.style.display="none";
+  if(!raw.trim()){ if(msg){msg.style.display="block";msg.style.background="rgba(200,0,28,.07)";msg.style.borderColor="var(--r)";msg.textContent="Pega el JSON primero.";} return; }
+  var data;
+  try{ data=JSON.parse(raw); }catch(e){ if(msg){msg.style.display="block";msg.style.background="rgba(200,0,28,.07)";msg.style.borderColor="var(--r)";msg.textContent="JSON inválido: "+e.message;} return; }
+  var overrides=loadSt("lmc_logos_override",{});
+  var count=0;
+  Object.keys(data).forEach(function(team){
+    var url=(data[team]||"").trim(); if(!url) return;
+    // Normalize the team name
+    var t=team.trim(); if(!t) return;
+    overrides[t]=url; LOGOS[t]=url;
+    // Also try to match existing LOGOS_DEFAULT keys
+    Object.keys(LOGOS_DEFAULT).forEach(function(k){
+      if(k.toLowerCase()===t.toLowerCase()){ overrides[k]=url; LOGOS[k]=url; }
+    });
+    count++;
+  });
+  saveSt("lmc_logos_override",overrides);
+  if(msg){msg.style.display="block";msg.style.background="rgba(0,153,64,.08)";msg.style.borderColor="var(--green)";msg.textContent="✓ "+count+" logos aplicados. Sincronizando...";}
+  renderAdminLogos(); renderAll(); syncAutoPush();
+}
 function saveLogo() {
   if(!editingLogoTeam) return;
   var url = gel("lfUrl").value.trim();
