@@ -44,18 +44,21 @@
 .live-badge::before{content:'';width:6px;height:6px;background:#fff;border-radius:50%;animation:livePulse 1s infinite;flex-shrink:0}
 .match-live-row{border-left:3px solid var(--r)!important;background:rgba(200,0,28,.04)!important}
 /* ── ADMIN JUGADORES ── */
-.jug-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.jug-card{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
-.jug-card:hover{border-color:var(--lc)}
-.jug-top{display:flex;align-items:center;gap:10px}
-.jug-ph-wrap{width:46px;height:46px;flex-shrink:0}
+.jug-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.jug-card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px 14px 12px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s,box-shadow .2s}
+.jug-card:hover{border-color:var(--lc);box-shadow:0 3px 14px rgba(0,0,0,.07)}
+.jug-top{display:flex;align-items:center;gap:11px}
+.jug-ph-wrap{width:52px;height:52px;border-radius:50%;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,var(--lc),var(--lc2));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:20px;font-weight:700;color:#fff}
 .jug-info{flex:1;min-width:0}
 .jug-name{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.jug-club{font-family:var(--fh);font-size:10px;color:var(--muted);margin-top:2px}
-.jug-goles{font-family:var(--fd);font-size:11px;color:var(--lc);font-weight:700;margin-top:3px}
-.jug-url{font-size:10px;border:1.5px solid var(--line);border-radius:7px;padding:5px 8px;width:100%;font-family:var(--fh);background:var(--bg);color:var(--ink);outline:none;box-sizing:border-box;transition:border-color .2s}
+.jug-club{font-family:var(--fh);font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jug-goles{display:inline-flex;align-items:center;gap:4px;margin-top:4px;background:rgba(200,0,28,.08);border-radius:20px;padding:2px 8px;font-family:var(--fh);font-size:10px;font-weight:700;color:var(--lc);letter-spacing:.3px}
+.jug-url-wrap{display:flex;flex-direction:column;gap:3px}
+.jug-url-label{font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:.8px;color:var(--muted);text-transform:uppercase}
+.jug-url{font-size:10px;border:1.5px solid var(--line);border-radius:7px;padding:6px 9px;width:100%;font-family:var(--fh);background:var(--bg);color:var(--ink);outline:none;box-sizing:border-box;transition:border-color .2s}
 .jug-url:focus{border-color:var(--lc)}
-.jug-league-hdr{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--lc);margin:16px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--lc)}
+.jug-league-hdr{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--lc);margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--lc);display:flex;align-items:center;gap:6px}
+.jug-league-hdr::before{content:'';display:inline-block;width:4px;height:16px;background:var(--lc);border-radius:2px}
 </style>
 <link rel="dns-prefetch" href="https://upload.wikimedia.org"/>
 <link rel="dns-prefetch" href="https://images.unsplash.com"/>
@@ -4354,14 +4357,15 @@ function saveOpin() {
 var editingLogoTeam = null;
 function renderAdminLogos() {
   var c = gel("logoGrid"); if(!c) return; c.innerHTML = "";
-  // Merge all known teams
+  // Merge all known teams — normalize via TMAP to avoid duplicates
   var teamSet = {};
-  Object.keys(LOGOS_DEFAULT).forEach(function(k){ if(k.length>2) teamSet[k]=1; });
-  Object.keys(LOGOS).forEach(function(k){ if(k.length>2) teamSet[k]=1; });
-  D.primera.rows.forEach(function(r){ teamSet[r.team]=1; });
-  D.primerab.rows.forEach(function(r){ teamSet[r.team]=1; });
+  function addTeam(k){ if(k&&k.length>2){ var c=TMAP[k]||k; teamSet[c]=1; } }
+  Object.keys(LOGOS_DEFAULT).forEach(addTeam);
+  Object.keys(LOGOS).forEach(addTeam);
+  D.primera.rows.forEach(function(r){ addTeam(r.team); });
+  D.primerab.rows.forEach(function(r){ addTeam(r.team); });
   var overrides = loadSt("lmc_logos_override",{});
-  Object.keys(overrides).forEach(function(k){ teamSet[k]=1; });
+  Object.keys(overrides).forEach(addTeam);
   var teams = Object.keys(teamSet).sort(function(a,b){return a.localeCompare(b,"es");});
 
   teams.forEach(function(team){
@@ -5255,38 +5259,53 @@ function renderAdminJugadores(){
 
       var phWrap = document.createElement("div");
       phWrap.className = "jug-ph-wrap";
-      var phEl = mkPlayerPh(g, false);
-      phEl.style.cssText = "width:46px;height:46px;border-radius:50%;flex-shrink:0";
-      phWrap.appendChild(phEl);
+      // Initial: show initials; replace with img if photo exists
+      (function(wrap, gObj){
+        function setPhoto(url){
+          wrap.innerHTML = "";
+          if(url){
+            var img = document.createElement("img");
+            img.referrerPolicy = "no-referrer";
+            img.style.cssText = "width:100%;height:100%;object-fit:cover";
+            img.onerror = function(){ wrap.innerHTML = ""; wrap.textContent = gObj.name?gObj.name.charAt(0).toUpperCase():"?"; };
+            img.src = url;
+            wrap.appendChild(img);
+          } else {
+            wrap.textContent = gObj.name ? gObj.name.charAt(0).toUpperCase() : "?";
+          }
+        }
+        setPhoto(gObj.photo||"");
+        wrap._setPhoto = setPhoto;
+      })(phWrap, g);
 
       var info = document.createElement("div");
       info.className = "jug-info";
       var nm = document.createElement("div"); nm.className = "jug-name"; nm.textContent = g.name;
       var cl = document.createElement("div"); cl.className = "jug-club"; cl.textContent = g.club;
       var gl = document.createElement("div"); gl.className = "jug-goles";
-      gl.textContent = g.goles + " goles · #" + g.rank;
+      gl.textContent = "\u26BD " + g.goles + " goles · #" + g.rank;
       info.appendChild(nm); info.appendChild(cl); info.appendChild(gl);
 
       top.appendChild(phWrap); top.appendChild(info);
       card.appendChild(top);
 
       // URL input
+      var urlWrap = document.createElement("div"); urlWrap.className = "jug-url-wrap";
+      var urlLabel = document.createElement("div"); urlLabel.className = "jug-url-label"; urlLabel.textContent = "URL de foto";
       var urlInp = document.createElement("input");
       urlInp.type = "text";
       urlInp.className = "jug-url";
       urlInp.value = g.photo || "";
-      urlInp.placeholder = "https://... URL de la foto";
+      urlInp.placeholder = "https://...";
+      urlWrap.appendChild(urlLabel); urlWrap.appendChild(urlInp);
 
       (function(inp, phW, gObj){
         inp.addEventListener("input", function(){
           var url = inp.value.trim();
           gObj.photo = url;
           savePlayerPhoto(gObj.name, url);
-          // Live preview
-          phW.innerHTML = "";
-          var newPh = mkPlayerPh(gObj, false);
-          newPh.style.cssText = "width:46px;height:46px;border-radius:50%;flex-shrink:0";
-          phW.appendChild(newPh);
+          // Live preview in card
+          if(phW._setPhoto) phW._setPhoto(url);
           // Re-render goleadores list
           renderGoles("golPrimera",  D.golPrimera,    true);
           renderGoles("golPrimera2", D.golPrimera,    false);
@@ -5297,7 +5316,7 @@ function renderAdminJugadores(){
         });
       })(urlInp, phWrap, g);
 
-      card.appendChild(urlInp);
+      card.appendChild(urlWrap);
       grid.appendChild(card);
     });
     sec.appendChild(grid);
