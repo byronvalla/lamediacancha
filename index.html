@@ -409,6 +409,16 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .prox{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:9px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:.1s}
 .prox:last-child{border-bottom:none}
 .prox:hover{background:rgba(212,0,32,.03)}
+/* Fixture accordion panel */
+.fx-panel{margin-top:20px;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.fx-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 18px;background:var(--w2);border:none;cursor:pointer;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);gap:10px;transition:background .15s}
+.fx-toggle:hover{background:var(--line)}
+.fx-arr{font-size:14px;transition:transform .25s;flex-shrink:0;color:var(--muted)}
+.fx-toggle.open .fx-arr{transform:rotate(180deg)}
+.fx-body{display:none;max-height:520px;overflow-y:auto}
+.fx-body.open{display:block}
+.fx-fecha-hdr{padding:8px 16px;background:linear-gradient(90deg,rgba(212,0,32,.08),transparent);border-bottom:1px solid var(--line);font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1px;color:var(--lc);text-transform:uppercase}
+.fx-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--fh)}
 .prox-vs{font-family:var(--fh);font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prox-liga{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
 .prox-h{font-family:var(--fd);font-size:16px;letter-spacing:1px;color:var(--r);text-align:right}
@@ -1771,6 +1781,7 @@ img { background-color:#f0f0f2; }
       <div class="card"><div class="card-head"><div class="card-title">&#218;ltimos Resultados</div></div><div id="resPSide2"></div></div>
     </div>
   </div>
+  <div id="fxP-primera"></div>
 </div></div>
 
 <!-- PRIMERA B -->
@@ -1781,6 +1792,7 @@ img { background-color:#f0f0f2; }
     <div class="legend" style="background:#fff;border:1.5px solid var(--line);border-top:none;border-radius:0 0 16px 16px"><div class="li"><div class="ld" style="background:var(--green)"></div>Asciende</div><div class="li"><div class="ld" style="background:var(--gold)"></div>Playoff Ascenso</div><div class="li"><div class="ld" style="background:var(--r)"></div>Desciende</div></div></div>
     <div style="display:flex;flex-direction:column;gap:18px"><div class="card"><div class="card-head"><div class="card-title">Goleadores</div></div><div id="golPrimeraB"></div></div></div>
   </div>
+  <div id="fxP-primerab"></div>
 </div></div>
 
 <!-- TERCERA -->
@@ -1791,6 +1803,7 @@ img { background-color:#f0f0f2; }
   <div id="t3c" style="display:none"><div class="ftw"><table class="ft" id="tblT3C" style="min-width:480px"></table></div></div>
   <div id="t3s" style="display:none"><div class="ftw"><table class="ft" id="tblT3S" style="min-width:480px"></table></div></div>
   <div class="legend" style="background:#fff;border:1.5px solid var(--line);border-top:none;border-radius:0 0 16px 16px"><div class="li"><div class="ld" style="background:var(--green)"></div>Asciende a Primera B</div><div class="li"><div class="ld" style="background:var(--gold)"></div>Playoff</div></div>
+  <div id="fxP-tercera"></div>
 </div></div>
 
 <!-- SELECCION -->
@@ -1803,6 +1816,7 @@ img { background-color:#f0f0f2; }
     </div>
     <div style="display:flex;flex-direction:column;gap:18px"><div class="card"><div class="card-head"><div class="card-title">Tabla Clasificatoria</div></div><div id="tablaElim"></div></div></div>
   </div>
+  <div id="fxP-seleccion"></div>
 </div></div>
 
 <!-- TRASPASOS -->
@@ -1962,6 +1976,7 @@ img { background-color:#f0f0f2; }
       </div>
     </div>
   </div>
+  <div id="fxP-copa"></div>
 
 </div></div>
 
@@ -3827,6 +3842,82 @@ function renderResultados(id, matches){
     c.innerHTML='<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--fh)">Sin resultados</div>';
   }
 }
+
+// Fixture accordion panel — shows all matches for a league grouped by fecha
+function renderFxPanel(panelId, ligas, label, accent){
+  var c = gel(panelId); if(!c) return;
+  accent = accent || "var(--lc)";
+  var all = (D.partidos||[]).concat(D.proxima||[]).filter(function(m){
+    return ligas.indexOf(m.liga) >= 0;
+  });
+  if(!all.length){ c.innerHTML=""; return; }
+
+  // Sort by date then by hora
+  all.sort(function(a,b){
+    var da = (a.fecha||"").split(/\D/).reverse().join("") + (a.hora||"");
+    var db = (b.fecha||"").split(/\D/).reverse().join("") + (b.hora||"");
+    return da > db ? 1 : da < db ? -1 : 0;
+  });
+
+  // Group by jornada/fecha header
+  var groups = [], groupMap = {};
+  all.forEach(function(m){
+    var key = m.jornada ? ("Fecha "+m.jornada) : (m.fecha || "Próximamente");
+    if(!groupMap[key]){ groupMap[key] = []; groups.push({key:key, matches:groupMap[key]}); }
+    groupMap[key].push(m);
+  });
+
+  var total = all.length;
+  var fin   = all.filter(function(m){return m.status==="fin";}).length;
+  var live  = all.filter(function(m){return m.status==="live";}).length;
+
+  var badge = live ? ('<span style="display:inline-flex;align-items:center;gap:4px;background:var(--r);color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;margin-left:6px"><span style="font-size:7px">●</span> EN VIVO</span>') : "";
+  var meta  = fin + " jugados · " + (total-fin-live) + " próximos";
+
+  c.innerHTML =
+    '<div class="fx-panel">' +
+      '<button class="fx-toggle" onclick="this.classList.toggle(\'open\');var b=this.nextElementSibling;b.classList.toggle(\'open\');if(b.classList.contains(\'open\')){window.injectFixtureLogos&&injectFixtureLogos();}">' +
+        '<span style="display:flex;align-items:center;gap:8px">' +
+          '<span style="font-size:16px">📋</span>' +
+          '<span>' + (label||"Fixture completo") + '</span>' + badge +
+          '<span style="font-weight:400;color:var(--muted);font-size:10px;margin-left:4px">' + meta + '</span>' +
+        '</span>' +
+        '<span class="fx-arr">▼</span>' +
+      '</button>' +
+      '<div class="fx-body" id="'+panelId+'Body">' + buildFxBody(groups, accent) + '</div>' +
+    '</div>';
+}
+
+function buildFxBody(groups, accent){
+  var html = "";
+  groups.forEach(function(g){
+    html += '<div class="fx-fecha-hdr" style="border-left:3px solid '+accent+';padding-left:13px">' + escH(g.key) + '</div>';
+    g.matches.forEach(function(m){
+      var isL = m.status==="live", isF = m.status==="fin";
+      var scoreHtml, scoreColor="color:var(--ink)";
+      if(isL){
+        scoreHtml = '<span style="display:block;font-size:7px;color:var(--r);text-align:center;margin-bottom:1px">● LIVE</span>'+m.hs+'-'+m.as_;
+        scoreColor = "color:var(--r)";
+      } else if(isF){
+        scoreHtml = m.hs+'-'+m.as_;
+      } else {
+        scoreHtml = m.hora||"vs";
+        scoreColor = "color:var(--muted)";
+      }
+      html +=
+        '<div class="r-row">' +
+          '<div class="r-hm"><div class="r-t">'+escH(m.home)+'</div>' +
+          (m.fecha&&!isF&&!isL?'<div class="r-m">'+escH(m.fecha)+(m.hora?' · '+escH(m.hora):'')+'</div>':'') +
+          '</div>' +
+          '<div class="r-hr" style="'+scoreColor+'">'+scoreHtml+'</div>' +
+          '<div class="r-aw"><div class="r-t">'+escH(m.away)+'</div></div>' +
+        '</div>';
+    });
+  });
+  return html || '<div class="fx-empty">Sin partidos registrados</div>';
+}
+function escH(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
 function renderStats(){
   var rows = D.primera.rows||[];
   // Stats numbers
@@ -3907,6 +3998,13 @@ function renderAll(){
   renderTransfers();
   renderFixtureRoja();
   renderStats();
+  // League fixture accordion panels
+  renderFxPanel("fxP-primera",   ["Primera División","Chilean Primera División"], "Fixture — Liga de Primera", "var(--gold)");
+  renderFxPanel("fxP-primerab",  ["Primera B","Chilean Primera B"],              "Fixture — Liga de Ascenso", "#9a0f0f");
+  renderFxPanel("fxP-tercera",   ["Segunda División","Chilean Segunda División"], "Fixture — Segunda División", "#0055a4");
+  renderFxPanel("fxP-copa",      ["Copa de la Liga","Copa Chile"],               "Fixture — Copa de la Liga",  "#1a6b5a");
+  renderFxPanel("fxP-seleccion", ["Selección Chilena","Chile"],                  "Fixture — La Roja",          "var(--r)");
+  setTimeout(injectFixtureLogos, 80);
   var t=new Date(); var h=t.getHours().toString().padStart(2,"0");
   var m=t.getMinutes().toString().padStart(2,"0");
   var upd=gel("apiLastUpdate"); if(upd) upd.textContent="Act. "+h+":"+m;
