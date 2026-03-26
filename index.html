@@ -2527,38 +2527,42 @@ var currentAdminUser = null;
 // ══════════════════════════════════════════════════════
 // Base URL for self-hosted SVG logos (GitHub Pages serves from /logos/ folder)
 var _L = "logos/";
+// Wikipedia Special:FilePath redirects to real club crests on Wikimedia Commons
+var _W = "https://en.wikipedia.org/wiki/Special:FilePath/";
 var LOGOS_DEFAULT = {
-  "Colo Colo":                     _L+"colo-colo.svg",
-  "Colo-Colo":                     _L+"colo-colo.svg",
-  "Universidad de Chile":          _L+"u-de-chile.svg",
-  "U. de Chile":                   _L+"u-de-chile.svg",
-  "Universidad Cat\u00F3lica":     _L+"u-catolica.svg",
-  "U. Cat\u00F3lica":              _L+"u-catolica.svg",
+  // Real crests from Wikipedia/Wikimedia Commons (free, CORS-open)
+  "Colo Colo":                     _W+"Escudo_de_Colo-Colo_1947.svg",
+  "Colo-Colo":                     _W+"Escudo_de_Colo-Colo_1947.svg",
+  "Universidad de Chile":          _W+"Logo_Universidad_de_Chile.svg",
+  "U. de Chile":                   _W+"Logo_Universidad_de_Chile.svg",
+  "Universidad Cat\u00F3lica":     _W+"Escudo_Club_Deportivo_Universidad_Cat%C3%B3lica.svg",
+  "U. Cat\u00F3lica":              _W+"Escudo_Club_Deportivo_Universidad_Cat%C3%B3lica.svg",
+  "Palestino":                     _W+"Escudo_Oficial_Club_Palestino.svg",
+  "Huachipato":                    _W+"Escudo_Huachipato_FC.svg",
+  "Coquimbo Unido":                _W+"Coquimbo_Unido.png",
+  "Uni\u00F3n La Calera":          _W+"Uni%C3%B3n_la_Calera_2020.png",
+  "Union La Calera":               _W+"Uni%C3%B3n_la_Calera_2020.png",
+  "Cobresal":                      _W+"CD_Cobresal.png",
+  "Deportes La Serena":            _W+"Club_de_Deportes_La_Serena_team_logo.png",
+  "Everton":                       _W+"Everton_De_Vi%C3%B1a_Del_Mar.png",
+  "Cobreloa":                      _W+"Escudo_cobreloa.svg",
+  "Santiago Wanderers":            _W+"Santiago_Wanderers.png",
+  "Magallanes":                    _W+"Escudo_Deportes_Magallanes.png",
+  "Rangers":                       _W+"Rangers_de_Talca_-_Escudo.svg",
+  "San Luis":                      _W+"Escudo-san_luis_de_quillota.jpg",
+  "Deportes Limache":              _W+"Deportes_Limache.png",
+  "Deportes Concepci\u00F3n":      _W+"Escudo_Deportes_Concepci%C3%B3n.svg",
+  // Local SVG fallbacks for teams with no free Wikimedia logo
   "\u00D1ublense":                 _L+"nublense.svg",
   "Nublense":                      _L+"nublense.svg",
   "O\u2019Higgins":                _L+"ohiggins.svg",
   "O'Higgins":                     _L+"ohiggins.svg",
-  "Palestino":                     _L+"palestino.svg",
-  "Huachipato":                    _L+"huachipato.svg",
   "Audax Italiano":                _L+"audax-italiano.svg",
-  "Coquimbo Unido":                _L+"coquimbo-unido.svg",
-  "Uni\u00F3n La Calera":          _L+"union-la-calera.svg",
-  "Union La Calera":               _L+"union-la-calera.svg",
-  "Cobresal":                      _L+"cobresal.svg",
-  "Deportes Limache":              _L+"d-limache.svg",
-  "Deportes La Serena":            _L+"la-serena.svg",
   "U. de Concepci\u00F3n":         _L+"u-concepcion.svg",
   "Universidad de Concepci\u00F3n":_L+"u-concepcion.svg",
-  "Deportes Concepci\u00F3n":      _L+"d-concepcion.svg",
-  "Everton":                       _L+"everton.svg",
   "Uni\u00F3n Espa\u00F1ola":      _L+"union-espanola.svg",
-  "San Luis":                      _L+"san-luis.svg",
   "Curi\u00F3 Unido":              _L+"curico-unido.svg",
-  "Magallanes":                    _L+"magallanes.svg",
-  "Rangers":                       _L+"rangers.svg",
-  "Cobreloa":                      _L+"cobreloa.svg",
   "Deportes Iquique":              _L+"deportes-iquique.svg",
-  "Santiago Wanderers":            _L+"s-wanderers.svg",
   "Deportes Antofagasta":          _L+"d-antofagasta.svg"
 };
 var LOGOS = Object.assign({}, LOGOS_DEFAULT);
@@ -2934,9 +2938,15 @@ function mkLogo(team, small) {
     img.loading = "eager";
     img.alt = team;
     img.style.cssText = "width:82%;height:82%;object-fit:contain;display:block";
-    img.onerror = function(){ 
+    img.onerror = function(){
+      // If Wikipedia URL failed, try local SVG fallback
+      if(this.src.indexOf("wikipedia.org")>=0){
+        var local="logos/"+team.toLowerCase().replace(/[\s''\u2019]+/g,"-").replace(/[^a-z0-9\-]/g,"").replace(/-+/g,"-").replace(/^-|-$/g,"")+".svg";
+        this.onerror=function(){ el.style.cssText+=";font-size:12px"; el.textContent=emoji(team); this.remove(); };
+        this.src=local; return;
+      }
       el.style.cssText += ";font-size:12px";
-      el.textContent = emoji(team); 
+      el.textContent = emoji(team);
       this.remove();
     };
     // Set src immediately — browser loads in background
@@ -2961,9 +2971,13 @@ function mkMcLogo(team) {
     img.loading = "eager";
     img.alt = team;
     img.style.cssText = "width:80%;height:80%;object-fit:contain;display:block";
-    img.onerror = function(){ 
-      el.textContent=emoji(team); 
-      this.remove(); 
+    img.onerror = function(){
+      if(this.src.indexOf("wikipedia.org")>=0){
+        var local="logos/"+team.toLowerCase().replace(/[\s''\u2019]+/g,"-").replace(/[^a-z0-9\-]/g,"").replace(/-+/g,"-").replace(/^-|-$/g,"")+".svg";
+        this.onerror=function(){ el.textContent=emoji(team); this.remove(); };
+        this.src=local; return;
+      }
+      el.textContent=emoji(team); this.remove();
     };
     img.src = url;
     el.appendChild(img);
