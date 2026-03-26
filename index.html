@@ -2345,7 +2345,7 @@ img { background-color:#f0f0f2; }
         <!-- SYNC -->
         <div class="admin-section" id="adminSec-sync">
           <div style="font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px">&#9729; Sincronizar Logos con JSONBin</div>
-          <p style="font-family:var(--fh);font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.6">Los logos guardados aquí se sincronizan con <b>jsonbin.io</b> (gratis) para que <b>todos los visitantes</b> vean tus escudos personalizados.<br>Crea cuenta gratis en <b>jsonbin.io</b>, copia tu Master Key y créa un bin vacío.</p>
+          <p style="font-family:var(--fh);font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.6"><b>Todo lo que guardes en el admin</b> — logos, noticias, fotos de jugadores, tablas, traspasos, resultados — se sincroniza con <b>jsonbin.io</b> (servicio gratuito) para que <b>todos los visitantes</b> lo vean automáticamente.<br><br>&#10102; Crea cuenta gratis en <a href="https://jsonbin.io" target="_blank" style="color:var(--lc)">jsonbin.io</a> &nbsp;&#10103; Copia tu <b>Master Key</b> &nbsp;&#10104; Pégala abajo y haz click en <b>+ Crear Bin nuevo</b></p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
             <div class="af-row"><label class="af-label">Master Key <span style="color:var(--muted);font-weight:400">(solo para escribir)</span></label><input class="af-input" id="syncMasterKey" type="password" placeholder="\$2a\$10\$..." autocomplete="off"/></div>
             <div class="af-row"><label class="af-label">Bin ID</label><input class="af-input" id="syncBinId" placeholder="676abc123..." /></div>
@@ -4820,9 +4820,10 @@ function showApiStatus(ok, msg){
 }
 
 // ══════════════════════════════════════════════════════
-// JSONBIN SYNC — logos visibles para todos los visitantes
+// JSONBIN SYNC — todos los datos del admin visibles para todos
 // ══════════════════════════════════════════════════════
 var JBIN_API = "https://api.jsonbin.io/v3/b";
+var _syncDebounceTimer = null;
 
 function syncGetKey(){ return localStorage.getItem("lmc_jbin_key")||""; }
 function syncGetBin(){ return localStorage.getItem("lmc_jbin_bin")||""; }
@@ -4833,14 +4834,58 @@ function syncSetStatus(msg, ok){
   el.style.borderColor = ok===true?"var(--green)":ok===false?"var(--r)":"var(--line)";
 }
 
+// Collect ALL admin data into one object
+function syncGetAllData(){
+  return {
+    logos:     loadSt("lmc_logos_override",{}),
+    news:      loadSt("lmc_news", []),
+    opin:      loadSt("lmc_opin", []),
+    photos:    loadSt("lmc_player_photos", {}),
+    traspasos: loadSt("lmc_traspasos", []),
+    tbl_p1:    loadSt("lmc_tbl_p1", []),
+    tbl_p2:    loadSt("lmc_tbl_p2", []),
+    goles_p1:  loadSt("lmc_goles_p1", []),
+    partidos:  loadSt("lmc_partidos", []),
+    proxima:   loadSt("lmc_proxima", [])
+  };
+}
+
+// Apply ALL remote data to local state + re-render
+function syncApplyData(d){
+  if(!d) return;
+  // Logos
+  if(d.logos && typeof d.logos==="object"){
+    var ov=loadSt("lmc_logos_override",{});
+    Object.keys(d.logos).forEach(function(k){ ov[k]=d.logos[k]; LOGOS[k]=d.logos[k]; });
+    saveSt("lmc_logos_override", ov);
+  }
+  // News
+  if(d.news && d.news.length){ N=d.news; saveSt("lmc_news", N); }
+  // Opinions
+  if(d.opin && d.opin.length){ O=d.opin; saveSt("lmc_opin", O); }
+  // Player photos
+  if(d.photos && typeof d.photos==="object"){
+    try{ _playerPhotos=d.photos; localStorage.setItem("lmc_player_photos", JSON.stringify(d.photos)); }catch(e){}
+    applyPlayerPhotos(D.golPrimera); applyPlayerPhotos(D.golPrimeraB||[]);
+  }
+  // Traspasos
+  if(d.traspasos && d.traspasos.length){ D.traspasos=d.traspasos; saveSt("lmc_traspasos", D.traspasos); }
+  // Tables
+  if(d.tbl_p1 && d.tbl_p1.length){ D.primera.rows=d.tbl_p1; saveSt("lmc_tbl_p1", d.tbl_p1); }
+  if(d.tbl_p2 && d.tbl_p2.length){ D.primerab.rows=d.tbl_p2; saveSt("lmc_tbl_p2", d.tbl_p2); }
+  if(d.goles_p1 && d.goles_p1.length){ D.golPrimera=d.goles_p1; saveSt("lmc_goles_p1", d.goles_p1); }
+  // Results
+  if(d.partidos && d.partidos.length){ D.partidos=d.partidos; saveSt("lmc_partidos", d.partidos); }
+  if(d.proxima  && d.proxima.length){  D.proxima=d.proxima;   saveSt("lmc_proxima",  d.proxima); }
+}
+
 function renderAdminSync(){
   var ki=gel("syncMasterKey"); if(ki) ki.value=syncGetKey();
   var bi=gel("syncBinId");     if(bi) bi.value=syncGetBin();
-  var binId=syncGetBin();
-  if(binId){
-    syncSetStatus("Bin configurado: <b>"+binId+"</b> &mdash; Los logos se sincronizan automáticamente al guardar.", true);
+  if(syncGetBin()){
+    syncSetStatus("&#10003; Bin configurado: <b>"+syncGetBin()+"</b><br>Todo lo que guardes en el admin se sube automáticamente para todos los visitantes.", true);
   } else {
-    syncSetStatus("Sin configurar. Ingresa tu Master Key y Bin ID (o crea uno nuevo).", null);
+    syncSetStatus("Sin configurar. Ingresa tu Master Key y haz click en <b>+ Crear Bin nuevo</b>.", null);
   }
 }
 
@@ -4849,25 +4894,24 @@ function syncSaveConfig(){
   var bin=(gel("syncBinId")||{}).value||"";
   localStorage.setItem("lmc_jbin_key", key.trim());
   localStorage.setItem("lmc_jbin_bin", bin.trim());
-  syncSetStatus(bin?"Configuración guardada. Bin: <b>"+bin+"</b>":"Configuración guardada (sin Bin ID).", !!bin);
+  syncSetStatus(bin?"&#10003; Configuración guardada. Bin: <b>"+bin+"</b>":"Configuración guardada (sin Bin ID).", !!bin);
 }
 
 function syncCreateBin(){
   var key=((gel("syncMasterKey")||{}).value||syncGetKey()).trim();
   if(!key){ syncSetStatus("&#9888; Ingresa tu Master Key primero.", false); return; }
   syncSetStatus("Creando bin...", null);
-  var overrides=loadSt("lmc_logos_override",{});
   fetch(JBIN_API, {
     method:"POST",
-    headers:{"Content-Type":"application/json","X-Master-Key":key,"X-Bin-Name":"lmc-logos","X-Bin-Private":"false"},
-    body:JSON.stringify(overrides)
+    headers:{"Content-Type":"application/json","X-Master-Key":key,"X-Bin-Name":"lmc-data","X-Bin-Private":"false"},
+    body:JSON.stringify(syncGetAllData())
   }).then(function(r){ return r.json(); }).then(function(j){
     if(j.metadata && j.metadata.id){
       var id=j.metadata.id;
       localStorage.setItem("lmc_jbin_bin", id);
       localStorage.setItem("lmc_jbin_key", key);
       var bi=gel("syncBinId"); if(bi) bi.value=id;
-      syncSetStatus("&#10003; Bin creado: <b>"+id+"</b><br>Logos subidos. Ahora todos los visitantes los verán.", true);
+      syncSetStatus("&#10003; Bin creado: <b>"+id+"</b><br>Todos tus datos (logos, noticias, fotos, tablas...) subidos. Todos los visitantes los verán.", true);
     } else {
       syncSetStatus("&#10005; Error al crear el bin: "+(j.message||JSON.stringify(j)), false);
     }
@@ -4876,18 +4920,17 @@ function syncCreateBin(){
 
 function syncPushNow(cb){
   var key=syncGetKey(); var bin=syncGetBin();
-  if(!key||!bin){ if(cb) cb(false); syncSetStatus("&#9888; Configura la Master Key y el Bin ID primero.", false); return; }
-  var overrides=loadSt("lmc_logos_override",{});
+  if(!key||!bin){ if(cb) cb(false); return; }
   fetch(JBIN_API+"/"+bin, {
     method:"PUT",
     headers:{"Content-Type":"application/json","X-Master-Key":key},
-    body:JSON.stringify(overrides)
+    body:JSON.stringify(syncGetAllData())
   }).then(function(r){ return r.json(); }).then(function(j){
     if(j.record!==undefined){
-      syncSetStatus("&#10003; Logos sincronizados correctamente &mdash; "+new Date().toLocaleTimeString("es-CL"), true);
+      syncSetStatus("&#10003; Todo sincronizado &mdash; "+new Date().toLocaleTimeString("es-CL"), true);
       if(cb) cb(true);
     } else {
-      syncSetStatus("&#10005; Error al sincronizar: "+(j.message||"respuesta inesperada"), false);
+      syncSetStatus("&#10005; Error: "+(j.message||"respuesta inesperada"), false);
       if(cb) cb(false);
     }
   }).catch(function(e){ syncSetStatus("&#10005; Error de red: "+e.message, false); if(cb) cb(false); });
@@ -4896,49 +4939,49 @@ function syncPushNow(cb){
 function syncPullNow(){
   var bin=syncGetBin();
   if(!bin){ syncSetStatus("&#9888; Configura el Bin ID primero.", false); return; }
-  syncSetStatus("Descargando logos...", null);
+  syncSetStatus("Descargando datos...", null);
   fetch(JBIN_API+"/"+bin+"/latest")
     .then(function(r){ return r.json(); })
     .then(function(j){
       if(j.record){
-        var remote=j.record;
-        var overrides=loadSt("lmc_logos_override",{});
-        Object.keys(remote).forEach(function(k){ overrides[k]=remote[k]; LOGOS[k]=remote[k]; });
-        saveSt("lmc_logos_override", overrides);
-        syncSetStatus("&#10003; "+Object.keys(remote).length+" logos descargados del bin.", true);
-        renderAdminLogos();
+        syncApplyData(j.record);
+        renderAll();
+        syncSetStatus("&#10003; Datos descargados y aplicados &mdash; "+new Date().toLocaleTimeString("es-CL"), true);
       } else {
         syncSetStatus("&#10005; Error al descargar: "+(j.message||"bin vacío o no encontrado"), false);
       }
     }).catch(function(e){ syncSetStatus("&#10005; Error de red: "+e.message, false); });
 }
 
-// Called by remote clients on page load — reads public bin, applies logos
+// Debounced auto-push — called whenever admin saves any data
+function syncAutoPush(){
+  if(!syncGetBin()||!syncGetKey()) return;
+  if(_syncDebounceTimer) clearTimeout(_syncDebounceTimer);
+  _syncDebounceTimer = setTimeout(function(){ syncPushNow(); }, 1500);
+}
+
+// On page load: fetch bin silently and apply all data for visitors
 function fetchRemoteLogos(){
   var bin=syncGetBin(); if(!bin) return;
   fetch(JBIN_API+"/"+bin+"/latest")
     .then(function(r){ return r.json(); })
     .then(function(j){
       if(!j.record) return;
-      var remote=j.record;
-      Object.keys(remote).forEach(function(k){ if(remote[k]) LOGOS[k]=remote[k]; });
-      // Re-inject logos on static rows now that we have updated URLs
+      var d=j.record;
+      // For visitors (not admin): apply data that enriches the page
+      syncApplyData(d);
+      renderAll();
       injectFixtureLogos();
-      // Re-render dynamic logo elements on page
-      document.querySelectorAll("[data-logo]").forEach(function(el){
-        var team=el.getAttribute("data-logo");
-        var url=getLogo(team); if(!url) return;
-        var img=el.querySelector("img");
-        if(img && img.src!==url){ img.src=url; }
-      });
     }).catch(function(){}); // Silent fail — fallback to defaults
 }
 
-// Auto-push when admin saves a logo override
-var _origSetLogoOverride = setLogoOverride;
-function setLogoOverride(team, url){
-  _origSetLogoOverride(team, url);
-  if(syncGetBin() && syncGetKey()) syncPushNow();
+// Intercept every saveSt call for lmc_ keys → auto-push
+var _origSaveSt = saveSt;
+function saveSt(key, val){
+  _origSaveSt(key, val);
+  if(key.indexOf("lmc_")===0 && key!=="lmc_jbin_key" && key!=="lmc_jbin_bin"){
+    syncAutoPush();
+  }
 }
 
 // ── Auto-refresh every 60s (not 3 min) for live games ──
