@@ -409,15 +409,18 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .prox{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:9px 13px;border-bottom:1px solid var(--line);cursor:pointer;transition:.1s}
 .prox:last-child{border-bottom:none}
 .prox:hover{background:rgba(212,0,32,.03)}
-/* Fixture accordion panel */
+/* Fixture fecha-tabs panel */
 .fx-panel{margin-top:20px;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.fx-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 18px;background:var(--w2);border:none;cursor:pointer;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);gap:10px;transition:background .15s}
-.fx-toggle:hover{background:var(--line)}
-.fx-arr{font-size:14px;transition:transform .25s;flex-shrink:0;color:var(--muted)}
-.fx-toggle.open .fx-arr{transform:rotate(180deg)}
-.fx-body{display:none;max-height:520px;overflow-y:auto}
-.fx-body.open{display:block}
-.fx-fecha-hdr{padding:8px 16px;background:linear-gradient(90deg,rgba(212,0,32,.08),transparent);border-bottom:1px solid var(--line);font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1px;color:var(--lc);text-transform:uppercase}
+.fx-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px 0;background:var(--w2);border-bottom:1px solid var(--line)}
+.fx-title{font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--ink3);padding-bottom:12px}
+.fx-tabs{display:flex;gap:0;overflow-x:auto;padding-bottom:0;flex:1;-webkit-overflow-scrolling:touch}
+.fx-tabs::-webkit-scrollbar{display:none}
+.fx-tab{border:none;background:none;padding:10px 14px 11px;font-family:var(--fh);font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:color .15s,border-color .15s;flex-shrink:0}
+.fx-tab:hover{color:var(--ink)}
+.fx-tab.active{color:var(--lc);border-bottom-color:var(--lc)}
+.fx-tab .fx-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--r);margin-left:4px;vertical-align:middle;animation:pulse 1s infinite}
+.fx-body{display:none}
+.fx-body.active{display:block}
 .fx-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--fh)}
 .prox-vs{font-family:var(--fh);font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prox-liga{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
@@ -3843,7 +3846,7 @@ function renderResultados(id, matches){
   }
 }
 
-// Fixture accordion panel — shows all matches for a league grouped by fecha
+// Fixture fecha-tabs panel — shows all matches per league with clickable fecha tabs
 function renderFxPanel(panelId, ligas, label, accent){
   var c = gel(panelId); if(!c) return;
   accent = accent || "var(--lc)";
@@ -3852,69 +3855,95 @@ function renderFxPanel(panelId, ligas, label, accent){
   });
   if(!all.length){ c.innerHTML=""; return; }
 
-  // Sort by date then by hora
+  // Sort by jornada number then by date
   all.sort(function(a,b){
+    var ja = parseInt(a.jornada)||999, jb = parseInt(b.jornada)||999;
+    if(ja!==jb) return ja-jb;
     var da = (a.fecha||"").split(/\D/).reverse().join("") + (a.hora||"");
     var db = (b.fecha||"").split(/\D/).reverse().join("") + (b.hora||"");
     return da > db ? 1 : da < db ? -1 : 0;
   });
 
-  // Group by jornada/fecha header
+  // Group by jornada
   var groups = [], groupMap = {};
   all.forEach(function(m){
-    var key = m.jornada ? ("Fecha "+m.jornada) : (m.fecha || "Próximamente");
-    if(!groupMap[key]){ groupMap[key] = []; groups.push({key:key, matches:groupMap[key]}); }
-    groupMap[key].push(m);
+    var key = m.jornada ? "Fecha "+m.jornada : (m.fecha||"Próximamente");
+    if(!groupMap[key]){ groupMap[key]={key:key,matches:[],hasLive:false,hasPending:false}; groups.push(groupMap[key]); }
+    groupMap[key].matches.push(m);
+    if(m.status==="live") groupMap[key].hasLive=true;
+    if(m.status!=="fin") groupMap[key].hasPending=true;
   });
 
-  var total = all.length;
-  var fin   = all.filter(function(m){return m.status==="fin";}).length;
-  var live  = all.filter(function(m){return m.status==="live";}).length;
+  // Auto-select the current fecha (first with live, else first with pending, else last)
+  var defIdx=groups.length-1;
+  for(var i=0;i<groups.length;i++){
+    if(groups[i].hasLive){defIdx=i;break;}
+  }
+  if(defIdx===groups.length-1){
+    for(var i=0;i<groups.length;i++){
+      if(groups[i].hasPending){defIdx=i;break;}
+    }
+  }
 
-  var badge = live ? ('<span style="display:inline-flex;align-items:center;gap:4px;background:var(--r);color:#fff;font-size:9px;padding:2px 7px;border-radius:20px;margin-left:6px"><span style="font-size:7px">●</span> EN VIVO</span>') : "";
-  var meta  = fin + " jugados · " + (total-fin-live) + " próximos";
+  var pid = panelId.replace(/[^a-z0-9]/gi,"");
 
-  c.innerHTML =
-    '<div class="fx-panel">' +
-      '<button class="fx-toggle" onclick="this.classList.toggle(\'open\');var b=this.nextElementSibling;b.classList.toggle(\'open\');if(b.classList.contains(\'open\')){window.injectFixtureLogos&&injectFixtureLogos();}">' +
-        '<span style="display:flex;align-items:center;gap:8px">' +
-          '<span style="font-size:16px">📋</span>' +
-          '<span>' + (label||"Fixture completo") + '</span>' + badge +
-          '<span style="font-weight:400;color:var(--muted);font-size:10px;margin-left:4px">' + meta + '</span>' +
-        '</span>' +
-        '<span class="fx-arr">▼</span>' +
-      '</button>' +
-      '<div class="fx-body" id="'+panelId+'Body">' + buildFxBody(groups, accent) + '</div>' +
-    '</div>';
-}
+  // Build tabs
+  var tabsHtml = "";
+  groups.forEach(function(g,i){
+    var dot = g.hasLive ? '<span class="fx-dot"></span>' : "";
+    tabsHtml += '<button class="fx-tab'+(i===defIdx?" active":"")+'" onclick="fxSwitchTab(\''+pid+'\','+i+',this)">' + escH(g.key) + dot + '</button>';
+  });
 
-function buildFxBody(groups, accent){
-  var html = "";
-  groups.forEach(function(g){
-    html += '<div class="fx-fecha-hdr" style="border-left:3px solid '+accent+';padding-left:13px">' + escH(g.key) + '</div>';
+  // Build bodies
+  var bodiesHtml = "";
+  groups.forEach(function(g,i){
+    bodiesHtml += '<div class="fx-body'+(i===defIdx?" active":"")+'" id="'+pid+'b'+i+'">';
     g.matches.forEach(function(m){
-      var isL = m.status==="live", isF = m.status==="fin";
+      var isL=m.status==="live", isF=m.status==="fin";
       var scoreHtml, scoreColor="color:var(--ink)";
       if(isL){
-        scoreHtml = '<span style="display:block;font-size:7px;color:var(--r);text-align:center;margin-bottom:1px">● LIVE</span>'+m.hs+'-'+m.as_;
-        scoreColor = "color:var(--r)";
+        scoreHtml='<span style="display:block;font-size:7px;color:var(--r);text-align:center;margin-bottom:1px">● LIVE</span>'+escH(m.hs)+'-'+escH(m.as_);
+        scoreColor="color:var(--r)";
       } else if(isF){
-        scoreHtml = m.hs+'-'+m.as_;
+        scoreHtml=escH(m.hs)+'-'+escH(m.as_);
       } else {
-        scoreHtml = m.hora||"vs";
-        scoreColor = "color:var(--muted)";
+        scoreHtml=escH(m.hora||"vs");
+        scoreColor="color:var(--muted)";
       }
-      html +=
+      bodiesHtml +=
         '<div class="r-row">' +
           '<div class="r-hm"><div class="r-t">'+escH(m.home)+'</div>' +
-          (m.fecha&&!isF&&!isL?'<div class="r-m">'+escH(m.fecha)+(m.hora?' · '+escH(m.hora):'')+'</div>':'') +
+          (!isF&&!isL&&m.fecha?'<div class="r-m">'+escH(m.fecha)+(m.hora?' · '+escH(m.hora):'')+'</div>':'') +
           '</div>' +
           '<div class="r-hr" style="'+scoreColor+'">'+scoreHtml+'</div>' +
           '<div class="r-aw"><div class="r-t">'+escH(m.away)+'</div></div>' +
         '</div>';
     });
+    bodiesHtml += '</div>';
   });
-  return html || '<div class="fx-empty">Sin partidos registrados</div>';
+
+  c.innerHTML =
+    '<div class="fx-panel">' +
+      '<div class="fx-header">' +
+        '<div class="fx-tabs" id="'+pid+'tabs">' + tabsHtml + '</div>' +
+      '</div>' +
+      bodiesHtml +
+    '</div>';
+
+  // Scroll active tab into view
+  var activeTab=c.querySelector(".fx-tab.active");
+  if(activeTab) setTimeout(function(){activeTab.scrollIntoView({block:"nearest",inline:"center"});},50);
+  injectFixtureLogos();
+}
+
+function fxSwitchTab(pid, idx, btn){
+  var panel = btn.closest(".fx-panel");
+  panel.querySelectorAll(".fx-tab").forEach(function(t){t.classList.remove("active");});
+  panel.querySelectorAll(".fx-body").forEach(function(b){b.classList.remove("active");});
+  btn.classList.add("active");
+  var body = document.getElementById(pid+"b"+idx);
+  if(body) body.classList.add("active");
+  injectFixtureLogos();
 }
 function escH(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
