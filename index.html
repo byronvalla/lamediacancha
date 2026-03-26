@@ -677,7 +677,7 @@ footer .fg,footer .fb{position:relative;z-index:1}
 /* FOOTER pitch center circle hint */
 
 /* PRIMERA section heading */
-#sec-primera .sh .st,.#sec-primerab .sh .st{
+#sec-primera .sh .st,#sec-primerab .sh .st{
   text-shadow:0 1px 3px rgba(0,0,0,.08)
 }
 /* MOBILE NAV pitch feel */
@@ -2525,39 +2525,41 @@ var currentAdminUser = null;
 // LOGOS — Wikipedia URLs indexed by canonical team name
 // Updated at runtime from admin panel (stored in localStorage)
 // ══════════════════════════════════════════════════════
+// Base URL for self-hosted SVG logos (GitHub Pages serves from /logos/ folder)
+var _L = "logos/";
 var LOGOS_DEFAULT = {
-  "Colo Colo":              "https://media.api-sports.io/football/teams/2288.png",
-  "Colo-Colo":              "https://media.api-sports.io/football/teams/2288.png",
-  "Universidad de Chile":   "https://media.api-sports.io/football/teams/2290.png",
-  "U. de Chile":            "https://media.api-sports.io/football/teams/2290.png",
-  "Universidad Cat\u00F3lica": "https://media.api-sports.io/football/teams/2289.png",
-  "U. Cat\u00F3lica":      "https://media.api-sports.io/football/teams/2289.png",
-  "\u00D1ublense":         "https://media.api-sports.io/football/teams/2304.png",
-  "Nublense":               "https://media.api-sports.io/football/teams/2304.png",
-  "O\u2019Higgins":        "https://media.api-sports.io/football/teams/2296.png",
-  "O'Higgins":              "https://media.api-sports.io/football/teams/2296.png",
-  "Palestino":              "https://media.api-sports.io/football/teams/2294.png",
-  "Huachipato":             "https://media.api-sports.io/football/teams/2295.png",
-  "Audax Italiano":         "https://media.api-sports.io/football/teams/2293.png",
-  "Coquimbo Unido":         "https://media.api-sports.io/football/teams/2302.png",
-  "Uni\u00F3n La Calera":  "https://media.api-sports.io/football/teams/2298.png",
-  "Union La Calera":        "https://media.api-sports.io/football/teams/2298.png",
-  "Cobresal":               "https://media.api-sports.io/football/teams/2301.png",
-  "Deportes Limache":       "https://media.api-sports.io/football/teams/10273.png",
-  "Deportes La Serena":     "https://media.api-sports.io/football/teams/2297.png",
-  "U. de Concepci\u00F3n": "https://media.api-sports.io/football/teams/2299.png",
-  "Universidad de Concepci\u00F3n": "https://media.api-sports.io/football/teams/2299.png",
-  "Deportes Concepci\u00F3n": "https://media.api-sports.io/football/teams/10274.png",
-  "Everton":                "https://media.api-sports.io/football/teams/2300.png",
-  "Uni\u00F3n Espa\u00F1ola": "https://media.api-sports.io/football/teams/2292.png",
-  "San Luis":               "https://media.api-sports.io/football/teams/10272.png",
-  "Curi\u00F3 Unido":      "https://media.api-sports.io/football/teams/10269.png",
-  "Magallanes":             "https://media.api-sports.io/football/teams/2291.png",
-  "Rangers":                "https://media.api-sports.io/football/teams/10268.png",
-  "Cobreloa":               "https://media.api-sports.io/football/teams/2303.png",
-  "Deportes Iquique":       "https://media.api-sports.io/football/teams/2305.png",
-  "Santiago Wanderers":     "https://media.api-sports.io/football/teams/2306.png",
-  "Deportes Antofagasta":   "https://media.api-sports.io/football/teams/2307.png"
+  "Colo Colo":                     _L+"colo-colo.svg",
+  "Colo-Colo":                     _L+"colo-colo.svg",
+  "Universidad de Chile":          _L+"u-de-chile.svg",
+  "U. de Chile":                   _L+"u-de-chile.svg",
+  "Universidad Cat\u00F3lica":     _L+"u-catolica.svg",
+  "U. Cat\u00F3lica":              _L+"u-catolica.svg",
+  "\u00D1ublense":                 _L+"nublense.svg",
+  "Nublense":                      _L+"nublense.svg",
+  "O\u2019Higgins":                _L+"ohiggins.svg",
+  "O'Higgins":                     _L+"ohiggins.svg",
+  "Palestino":                     _L+"palestino.svg",
+  "Huachipato":                    _L+"huachipato.svg",
+  "Audax Italiano":                _L+"audax-italiano.svg",
+  "Coquimbo Unido":                _L+"coquimbo-unido.svg",
+  "Uni\u00F3n La Calera":          _L+"union-la-calera.svg",
+  "Union La Calera":               _L+"union-la-calera.svg",
+  "Cobresal":                      _L+"cobresal.svg",
+  "Deportes Limache":              _L+"d-limache.svg",
+  "Deportes La Serena":            _L+"la-serena.svg",
+  "U. de Concepci\u00F3n":         _L+"u-concepcion.svg",
+  "Universidad de Concepci\u00F3n":_L+"u-concepcion.svg",
+  "Deportes Concepci\u00F3n":      _L+"d-concepcion.svg",
+  "Everton":                       _L+"everton.svg",
+  "Uni\u00F3n Espa\u00F1ola":      _L+"union-espanola.svg",
+  "San Luis":                      _L+"san-luis.svg",
+  "Curi\u00F3 Unido":              _L+"curico-unido.svg",
+  "Magallanes":                    _L+"magallanes.svg",
+  "Rangers":                       _L+"rangers.svg",
+  "Cobreloa":                      _L+"cobreloa.svg",
+  "Deportes Iquique":              _L+"deportes-iquique.svg",
+  "Santiago Wanderers":            _L+"s-wanderers.svg",
+  "Deportes Antofagasta":          _L+"d-antofagasta.svg"
 };
 var LOGOS = Object.assign({}, LOGOS_DEFAULT);
 
@@ -4109,6 +4111,28 @@ function renderAll(){
 // ══════════════════════════════════════════════════════
 var SECS=["inicio","primera","primerab","tercera","copa","seleccion","traspasos","estadisticas","resultados","noticias","articulo"];
 var NAVS=["inicio","primera","primerab","tercera","copa","seleccion","traspasos","estadisticas","resultados","noticias"];
+var _currentSec = "inicio";
+function renderSec(sec){
+  // Re-render the relevant section content when first visited
+  if(sec==="primera"||sec==="primerab"){
+    renderTable("tblPrimera", D.primera.rows, "fp");
+    renderTable("tblPrimeraB", D.primerab.rows, "fp");
+  } else if(sec==="estadisticas"){
+    renderStats();
+    renderGoles("statsGoles", D.golPrimera, true);
+    renderGoles("statsGolesB", D.golPrimeraB||[], true);
+  } else if(sec==="resultados"){
+    renderResultsPage();
+    renderProxima("resProxima", D.proxima);
+  } else if(sec==="traspasos"){
+    renderTransfers();
+  } else if(sec==="noticias"){
+    renderAllNews("allNews", N);
+  } else if(sec==="inicio"){
+    renderHero(); renderLiveStrip(); renderHomeMain();
+  }
+  setTimeout(injectFixtureLogos, 50);
+}
 
 function goSec(sec){
   SECS.forEach(function(s){var el=gel("sec-"+s);if(el)el.classList.toggle("active",s===sec);});
