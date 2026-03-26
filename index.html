@@ -4834,19 +4834,34 @@ function syncSetStatus(msg, ok){
   el.style.borderColor = ok===true?"var(--green)":ok===false?"var(--r)":"var(--line)";
 }
 
-// Collect ALL admin data into one object
+// Collect ALL admin data from in-memory variables (not localStorage)
+// Strips base64 images — JSONBin has 100KB limit, only URLs work
 function syncGetAllData(){
+  function noBase64(obj){
+    var out={};
+    Object.keys(obj||{}).forEach(function(k){
+      if(obj[k] && String(obj[k]).indexOf("data:")<0) out[k]=obj[k];
+    });
+    return out;
+  }
+  function cleanNews(arr){
+    return (arr||[]).map(function(n){
+      var c=Object.assign({},n);
+      if(c.img && c.img.indexOf("data:")===0) c.img="";
+      return c;
+    });
+  }
   return {
-    logos:     loadSt("lmc_logos_override",{}),
-    news:      loadSt("lmc_news", []),
-    opin:      loadSt("lmc_opin", []),
-    photos:    loadSt("lmc_player_photos", {}),
-    traspasos: loadSt("lmc_traspasos", []),
-    tbl_p1:    loadSt("lmc_tbl_p1", []),
-    tbl_p2:    loadSt("lmc_tbl_p2", []),
-    goles_p1:  loadSt("lmc_goles_p1", []),
-    partidos:  loadSt("lmc_partidos", []),
-    proxima:   loadSt("lmc_proxima", [])
+    logos:     noBase64(loadSt("lmc_logos_override",{})),
+    news:      cleanNews(N),
+    opin:      O||[],
+    photos:    noBase64(_playerPhotos||{}),
+    traspasos: D.traspasos||[],
+    tbl_p1:    D.primera.rows||[],
+    tbl_p2:    D.primerab.rows||[],
+    goles_p1:  D.golPrimera||[],
+    partidos:  D.partidos||[],
+    proxima:   D.proxima||[]
   };
 }
 
