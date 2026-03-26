@@ -2443,8 +2443,8 @@ var currentAdminUser = null;
 // Updated at runtime from admin panel (stored in localStorage)
 // ══════════════════════════════════════════════════════
 var LOGOS_DEFAULT = {
-  "Colo Colo":              "https://media.api-sports.io/football/teams/2288.png",
-  "Colo-Colo":              "https://media.api-sports.io/football/teams/2288.png",
+  "Colo Colo":              "https://static.emol.cl/emol50/especiales/img/recursos/logos/futbol/singles_400x400/chile/colo-colo.png",
+  "Colo-Colo":              "https://static.emol.cl/emol50/especiales/img/recursos/logos/futbol/singles_400x400/chile/colo-colo.png",
   "Universidad de Chile":   "https://media.api-sports.io/football/teams/2290.png",
   "U. de Chile":            "https://media.api-sports.io/football/teams/2290.png",
   "Universidad Cat\u00F3lica": "https://media.api-sports.io/football/teams/2289.png",
@@ -2612,6 +2612,9 @@ function loadSt(key, def){
 }
 function saveSt(key,val){
   try{ localStorage.setItem(key,JSON.stringify(val)); }catch(e){}
+  if(key.indexOf("lmc_")===0 && key!=="lmc_jbin_key" && key!=="lmc_jbin_bin"){
+    if(typeof syncAutoPush==="function") syncAutoPush();
+  }
 }
 
 // ══════════════════════════════════════════════════════
@@ -4988,15 +4991,6 @@ function fetchRemoteLogos(){
       renderAll();
       injectFixtureLogos();
     }).catch(function(){}); // Silent fail — fallback to defaults
-}
-
-// Intercept every saveSt call for lmc_ keys → auto-push
-var _origSaveSt = saveSt;
-function saveSt(key, val){
-  _origSaveSt(key, val);
-  if(key.indexOf("lmc_")===0 && key!=="lmc_jbin_key" && key!=="lmc_jbin_bin"){
-    syncAutoPush();
-  }
 }
 
 // ── Auto-refresh every 60s (not 3 min) for live games ──
