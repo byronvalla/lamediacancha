@@ -422,6 +422,42 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .fx-body{display:none}
 .fx-body.active{display:block}
 .fx-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--fh)}
+/* ═══ FECHA PICKER — campeonatochileno.cl style ═══ */
+.fecha-picker-wrap{display:flex;align-items:center;gap:4px;padding:10px 10px;background:#f7f8fa;border-bottom:1px solid var(--line)}
+.fecha-nav-arr{width:30px;height:30px;border:1.5px solid var(--line);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);flex-shrink:0;transition:.15s;line-height:1;padding:0}
+.fecha-nav-arr:hover{background:var(--lc);color:#fff;border-color:var(--lc)}
+.fecha-circles{display:flex;gap:5px;overflow-x:auto;padding:2px 4px;-webkit-overflow-scrolling:touch;flex:1}
+.fecha-circles::-webkit-scrollbar{display:none}
+.fecha-circle{min-width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:12px;font-weight:700;color:var(--muted);transition:.15s;flex-shrink:0;padding:0 6px}
+.fecha-circle:hover{border-color:var(--lc);color:var(--lc)}
+.fecha-circle.active{background:var(--lc);border-color:var(--lc);color:#fff}
+.fecha-circle.has-live{border-color:var(--r);color:var(--r)}
+.fecha-circle.active.has-live{background:var(--r);border-color:var(--r)}
+/* ═══ MATCH CARDS ═══ */
+.mc-wrap{padding:0}
+.mc-fecha-title{padding:8px 14px 4px;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+.mc-card{display:grid;grid-template-columns:66px 1fr auto 1fr;align-items:center;padding:11px 14px 7px;border-bottom:1px solid var(--line)}
+.mc-card:last-child{border-bottom:none}
+.mc-date{text-align:center;padding-right:12px;border-right:1.5px solid var(--line);margin-right:4px}
+.mc-date-d{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);line-height:1}
+.mc-date-m{font-size:9px;color:var(--muted);font-family:var(--fh);text-transform:uppercase;margin-top:1px}
+.mc-date-h{font-family:var(--fd);font-size:11px;color:var(--lc);margin-top:4px;font-weight:700}
+.mc-home{display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:0 8px;min-width:0}
+.mc-away{display:flex;align-items:center;justify-content:flex-start;gap:7px;padding:0 8px;min-width:0}
+.mc-tname{font-size:12px;font-weight:700;color:var(--ink);font-family:var(--fh);letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mc-tlogo{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.mc-scores{display:flex;gap:4px;align-items:center;justify-content:center;flex-shrink:0}
+.mc-sbox{width:32px;height:32px;border-radius:7px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;font-weight:900;color:var(--ink);background:#fff}
+.mc-sbox.live{border-color:var(--r);color:var(--r)}
+.mc-sbox.prog{color:var(--muted);font-size:14px;letter-spacing:0}
+.mc-info{grid-column:1/-1;padding:2px 14px 5px;font-size:10px;color:var(--muted);font-family:var(--fh)}
+@media(max-width:640px){
+  .mc-card{grid-template-columns:54px 1fr auto 1fr;padding:9px 10px 6px}
+  .mc-tname{font-size:10px}
+  .mc-sbox{width:27px;height:27px;font-size:14px}
+  .mc-tlogo{width:22px;height:22px}
+  .mc-date-d{font-size:17px}
+}
 .prox-vs{font-family:var(--fh);font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prox-liga{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
 .prox-h{font-family:var(--fd);font-size:16px;letter-spacing:1px;color:var(--r);text-align:right}
@@ -2989,23 +3025,90 @@ var D = {
     {rank:5,name:"Gonzalo Sosa",club:"Cobreloa",goles:3,flag:"\uD83C\uDDE6\uD83C\uDDF7",photo:""}
   ],
   partidos:[
-    // Copa de la Liga Fecha 1
-    {home:"Universidad de Chile",hs:"2",as_:"2",away:"Deportes La Serena",status:"fin",fecha:"20 Mar",hora:"18:00",liga:"Copa de la Liga",min:""},
-    {home:"Unión La Calera",hs:"0",as_:"1",away:"Audax Italiano",status:"fin",fecha:"20 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
-    {home:"Huachipato",hs:"2",as_:"2",away:"Deportes Concepción",status:"fin",fecha:"21 Mar",hora:"12:00",liga:"Copa de la Liga",min:""},
-    {home:"Colo Colo",hs:"1",as_:"0",away:"Coquimbo Unido",status:"fin",fecha:"21 Mar",hora:"18:00",liga:"Copa de la Liga",min:""},
-    {home:"Cobresal",hs:"0",as_:"1",away:"Ñublense",status:"fin",fecha:"21 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
-    {home:"Universidad Católica",hs:"1",as_:"0",away:"U. de Concepción",status:"fin",fecha:"22 Mar",hora:"18:00",liga:"Copa de la Liga",min:""},
-    {home:"O'Higgins",hs:"2",as_:"1",away:"Deportes Limache",status:"fin",fecha:"22 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
-    {home:"Palestino",hs:"1",as_:"1",away:"Everton",status:"fin",fecha:"23 Mar",hora:"20:30",liga:"Copa de la Liga",min:""},
-    // Liga de Primera — últimas fechas
-    {home:"Colo Colo",hs:"2",as_:"0",away:"Huachipato",status:"fin",fecha:"16 Mar",hora:"",liga:"Primera División",min:""},
-    {home:"Unión La Calera",hs:"3",as_:"3",away:"O'Higgins",status:"fin",fecha:"16 Mar",hora:"",liga:"Primera División",min:""},
-    {home:"Cobresal",hs:"2",as_:"5",away:"Deportes Limache",status:"fin",fecha:"15 Mar",hora:"",liga:"Primera División",min:""},
-    {home:"Ñublense",hs:"2",as_:"2",away:"Deportes La Serena",status:"fin",fecha:"14 Mar",hora:"",liga:"Primera División",min:""},
-    {home:"Coquimbo Unido",hs:"0",as_:"1",away:"Universidad de Chile",status:"fin",fecha:"14 Mar",hora:"",liga:"Primera División",min:""},
-    {home:"Universidad Católica",hs:"2",as_:"2",away:"Everton",status:"fin",fecha:"13 Mar",hora:"",liga:"Primera División",min:""},
-    {home:"Deportes Concepción",hs:"1",as_:"2",away:"Palestino",status:"fin",fecha:"13 Mar",hora:"",liga:"Primera División",min:""}
+    // ===== LIGA DE PRIMERA MERCADO LIBRE 2026 =====
+    // Fecha 1 (30 Ene – 2 Feb)
+    {jornada:1,home:"Universidad de Chile",hs:"0",as_:"0",away:"Audax Italiano",status:"fin",fecha:"30 Ene",hora:"20:30",liga:"Primera División"},
+    {jornada:1,home:"Deportes Limache",hs:"3",as_:"1",away:"Colo Colo",status:"fin",fecha:"31 Ene",hora:"18:00",liga:"Primera División"},
+    {jornada:1,home:"U. de Concepción",hs:"1",as_:"0",away:"Coquimbo Unido",status:"fin",fecha:"31 Ene",hora:"18:00",liga:"Primera División"},
+    {jornada:1,home:"Cobresal",hs:"1",as_:"0",away:"Huachipato",status:"fin",fecha:"31 Ene",hora:"20:30",liga:"Primera División"},
+    {jornada:1,home:"Deportes La Serena",hs:"2",as_:"2",away:"Universidad Católica",status:"fin",fecha:"01 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:1,home:"Palestino",hs:"1",as_:"1",away:"Ñublense",status:"fin",fecha:"01 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:1,home:"Everton",hs:"0",as_:"1",away:"Unión La Calera",status:"fin",fecha:"02 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:1,home:"Deportes Concepción",hs:"2",as_:"1",away:"O'Higgins",status:"fin",fecha:"02 Feb",hora:"20:30",liga:"Primera División"},
+    // Fecha 2 (6–9 Feb)
+    {jornada:2,home:"Audax Italiano",hs:"3",as_:"0",away:"U. de Concepción",status:"fin",fecha:"06 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:2,home:"Coquimbo Unido",hs:"3",as_:"1",away:"Palestino",status:"fin",fecha:"07 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:2,home:"Ñublense",hs:"1",as_:"1",away:"Deportes Limache",status:"fin",fecha:"08 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:2,home:"Universidad Católica",hs:"2",as_:"0",away:"Deportes Concepción",status:"fin",fecha:"08 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:2,home:"Unión La Calera",hs:"3",as_:"1",away:"Cobresal",status:"fin",fecha:"09 Feb",hora:"20:30",liga:"Primera División"},
+    // Fecha 3 (13–15 Feb)
+    {jornada:3,home:"Everton",hs:"0",as_:"3",away:"Huachipato",status:"fin",fecha:"13 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:3,home:"Palestino",hs:"0",as_:"0",away:"Universidad de Chile",status:"fin",fecha:"13 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:3,home:"Deportes La Serena",hs:"0",as_:"1",away:"Coquimbo Unido",status:"fin",fecha:"14 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:3,home:"Deportes Limache",hs:"2",as_:"1",away:"O'Higgins",status:"fin",fecha:"14 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:3,home:"Cobresal",hs:"3",as_:"2",away:"Universidad Católica",status:"fin",fecha:"14 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:3,home:"U. de Concepción",hs:"2",as_:"1",away:"Deportes Concepción",status:"fin",fecha:"15 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:3,home:"Ñublense",hs:"1",as_:"0",away:"Audax Italiano",status:"fin",fecha:"15 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:3,home:"Colo Colo",hs:"1",as_:"0",away:"Unión La Calera",status:"fin",fecha:"15 Feb",hora:"20:30",liga:"Primera División"},
+    // Fecha 4 (20–22 Feb)
+    {jornada:4,home:"Unión La Calera",hs:"0",as_:"1",away:"Ñublense",status:"fin",fecha:"20 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:4,home:"Deportes Concepción",hs:"1",as_:"1",away:"Cobresal",status:"fin",fecha:"20 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:4,home:"Huachipato",hs:"2",as_:"1",away:"Palestino",status:"fin",fecha:"21 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:4,home:"O'Higgins",hs:"0",as_:"1",away:"Colo Colo",status:"fin",fecha:"21 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:4,home:"Universidad Católica",hs:"3",as_:"1",away:"Coquimbo Unido",status:"fin",fecha:"21 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:4,home:"Deportes La Serena",hs:"1",as_:"1",away:"U. de Concepción",status:"fin",fecha:"22 Feb",hora:"18:00",liga:"Primera División"},
+    // Fecha 5 (27 Feb – 1 Mar) — Superclásico #199
+    {jornada:5,home:"Coquimbo Unido",hs:"0",as_:"1",away:"Deportes Concepción",status:"fin",fecha:"28 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:5,home:"Deportes Limache",hs:"3",as_:"0",away:"Huachipato",status:"fin",fecha:"28 Feb",hora:"18:00",liga:"Primera División"},
+    {jornada:5,home:"Palestino",hs:"4",as_:"2",away:"O'Higgins",status:"fin",fecha:"28 Feb",hora:"20:30",liga:"Primera División"},
+    {jornada:5,home:"U. de Concepción",hs:"0",as_:"3",away:"Everton",status:"fin",fecha:"01 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:5,home:"Colo Colo",hs:"0",as_:"1",away:"Universidad de Chile",status:"fin",fecha:"01 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:5,home:"Ñublense",hs:"1",as_:"2",away:"Universidad Católica",status:"fin",fecha:"01 Mar",hora:"20:30",liga:"Primera División"},
+    // Fecha 6 (6–9 Mar)
+    {jornada:6,home:"Deportes La Serena",hs:"3",as_:"0",away:"Unión La Calera",status:"fin",fecha:"06 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:6,home:"Deportes Concepción",hs:"0",as_:"2",away:"Ñublense",status:"fin",fecha:"06 Mar",hora:"20:30",liga:"Primera División"},
+    {jornada:6,home:"Huachipato",hs:"1",as_:"3",away:"Coquimbo Unido",status:"fin",fecha:"07 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:6,home:"Everton",hs:"1",as_:"0",away:"Deportes Limache",status:"fin",fecha:"07 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:6,home:"Audax Italiano",hs:"0",as_:"1",away:"Colo Colo",status:"fin",fecha:"07 Mar",hora:"20:30",liga:"Primera División"},
+    {jornada:6,home:"O'Higgins",hs:"1",as_:"0",away:"Universidad Católica",status:"fin",fecha:"07 Mar",hora:"20:30",liga:"Primera División"},
+    {jornada:6,home:"Universidad de Chile",hs:"2",as_:"0",away:"U. de Concepción",status:"fin",fecha:"09 Mar",hora:"20:00",liga:"Primera División"},
+    // Fecha 7 (13–16 Mar)
+    {jornada:7,home:"Universidad Católica",hs:"2",as_:"2",away:"Everton",status:"fin",fecha:"13 Mar",hora:"20:30",liga:"Primera División"},
+    {jornada:7,home:"Deportes Concepción",hs:"1",as_:"2",away:"Palestino",status:"fin",fecha:"13 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:7,home:"Coquimbo Unido",hs:"0",as_:"1",away:"Universidad de Chile",status:"fin",fecha:"14 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:7,home:"U. de Concepción",hs:"1",as_:"0",away:"Palestino",status:"fin",fecha:"15 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:7,home:"Cobresal",hs:"2",as_:"5",away:"Deportes Limache",status:"fin",fecha:"15 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:7,home:"Ñublense",hs:"2",as_:"2",away:"Deportes La Serena",status:"fin",fecha:"15 Mar",hora:"20:30",liga:"Primera División"},
+    {jornada:7,home:"Unión La Calera",hs:"3",as_:"3",away:"O'Higgins",status:"fin",fecha:"16 Mar",hora:"18:00",liga:"Primera División"},
+    {jornada:7,home:"Colo Colo",hs:"2",as_:"0",away:"Huachipato",status:"fin",fecha:"16 Mar",hora:"20:30",liga:"Primera División"},
+    // Fecha 8 (5–8 Abr — próxima)
+    {jornada:8,home:"Deportes Concepción",away:"Colo Colo",status:"prog",fecha:"05 Abr",hora:"20:30",liga:"Primera División"},
+    {jornada:8,home:"Coquimbo Unido",away:"Cobresal",status:"prog",fecha:"05 Abr",hora:"18:00",liga:"Primera División"},
+    {jornada:8,home:"Universidad de Chile",away:"Deportes La Serena",status:"prog",fecha:"08 Abr",hora:"18:00",liga:"Primera División"},
+    {jornada:8,home:"Deportes Limache",away:"Unión La Calera",status:"prog",fecha:"08 Abr",hora:"18:00",liga:"Primera División"},
+    {jornada:8,home:"O'Higgins",away:"Audax Italiano",status:"prog",fecha:"08 Abr",hora:"20:30",liga:"Primera División"},
+    {jornada:8,home:"Universidad Católica",away:"Palestino",status:"prog",fecha:"08 Abr",hora:"20:30",liga:"Primera División"},
+    {jornada:8,home:"Everton",away:"Ñublense",status:"prog",fecha:"08 Abr",hora:"18:00",liga:"Primera División"},
+    {jornada:8,home:"Huachipato",away:"U. de Concepción",status:"prog",fecha:"08 Abr",hora:"18:00",liga:"Primera División"},
+    // ===== COPA DE LA LIGA 2026 =====
+    // Fecha 1 (20–23 Mar)
+    {jornada:1,home:"Universidad de Chile",hs:"2",as_:"2",away:"Deportes La Serena",status:"fin",fecha:"20 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:1,home:"Unión La Calera",hs:"0",as_:"1",away:"Audax Italiano",status:"fin",fecha:"20 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:1,home:"Huachipato",hs:"2",as_:"2",away:"Deportes Concepción",status:"fin",fecha:"21 Mar",hora:"12:00",liga:"Copa de la Liga"},
+    {jornada:1,home:"Colo Colo",hs:"1",as_:"0",away:"Coquimbo Unido",status:"fin",fecha:"21 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:1,home:"Cobresal",hs:"0",as_:"1",away:"Ñublense",status:"fin",fecha:"21 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:1,home:"Universidad Católica",hs:"1",as_:"0",away:"U. de Concepción",status:"fin",fecha:"22 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:1,home:"O'Higgins",hs:"2",as_:"1",away:"Deportes Limache",status:"fin",fecha:"22 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:1,home:"Palestino",hs:"1",as_:"1",away:"Everton",status:"fin",fecha:"23 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    // Fecha 2 (24–26 Mar)
+    {jornada:2,home:"Universidad de Chile",away:"Unión La Calera",status:"prog",fecha:"24 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"Deportes Concepción",away:"Colo Colo",status:"prog",fecha:"24 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:2,home:"Ñublense",away:"Universidad Católica",status:"prog",fecha:"25 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"Huachipato",away:"Coquimbo Unido",status:"prog",fecha:"25 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"Audax Italiano",away:"Deportes La Serena",status:"prog",fecha:"25 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:2,home:"Deportes Limache",away:"Palestino",status:"prog",fecha:"26 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"U. de Concepción",away:"Cobresal",status:"prog",fecha:"26 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:2,home:"Everton",away:"O'Higgins",status:"prog",fecha:"26 Mar",hora:"20:30",liga:"Copa de la Liga"}
   ],
 
   copa:{
@@ -3034,18 +3137,7 @@ var D = {
       {pos:4,team:"Coquimbo Unido",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""}
     ]
   },
-  proxima:[
-    {home:"Universidad de Chile",away:"Unión La Calera",hora:"18:00",fecha:"24 Mar",liga:"Copa de la Liga"},
-    {home:"Deportes Concepción",away:"Colo Colo",hora:"20:30",fecha:"24 Mar",liga:"Copa de la Liga"},
-    {home:"Ñublense",away:"Universidad Católica",hora:"18:00",fecha:"25 Mar",liga:"Copa de la Liga"},
-    {home:"Huachipato",away:"Coquimbo Unido",hora:"18:00",fecha:"25 Mar",liga:"Copa de la Liga"},
-    {home:"Audax Italiano",away:"Deportes La Serena",hora:"20:30",fecha:"25 Mar",liga:"Copa de la Liga"},
-    {home:"Deportes Limache",away:"Palestino",hora:"18:00",fecha:"26 Mar",liga:"Copa de la Liga"},
-    {home:"U. de Concepción",away:"Cobresal",hora:"20:30",fecha:"26 Mar",liga:"Copa de la Liga"},
-    {home:"Everton",away:"O'Higgins",hora:"20:30",fecha:"26 Mar",liga:"Copa de la Liga"},
-    {home:"Deportes Concepción",away:"Colo Colo",hora:"20:30",fecha:"05 Abr",liga:"Primera División"},
-    {home:"Coquimbo Unido",away:"Cobresal",hora:"18:00",fecha:"05 Abr",liga:"Primera División"}
-  ],
+  proxima:[],
   traspasos:[
     {jugador:"Alexis S\u00E1nchez",de:"Udinese (ITA)",a:"Colo Colo",valor:"Libre",tipo:"llegada",fecha:"Mar 2026"},
     {jugador:"Arturo Vidal",de:"Athletico PR (BRA)",a:"Colo Colo",valor:"Libre",tipo:"llegada",fecha:"Ene 2026"},
@@ -4126,7 +4218,7 @@ function renderResultados(id, matches){
   }
 }
 
-// Fixture fecha-tabs panel — shows all matches per league with clickable fecha tabs
+// Fixture panel — circular fecha number picker (campeonatochileno.cl style)
 function renderFxPanel(panelId, ligas, label, accent){
   var c = gel(panelId); if(!c) return;
   accent = accent || "var(--lc)";
@@ -4144,59 +4236,74 @@ function renderFxPanel(panelId, ligas, label, accent){
     return da > db ? 1 : da < db ? -1 : 0;
   });
 
-  // Group by jornada
-  var groups = [], groupMap = {};
+  // Group by jornada — deduplicate
+  var groups = [], groupMap = {}, seen = {};
   all.forEach(function(m){
-    var key = m.jornada ? "Fecha "+m.jornada : (m.fecha||"Próximamente");
-    if(!groupMap[key]){ groupMap[key]={key:key,matches:[],hasLive:false,hasPending:false}; groups.push(groupMap[key]); }
-    groupMap[key].matches.push(m);
-    if(m.status==="live") groupMap[key].hasLive=true;
-    if(m.status!=="fin") groupMap[key].hasPending=true;
+    var sk = m.home+"|"+m.away+"|"+(m.fecha||"")+(m.hora||"");
+    if(seen[sk]) return; seen[sk]=true;
+    var jKey = m.jornada ? String(m.jornada) : (m.fecha||"?");
+    var jLabel = m.jornada ? "Fecha "+m.jornada : (m.fecha||"Próximamente");
+    if(!groupMap[jKey]){
+      groupMap[jKey]={key:jKey,label:jLabel,matches:[],hasLive:false,hasPending:false};
+      groups.push(groupMap[jKey]);
+    }
+    groupMap[jKey].matches.push(m);
+    if(m.status==="live") groupMap[jKey].hasLive=true;
+    if(m.status!=="fin") groupMap[jKey].hasPending=true;
   });
 
-  // Auto-select the current fecha (first with live, else first with pending, else last)
-  var defIdx=groups.length-1;
-  for(var i=0;i<groups.length;i++){
-    if(groups[i].hasLive){defIdx=i;break;}
-  }
+  // Auto-select: first with live → first with pending → last
+  var defIdx = groups.length-1;
+  for(var i=0;i<groups.length;i++){ if(groups[i].hasLive){defIdx=i;break;} }
   if(defIdx===groups.length-1){
-    for(var i=0;i<groups.length;i++){
-      if(groups[i].hasPending){defIdx=i;break;}
-    }
+    for(var i=0;i<groups.length;i++){ if(groups[i].hasPending){defIdx=i;break;} }
   }
 
   var pid = panelId.replace(/[^a-z0-9]/gi,"");
 
-  // Build tabs
-  var tabsHtml = "";
+  // Build circular fecha buttons
+  var circlesHtml = "";
   groups.forEach(function(g,i){
-    var dot = g.hasLive ? '<span class="fx-dot"></span>' : "";
-    tabsHtml += '<button class="fx-tab'+(i===defIdx?" active":"")+'" onclick="fxSwitchTab(\''+pid+'\','+i+',this)">' + escH(g.key) + dot + '</button>';
+    var cls = "fecha-circle"+(i===defIdx?" active":"")+(g.hasLive?" has-live":"");
+    circlesHtml += '<button class="'+cls+'" onclick="fxSwitchFecha(\''+pid+'\','+i+',this)" title="'+escH(g.label)+'">'+escH(g.key)+'</button>';
   });
 
-  // Build bodies
+  // Build match card bodies
   var bodiesHtml = "";
   groups.forEach(function(g,i){
-    bodiesHtml += '<div class="fx-body'+(i===defIdx?" active":"")+'" id="'+pid+'b'+i+'">';
+    bodiesHtml += '<div class="fx-body mc-wrap'+(i===defIdx?" active":"")+'" id="'+pid+'b'+i+'">';
+    bodiesHtml += '<div class="mc-fecha-title">'+escH(g.label)+'</div>';
     g.matches.forEach(function(m){
       var isL=m.status==="live", isF=m.status==="fin";
-      var scoreHtml, scoreColor="color:var(--ink)";
-      if(isL){
-        scoreHtml='<span style="display:block;font-size:7px;color:var(--r);text-align:center;margin-bottom:1px">● LIVE</span>'+escH(m.hs)+'-'+escH(m.as_);
-        scoreColor="color:var(--r)";
-      } else if(isF){
-        scoreHtml=escH(m.hs)+'-'+escH(m.as_);
-      } else {
-        scoreHtml=escH(m.hora||"vs");
-        scoreColor="color:var(--muted)";
-      }
+      var sboxCls = isL ? " live" : (isF ? "" : " prog");
+      var sc1, sc2;
+      if(isF||isL){ sc1=escH(m.hs||"0"); sc2=escH(m.as_||"0"); }
+      else { sc1="&#x2022;"; sc2="&#x2022;"; }
+      // Parse date parts
+      var dParts=(m.fecha||"").split(/\s+/);
+      var dd=dParts[0]||"", dm=dParts[1]||"";
+      var timeDisp=isL?'<span style="color:var(--r)">&#9679;</span> '+(m.hora||""):escH(m.hora||"--:--");
+      var stadiumHtml=m.estadio?'<div class="mc-info">&#128205; '+escH(m.estadio)+(m.arbitro?' &middot; '+escH(m.arbitro):'')+'</div>':'';
       bodiesHtml +=
-        '<div class="r-row">' +
-          '<div class="r-hm"><div class="r-t">'+escH(m.home)+'</div>' +
-          (!isF&&!isL&&m.fecha?'<div class="r-m">'+escH(m.fecha)+(m.hora?' · '+escH(m.hora):'')+'</div>':'') +
+        '<div class="mc-card">' +
+          '<div class="mc-date">' +
+            '<div class="mc-date-d">'+escH(dd)+'</div>' +
+            '<div class="mc-date-m">'+escH(dm)+'</div>' +
+            '<div class="mc-date-h">'+timeDisp+'</div>' +
           '</div>' +
-          '<div class="r-hr" style="'+scoreColor+'">'+scoreHtml+'</div>' +
-          '<div class="r-aw"><div class="r-t">'+escH(m.away)+'</div></div>' +
+          '<div class="mc-home">' +
+            '<span class="mc-tname">'+escH(m.home)+'</span>' +
+            '<div class="mc-tlogo" data-team="'+escH(m.home)+'"></div>' +
+          '</div>' +
+          '<div class="mc-scores">' +
+            '<div class="mc-sbox'+sboxCls+'">'+sc1+'</div>' +
+            '<div class="mc-sbox'+sboxCls+'">'+sc2+'</div>' +
+          '</div>' +
+          '<div class="mc-away">' +
+            '<div class="mc-tlogo" data-team="'+escH(m.away)+'"></div>' +
+            '<span class="mc-tname">'+escH(m.away)+'</span>' +
+          '</div>' +
+          (stadiumHtml||'') +
         '</div>';
     });
     bodiesHtml += '</div>';
@@ -4204,27 +4311,51 @@ function renderFxPanel(panelId, ligas, label, accent){
 
   c.innerHTML =
     '<div class="fx-panel">' +
-      '<div class="fx-header">' +
-        '<div class="fx-tabs" id="'+pid+'tabs">' + tabsHtml + '</div>' +
+      '<div class="fecha-picker-wrap">' +
+        '<button class="fecha-nav-arr" onclick="fxNavFecha(\''+pid+'\',-1)">&#8249;</button>' +
+        '<div class="fecha-circles" id="'+pid+'circles">'+circlesHtml+'</div>' +
+        '<button class="fecha-nav-arr" onclick="fxNavFecha(\''+pid+'\',1)">&#8250;</button>' +
       '</div>' +
       bodiesHtml +
     '</div>';
 
-  // Scroll active tab into view
-  var activeTab=c.querySelector(".fx-tab.active");
-  if(activeTab) setTimeout(function(){activeTab.scrollIntoView({block:"nearest",inline:"center"});},50);
-  injectFixtureLogos();
+  var activeCircle=c.querySelector(".fecha-circle.active");
+  if(activeCircle) setTimeout(function(){activeCircle.scrollIntoView({block:"nearest",inline:"center"});},50);
+  injectFxCardLogos(c);
 }
 
-function fxSwitchTab(pid, idx, btn){
+function fxSwitchFecha(pid, idx, btn){
   var panel = btn.closest(".fx-panel");
-  panel.querySelectorAll(".fx-tab").forEach(function(t){t.classList.remove("active");});
+  panel.querySelectorAll(".fecha-circle").forEach(function(b){b.classList.remove("active");});
   panel.querySelectorAll(".fx-body").forEach(function(b){b.classList.remove("active");});
   btn.classList.add("active");
   var body = document.getElementById(pid+"b"+idx);
-  if(body) body.classList.add("active");
-  injectFixtureLogos();
+  if(body){ body.classList.add("active"); injectFxCardLogos(body); }
 }
+
+function fxNavFecha(pid, dir){
+  var circles = document.getElementById(pid+"circles");
+  if(!circles) return;
+  var all = circles.querySelectorAll(".fecha-circle");
+  var idx = 0;
+  for(var i=0;i<all.length;i++){ if(all[i].classList.contains("active")){idx=i;break;} }
+  var newIdx = Math.max(0,Math.min(all.length-1,idx+dir));
+  if(newIdx!==idx){ fxSwitchFecha(pid,newIdx,all[newIdx]); setTimeout(function(){all[newIdx].scrollIntoView({block:"nearest",inline:"center"});},0); }
+}
+
+function injectFxCardLogos(container){
+  (container||document).querySelectorAll(".mc-tlogo[data-team]").forEach(function(el){
+    if(el.getAttribute("data-logo-done")) return;
+    el.setAttribute("data-logo-done","1");
+    var team = el.getAttribute("data-team");
+    var logo = mkLogo(team, true);
+    logo.style.cssText = "width:28px;height:28px;border-radius:50%;object-fit:contain;background:#f5f5f7;padding:2px;flex-shrink:0";
+    el.appendChild(logo);
+  });
+}
+
+// Keep fxSwitchTab as alias for backwards compat (e.g. admin panel references)
+function fxSwitchTab(pid, idx, btn){ fxSwitchFecha(pid, idx, btn); }
 function escH(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
 function renderStats(){
@@ -4314,6 +4445,7 @@ function renderAll(){
   renderFxPanel("fxP-copa",      ["Copa de la Liga","Copa Chile"],               "Fixture — Copa de la Liga",  "#1a6b5a");
   renderFxPanel("fxP-seleccion", ["Selección Chilena","Chile"],                  "Fixture — La Roja",          "var(--r)");
   setTimeout(injectFixtureLogos, 80);
+  setTimeout(function(){ injectFxCardLogos(document); }, 100);
   var t=new Date(); var h=t.getHours().toString().padStart(2,"0");
   var m=t.getMinutes().toString().padStart(2,"0");
   var upd=gel("apiLastUpdate"); if(upd) upd.textContent="Act. "+h+":"+m;
