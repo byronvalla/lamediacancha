@@ -2185,7 +2185,7 @@ nav::before{background:linear-gradient(90deg,#0055a4 33%,rgba(255,255,255,.5) 33
   </div>
   <div class="rg rg-copa" style="margin-bottom:14px">
     <div class="rg-h"><div class="rg-h-inner">&#x1F4C5; Fecha 3 &mdash; Abril 2026</div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">Colo Coco</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">U. de Concepci&oacute;n</div></div></div>
+    <div class="r-row"><div class="r-hm"><div class="r-t">Colo Colo</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">U. de Concepci&oacute;n</div></div></div>
     <div class="r-row"><div class="r-hm"><div class="r-t">Universidad Cat&oacute;lica</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
     <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes Limache</div></div></div>
     <div class="r-row"><div class="r-hm"><div class="r-t">O&apos;Higgins</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Audax Italiano</div></div></div>
@@ -5960,14 +5960,17 @@ function injectCopaGroupLogos(){
 function injectFixtureLogos(){
   // Inject team logos into static HTML .r-row fixture rows
   document.querySelectorAll(".r-row").forEach(function(row){
+    // Guard on the row element itself so logos are injected exactly once,
+    // even when the home team has no logo (which would leave hmT without an img,
+    // causing the old guard to re-inject away logos on every call).
+    if(row.getAttribute("data-logos-done")) return;
+    row.setAttribute("data-logos-done","1");
     var hmDiv = row.querySelector(".r-hm");
     var awDiv = row.querySelector(".r-aw");
     if(!hmDiv || !awDiv) return;
     var hmT = hmDiv.querySelector(".r-t");
     var awT = awDiv.querySelector(".r-t");
     if(!hmT || !awT) return;
-    // Only inject once
-    if(hmT.querySelector("img,div[data-logo]")) return;
     var hmName = hmT.textContent.trim();
     var awName = awT.textContent.trim();
     // Home logo (appended — row-reverse puts it to right of name)
