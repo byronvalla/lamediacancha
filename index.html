@@ -2726,14 +2726,25 @@ var currentAdminUser = null;
 var _L = "logos/";
 // Wikipedia Special:FilePath redirects to real club crests on Wikimedia Commons
 var _W = "https://en.wikipedia.org/wiki/Special:FilePath/";
+// Direct Wikimedia Commons uploads (Access-Control-Allow-Origin: *)
+var _WC = "https://upload.wikimedia.org/wikipedia/commons/";
 var LOGOS_DEFAULT = {
-  // Real crests from Wikipedia/Wikimedia Commons (free, CORS-open)
-  "Colo Colo":                     _W+"Escudo_de_Colo-Colo_1947.svg",
-  "Colo-Colo":                     _W+"Escudo_de_Colo-Colo_1947.svg",
-  "Universidad de Chile":          _W+"Logo_Universidad_de_Chile.svg",
-  "U. de Chile":                   _W+"Logo_Universidad_de_Chile.svg",
-  "Universidad Cat\u00F3lica":     _W+"Escudo_Club_Deportivo_Universidad_Cat%C3%B3lica.svg",
-  "U. Cat\u00F3lica":              _W+"Escudo_Club_Deportivo_Universidad_Cat%C3%B3lica.svg",
+  // Direct URLs provided / updated
+  "Colo Colo":                     "https://p7.hiclipart.com/preview/967/1019/627/colo-colo-chilean-primera-division-club-universidad-de-chile-c-d-antofagasta-club-deportivo-palestino-football-thumbnail.jpg",
+  "Colo-Colo":                     "https://p7.hiclipart.com/preview/967/1019/627/colo-colo-chilean-primera-division-club-universidad-de-chile-c-d-antofagasta-club-deportivo-palestino-football-thumbnail.jpg",
+  "Universidad de Chile":          _WC+"2/2d/Emblema_del_Club_Universidad_de_Chile.png",
+  "U. de Chile":                   _WC+"2/2d/Emblema_del_Club_Universidad_de_Chile.png",
+  "Universidad Cat\u00F3lica":     _WC+"3/33/LogoCDUC.png",
+  "U. Cat\u00F3lica":              _WC+"3/33/LogoCDUC.png",
+  "\u00D1ublense":                 _WC+"9/9f/%C3%91ublense.png",
+  "Nublense":                      _WC+"9/9f/%C3%91ublense.png",
+  "Audax Italiano":                _WC+"e/eb/Audax_Italiano_Escudo.png",
+  "O\u2019Higgins":                "https://www.ceroacero.es/img/logos/equipas/2280_imgbank_1688115224.png",
+  "O'Higgins":                     "https://www.ceroacero.es/img/logos/equipas/2280_imgbank_1688115224.png",
+  "Deportes Limache":              "https://static.wikia.nocookie.net/futbolchileno/images/0/09/Escudo_Deportes_Limache.png/revision/latest?cb=20210613002323&path-prefix=es",
+  "U. de Concepci\u00F3n":         "https://logodownload.org/wp-content/uploads/2019/04/universidad-concepcion-logo-escudo-1.png",
+  "Universidad de Concepci\u00F3n":"https://logodownload.org/wp-content/uploads/2019/04/universidad-concepcion-logo-escudo-1.png",
+  // Wikipedia Special:FilePath (CORS-open via redirect to Wikimedia)
   "Palestino":                     _W+"Escudo_Oficial_Club_Palestino.svg",
   "Huachipato":                    _W+"Escudo_Huachipato_FC.svg",
   "Coquimbo Unido":                _W+"Coquimbo_Unido.png",
@@ -2747,16 +2758,8 @@ var LOGOS_DEFAULT = {
   "Magallanes":                    _W+"Escudo_Deportes_Magallanes.png",
   "Rangers":                       _W+"Rangers_de_Talca_-_Escudo.svg",
   "San Luis":                      _W+"Escudo-san_luis_de_quillota.jpg",
-  "Deportes Limache":              _W+"Deportes_Limache.png",
   "Deportes Concepci\u00F3n":      _W+"Escudo_Deportes_Concepci%C3%B3n.svg",
-  // Local SVG fallbacks for teams with no free Wikimedia logo
-  "\u00D1ublense":                 _L+"nublense.svg",
-  "Nublense":                      _L+"nublense.svg",
-  "O\u2019Higgins":                _L+"ohiggins.svg",
-  "O'Higgins":                     _L+"ohiggins.svg",
-  "Audax Italiano":                _L+"audax-italiano.svg",
-  "U. de Concepci\u00F3n":         _L+"u-concepcion.svg",
-  "Universidad de Concepci\u00F3n":_L+"u-concepcion.svg",
+  // Local SVG fallbacks
   "Uni\u00F3n Espa\u00F1ola":      _L+"union-espanola.svg",
   "Curi\u00F3 Unido":              _L+"curico-unido.svg",
   "Deportes Iquique":              _L+"deportes-iquique.svg",
@@ -3136,15 +3139,14 @@ function mkLogo(team, small) {
     img.alt = team;
     img.style.cssText = "width:82%;height:82%;object-fit:contain;display:block";
     img.onerror = function(){
-      // If Wikipedia URL failed, try local SVG fallback
-      if(this.src.indexOf("wikipedia.org")>=0){
-        var local="logos/"+team.toLowerCase().replace(/[\s''\u2019]+/g,"-").replace(/[^a-z0-9\-]/g,"").replace(/-+/g,"-").replace(/^-|-$/g,"")+".svg";
-        this.onerror=function(){ el.style.cssText+=";font-size:12px"; el.textContent=emoji(team); this.remove(); };
-        this.src=local; return;
+      // Always try local SVG fallback before giving up (covers all external URLs)
+      if(this.src.indexOf("logos/")>=0){
+        // local SVG already failed — show emoji
+        el.style.cssText+=";font-size:12px"; el.textContent=emoji(team); this.remove(); return;
       }
-      el.style.cssText += ";font-size:12px";
-      el.textContent = emoji(team);
-      this.remove();
+      var local="logos/"+team.toLowerCase().replace(/[\s''\u2019\u2018]+/g,"-").replace(/[^a-z0-9\-]/g,"").replace(/-+/g,"-").replace(/^-|-$/g,"")+".svg";
+      this.onerror=function(){ el.style.cssText+=";font-size:12px"; el.textContent=emoji(team); this.remove(); };
+      this.src=local;
     };
     // Set src immediately — browser loads in background
     img.src = url;
@@ -3169,12 +3171,12 @@ function mkMcLogo(team) {
     img.alt = team;
     img.style.cssText = "width:80%;height:80%;object-fit:contain;display:block";
     img.onerror = function(){
-      if(this.src.indexOf("wikipedia.org")>=0){
-        var local="logos/"+team.toLowerCase().replace(/[\s''\u2019]+/g,"-").replace(/[^a-z0-9\-]/g,"").replace(/-+/g,"-").replace(/^-|-$/g,"")+".svg";
-        this.onerror=function(){ el.textContent=emoji(team); this.remove(); };
-        this.src=local; return;
+      if(this.src.indexOf("logos/")>=0){
+        el.textContent=emoji(team); this.remove(); return;
       }
-      el.textContent=emoji(team); this.remove();
+      var local="logos/"+team.toLowerCase().replace(/[\s''\u2019\u2018]+/g,"-").replace(/[^a-z0-9\-]/g,"").replace(/-+/g,"-").replace(/^-|-$/g,"")+".svg";
+      this.onerror=function(){ el.textContent=emoji(team); this.remove(); };
+      this.src=local;
     };
     img.src = url;
     el.appendChild(img);
