@@ -1601,6 +1601,56 @@ img { background-color:#f0f0f2; }
 .nli:hover { padding-left:6px; }
 .nli { transition:padding .15s var(--transition); }
 
+/* ═══ DARK NAVY NAVIGATION (campeonatochileno.cl style) ═══ */
+nav{background:#0d1b36!important;border-bottom:2px solid rgba(255,255,255,.12)!important;box-shadow:0 2px 24px rgba(0,0,0,.4)!important}
+nav::before{background:linear-gradient(90deg,#0055a4 33%,rgba(255,255,255,.5) 33%,rgba(255,255,255,.5) 38%,#c8001c 38%)!important;opacity:.65;height:3px}
+.nav-logo-name{color:#fff!important}.nav-logo-name span{color:var(--lc)!important}
+.nav-logo-tag{color:rgba(255,255,255,.45)!important}
+.nav-logo{border-right-color:rgba(255,255,255,.12)!important}
+.nb{color:rgba(255,255,255,.75)!important}
+.nb:hover{color:#fff!important;background:rgba(255,255,255,.1)!important}
+.nb.active{color:#fff!important;font-weight:900!important}
+.nb.active::after{background:#fff!important}
+.nav-search{background:rgba(255,255,255,.09)!important;border-color:rgba(255,255,255,.18)!important}
+.nav-search input{color:#fff!important}.nav-search input::placeholder{color:rgba(255,255,255,.35)!important}
+.hamburger{border-color:rgba(255,255,255,.25)!important;color:#fff!important;background:rgba(255,255,255,.08)!important}
+.mmenu{background:#0d1b36}
+.mm-link{color:rgba(255,255,255,.85);border-bottom-color:rgba(255,255,255,.1)}
+.mm-link:hover,.mm-link.active{color:#fff;background:rgba(255,255,255,.06)}
+.mm-head{border-bottom-color:var(--lc)}
+.mm-head .nav-logo-name{color:#fff!important}
+.mm-close{border-color:rgba(255,255,255,.2)!important;color:#fff!important;background:rgba(255,255,255,.08)!important}
+
+/* ═══ COPA GROUP STANDINGS TABLES ═══ */
+.copa-groups-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:680px){.copa-groups-grid{grid-template-columns:1fr}}
+.copa-group-card{background:#fff;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--sh)}
+.copa-group-hdr{background:linear-gradient(135deg,#0d4a3a,#1a6b5a);color:#fff;font-family:var(--fd);font-size:13px;letter-spacing:2px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.copa-group-hdr-sub{font-family:var(--fh);font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.55);font-weight:700;text-transform:uppercase}
+.copa-tbl{width:100%;border-collapse:collapse}
+.copa-tbl thead tr{background:#f0f7f4}
+.copa-tbl th{padding:6px 7px;font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#1a6b5a;text-align:center;border-bottom:1.5px solid rgba(26,107,90,.15)}
+.copa-tbl th:first-child{text-align:left;padding-left:12px;min-width:130px}
+.copa-tbl td{padding:9px 7px;font-size:12px;color:var(--ink);text-align:center;border-bottom:1px solid rgba(0,0,0,.05);vertical-align:middle}
+.copa-tbl td:first-child{text-align:left;padding-left:12px;font-weight:700;font-size:13px}
+.copa-tbl tr:last-child td{border-bottom:none}
+.copa-tbl tr:hover td{background:rgba(26,107,90,.04)}
+.copa-tbl .copa-pts{font-family:var(--fd);font-size:15px;color:#0d4a3a;font-weight:700}
+.copa-tbl .copa-pos{font-family:var(--fh);font-size:10px;font-weight:700;color:var(--muted);width:14px;display:inline-block;text-align:center}
+.copa-leader{background:rgba(26,107,90,.07)!important}
+.copa-leader td{border-bottom:2px solid rgba(26,107,90,.2)!important}
+.copa-team-cell{display:flex;align-items:center;gap:7px}
+.copa-logo{width:22px;height:22px;border-radius:50%;object-fit:contain;background:#f5f5f7;padding:2px;flex-shrink:0}
+
+/* ═══ COPA FIXTURE ENHANCEMENTS ═══ */
+.rg-copa .rg-h{background:linear-gradient(135deg,#0d4a3a,#1a6b5a)!important}
+.rg-copa .r-row:hover{background:rgba(26,107,90,.05)!important}
+.copa-date-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(26,107,90,.1);color:#0d4a3a;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 10px;border-radius:20px;margin-bottom:10px;text-transform:uppercase}
+
+/* ═══ SECTION DIVIDER PILL ═══ */
+.sec-divider{display:flex;align-items:center;gap:12px;margin:22px 0 16px;color:var(--muted);font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--line)}
+
 </style>
 
 <script type="application/ld+json">
@@ -1947,28 +1997,131 @@ img { background-color:#f0f0f2; }
     </div>
   </div>
 
-  <!-- GRUPOS -->
-  <div style="margin-bottom:24px">
-    <div style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Grupos &mdash; Fase de grupos 2026</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
-      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO A</div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">Colo Colo<br/>U. Cat&oacute;lica<br/>D. La Serena<br/>U. de Concepci&oacute;n</div>
-      </div>
-      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO B</div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">Universidad de Chile<br/>O&apos;Higgins<br/>Audax Italiano<br/>D. Limache</div>
-      </div>
-      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO C</div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">&Ntilde;ublense<br/>Cobresal<br/>Uni&oacute;n La Calera<br/>Everton</div>
-      </div>
-      <div style="background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid #1a6b5a">
-        <div style="font-family:var(--fd);font-size:14px;letter-spacing:1px;color:#1a6b5a;margin-bottom:10px">GRUPO D</div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:2.2">Huachipato<br/>Palestino<br/>D. Concepci&oacute;n<br/>Coquimbo Unido</div>
-      </div>
+  <!-- GRUPOS — STANDINGS TABLES -->
+  <div class="sec-divider">Fase de Grupos 2026 &mdash; Posiciones</div>
+  <div class="copa-groups-grid" id="copaGroupsGrid">
+
+    <!-- GRUPO A -->
+    <div class="copa-group-card">
+      <div class="copa-group-hdr">GRUPO A <span class="copa-group-hdr-sub">1&deg; avanza</span></div>
+      <table class="copa-tbl">
+        <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="copa-leader">
+            <td><span class="copa-pos p1">1</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-ucatolica" onerror="this.style.display='none'"/>U. Cat&oacute;lica</div></td>
+            <td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td class="copa-pts">3</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">2</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-colo" onerror="this.style.display='none'"/>Colo Colo</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">3</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-laserena" onerror="this.style.display='none'"/>D. La Serena</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">4</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-uconce" onerror="this.style.display='none'"/>U. de Concepci&oacute;n</div></td>
+            <td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td class="copa-pts">0</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
+
+    <!-- GRUPO B -->
+    <div class="copa-group-card">
+      <div class="copa-group-hdr">GRUPO B <span class="copa-group-hdr-sub">1&deg; avanza</span></div>
+      <table class="copa-tbl">
+        <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="copa-leader">
+            <td><span class="copa-pos p1">1</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-ohiggins" onerror="this.style.display='none'"/>O&apos;Higgins</div></td>
+            <td>1</td><td>1</td><td>0</td><td>0</td><td>2</td><td>1</td><td class="copa-pts">3</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">2</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-udechile" onerror="this.style.display='none'"/>U. de Chile</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">3</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-audax" onerror="this.style.display='none'"/>Audax Italiano</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">4</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-limache" onerror="this.style.display='none'"/>D. Limache</div></td>
+            <td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>2</td><td class="copa-pts">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- GRUPO C -->
+    <div class="copa-group-card">
+      <div class="copa-group-hdr">GRUPO C <span class="copa-group-hdr-sub">1&deg; avanza</span></div>
+      <table class="copa-tbl">
+        <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="copa-leader">
+            <td><span class="copa-pos p1">1</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-nublense" onerror="this.style.display='none'"/>&Ntilde;ublense</div></td>
+            <td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td class="copa-pts">3</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">2</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-lacalera" onerror="this.style.display='none'"/>U. La Calera</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">3</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-everton" onerror="this.style.display='none'"/>Everton</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">4</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-cobresal" onerror="this.style.display='none'"/>Cobresal</div></td>
+            <td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td class="copa-pts">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- GRUPO D -->
+    <div class="copa-group-card">
+      <div class="copa-group-hdr">GRUPO D <span class="copa-group-hdr-sub">1&deg; avanza</span></div>
+      <table class="copa-tbl">
+        <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>Pts</th></tr></thead>
+        <tbody>
+          <tr class="copa-leader">
+            <td><span class="copa-pos p1">1</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-huachi" onerror="this.style.display='none'"/>Huachipato</div></td>
+            <td>1</td><td>0</td><td>1</td><td>0</td><td>2</td><td>2</td><td class="copa-pts">1</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">2</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-dconce" onerror="this.style.display='none'"/>D. Concepci&oacute;n</div></td>
+            <td>1</td><td>0</td><td>1</td><td>0</td><td>2</td><td>2</td><td class="copa-pts">1</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">3</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-palestino" onerror="this.style.display='none'"/>Palestino</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+          <tr>
+            <td><span class="copa-pos">4</span></td>
+            <td><div class="copa-team-cell"><img class="copa-logo" src="" alt="" id="clogo-coquimbo" onerror="this.style.display='none'"/>Coquimbo Unido</div></td>
+            <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="copa-pts">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /copa-groups-grid -->
 <div class="lit-tabs">
   <button class="lit-tab active" onclick="litTab('copa','partidos',this)">📋 Partidos</button>
   <button class="lit-tab" onclick="litTab('copa','info',this)">ℹ️ Grupos & Info</button>
@@ -1988,8 +2141,8 @@ img { background-color:#f0f0f2; }
   <div class="p2c">
     <div>
       <div class="sh"><div class="st" style="font-size:18px">Fixture</div></div>
-      <div class="rg" style="margin-bottom:14px">
-        <div class="rg-h"><div class="rg-h-inner">Fecha 1 &mdash; 20-23 Marzo 2026</div></div>
+      <div class="rg rg-copa" style="margin-bottom:14px">
+        <div class="rg-h"><div class="rg-h-inner">&#x2705; Fecha 1 &mdash; 20-23 Marzo 2026</div></div>
         <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">20 Mar &middot; 18:00</div></div><div class="r-hr">2 - 2</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
         <div class="r-row"><div class="r-hm"><div class="r-t">Uni&oacute;n La Calera</div><div class="r-m">20 Mar &middot; 20:30</div></div><div class="r-hr">0 - 1</div><div class="r-aw"><div class="r-t">Audax Italiano</div></div></div>
         <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">21 Mar &middot; 12:00</div></div><div class="r-hr">2 - 2</div><div class="r-aw"><div class="r-t">Deportes Concepci&oacute;n</div></div></div>
@@ -1999,8 +2152,8 @@ img { background-color:#f0f0f2; }
         <div class="r-row"><div class="r-hm"><div class="r-t">O&apos;Higgins</div><div class="r-m">22 Mar &middot; 20:30</div></div><div class="r-hr">2 - 1</div><div class="r-aw"><div class="r-t">Deportes Limache</div></div></div>
         <div class="r-row"><div class="r-hm"><div class="r-t">Palestino</div><div class="r-m">23 Mar &middot; 20:30</div></div><div class="r-hr">1 - 1</div><div class="r-aw"><div class="r-t">Everton</div></div></div>
       </div>
-      <div class="rg">
-        <div class="rg-h"><div class="rg-h-inner">Fecha 2 &mdash; 24-26 Marzo 2026</div></div>
+      <div class="rg rg-copa">
+        <div class="rg-h"><div class="rg-h-inner">&#x1F4C5; Fecha 2 &mdash; 24-26 Marzo 2026</div></div>
         <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">24 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Uni&oacute;n La Calera</div></div></div>
         <div class="r-row"><div class="r-hm"><div class="r-t">Deportes Concepci&oacute;n</div><div class="r-m">24 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Colo Colo</div></div></div>
         <div class="r-row"><div class="r-hm"><div class="r-t">&Ntilde;ublense</div><div class="r-m">25 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Universidad Cat&oacute;lica</div></div></div>
@@ -2030,8 +2183,8 @@ img { background-color:#f0f0f2; }
       </div>
     </div>
   </div>
-  <div class="rg" style="margin-bottom:14px">
-    <div class="rg-h"><div class="rg-h-inner">Fecha 3 &mdash; Abril 2026</div></div>
+  <div class="rg rg-copa" style="margin-bottom:14px">
+    <div class="rg-h"><div class="rg-h-inner">&#x1F4C5; Fecha 3 &mdash; Abril 2026</div></div>
     <div class="r-row"><div class="r-hm"><div class="r-t">Colo Coco</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">U. de Concepci&oacute;n</div></div></div>
     <div class="r-row"><div class="r-hm"><div class="r-t">Universidad Cat&oacute;lica</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
     <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes Limache</div></div></div>
@@ -2044,6 +2197,30 @@ img { background-color:#f0f0f2; }
   <div id="fxP-copa"></div>
 </div>
 <div class="lit-panel" id="litp-copa-info">
+  <div style="padding:16px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+      <div class="card">
+        <div class="card-head"><div class="card-title" style="color:#0d4a3a">&#127942; Premio</div></div>
+        <div style="padding:16px;font-size:13px;color:var(--ink3);line-height:1.8">
+          El campe&oacute;n clasifica al <b>Chile 3 Copa Libertadores 2027</b> y a la <b>Supercopa 2027</b>.<br/><br/>
+          Logo inspirado en la <b>Cordillera de los Andes</b>.<br/><br/>
+          Torneo creado para agregar partidos al calendario y cumplir contrato con <b>TNT Sports</b>.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-title" style="color:#0d4a3a">&#128337; Formato</div></div>
+        <div style="padding:16px;font-size:13px;color:var(--ink3);line-height:1.8">
+          <b>Fase de grupos:</b> 4 grupos de 4, todos contra todos (ida y vuelta).<br/>
+          <b>Semifinales:</b> 1&deg; de cada grupo, ida y vuelta.<br/>
+          <b>Final:</b> Partido &uacute;nico (sede por confirmar).
+        </div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,#0d4a3a,#1a6b5a);border-radius:12px;padding:16px 20px;color:rgba(255,255,255,.85);font-size:13px;line-height:1.75">
+      <div style="font-family:var(--fd);font-size:16px;letter-spacing:1px;color:#fff;margin-bottom:8px">&#9917; Sobre la Copa de la Liga 2026</div>
+      La <b style="color:#fff">Copa de la Liga Constructora Independencia</b> es la primera edici&oacute;n del nuevo torneo oficial del f&uacute;tbol chileno, disputado entre marzo y julio de 2026. Los 16 equipos de la Liga de Primera se dividen en 4 grupos de 4. El ganador de cada grupo avanza a semifinales. El campe&oacute;n obtiene el tercer cupo chileno a la Copa Libertadores 2027.
+    </div>
+  </div>
 </div>
 </div></div>
 
@@ -5761,6 +5938,25 @@ function refreshReveal(){
   },100);
 }
 
+function injectCopaGroupLogos(){
+  // Inject logos into copa-team-cell elements in group standings
+  document.querySelectorAll(".copa-team-cell").forEach(function(cell){
+    var img = cell.querySelector(".copa-logo");
+    if(!img) return;
+    // Team name is text of cell (excluding img)
+    var name = cell.textContent.trim();
+    var url = getLogo(name);
+    if(url){
+      img.src = url;
+      img.referrerPolicy = "no-referrer";
+      img.style.display = "";
+      img.onerror = function(){ this.style.display="none"; };
+    } else {
+      img.style.display = "none";
+    }
+  });
+}
+
 function injectFixtureLogos(){
   // Inject team logos into static HTML .r-row fixture rows
   document.querySelectorAll(".r-row").forEach(function(row){
@@ -5812,6 +6008,7 @@ function init(){
   // Render IMMEDIATELY — no waiting for loader
   renderAll();
   injectFixtureLogos();
+  injectCopaGroupLogos();
   fetchRemoteLogos(); // Load shared logos from JSONBin for all visitors
   setLeagueTheme("inicio");
   // Start API after render
