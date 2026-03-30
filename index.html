@@ -1731,6 +1731,138 @@ nav::before{background:linear-gradient(90deg,#0055a4 33%,rgba(255,255,255,.5) 33
 .sec-divider{display:flex;align-items:center;gap:12px;margin:22px 0 16px;color:var(--muted);font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
 .sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--line)}
 
+/* ═══════════════════════════════════════════
+   CORRECCIONES VISUALES COMPLETAS v2.0
+   Fixes: tables mobile, cards, overflow, menu
+   ═══════════════════════════════════════════ */
+
+/* 1. FIX TABLE OVERFLOW ON MOBILE
+   .ftw tenía overflow:hidden que bloqueaba el scroll horizontal */
+.ftw{overflow-x:auto!important;overflow-y:visible!important;-webkit-overflow-scrolling:touch}
+/* El ::before (barra de color) sigue clipeada por border-radius del padre */
+.ftw table{min-width:480px}
+
+/* 2. FIX NEWS CARD IMAGE DISTORTION
+   El pseudo-elemento ::before duplicaba el background y causaba distorsión */
+.nc-img-main::before,.nc-img-sm::before,.nc-img-full::before,.nc-img::before{
+  content:none!important;display:none!important
+}
+/* Zoom suave en hover directo sobre el elemento (no pseudo-element) */
+.nc-img{transition:transform .45s ease;transform-origin:center}
+.nc:hover .nc-img{transform:scale(1.05)}
+
+/* 3. FIX TEAM NAME TRUNCATION IN LIVE STRIP
+   max-width:70px causaba corte del nombre del equipo */
+.mc-tname{max-width:none!important;width:100%;white-space:normal;line-height:1.2;min-width:0}
+
+/* 4. FIX TEXT OVERFLOW IN ALL CONTAINERS */
+.nc-title,.hcard-title,.nc-exc,.opin-title,.opin-exc{overflow:hidden;word-break:break-word;overflow-wrap:break-word}
+.nc-body,.hcard-body,.opin-body{min-width:0;overflow:hidden}
+/* Prevent any element from breaking out of its card */
+.nc,.hcard,.card,.opin-card{contain:layout}
+
+/* 5. FIX HERO IMAGE CROPPING
+   Ensure background images are properly sized and positioned */
+.hmain,.nc-img,.hcard-img{
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important
+}
+/* Fix .hcard-img min-height for empty state */
+.hcard-img{min-height:85px;background-color:#e8e8ec}
+
+/* 6. FIX MOBILE MENU — smooth open animation + better tap targets */
+/* Use keyframe on open (display:none→flex doesn't transition, so we animate on .open) */
+.mmenu{overflow-y:auto!important;overflow-x:hidden}
+.mmenu.open{animation:menuIn .22s cubic-bezier(.25,.46,.45,.94) both}
+@keyframes menuIn{from{opacity:0;transform:translateX(8%)}to{opacity:1;transform:none}}
+.mm-link{
+  padding:13px 8px;
+  transition:color .12s ease,background .12s ease,padding-left .12s ease;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  min-height:48px;
+  display:flex;align-items:center
+}
+.mm-link:active{background:rgba(255,255,255,.12)!important}
+
+/* 7. FIX BUTTON SIZE CONSISTENCY */
+.tab,.lb-btn{
+  min-height:36px;
+  box-sizing:border-box;
+  display:inline-flex;align-items:center;justify-content:center
+}
+button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+/* Normalize slink/pill buttons */
+.slink{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:30px;padding:5px 14px;font-size:11.5px;box-sizing:border-box
+}
+
+/* 8. FIX SECTIONS WITH TOO MUCH WHITESPACE */
+.home-main{padding:18px 0}
+.hbody{padding:18px 0}
+.home-hero{padding:14px 0 0}
+/* Tighten vertical section gaps on mobile */
+@media(max-width:860px){
+  .home-main{padding:12px 0;gap:12px}
+  .hbody{padding:12px 0;gap:12px}
+  .scol{gap:12px}
+  .sh{margin-bottom:10px}
+  .p2c{gap:14px}
+}
+@media(max-width:580px){
+  .home-main{padding:10px 0;gap:10px}
+  .hbody{padding:10px 0;gap:10px}
+  .scol{gap:10px}
+}
+
+/* 9. FIX LIVE RESULTS ON MOBILE — show 2 cards minimum */
+@media(max-width:580px){
+  .match-cards{grid-template-columns:1fr 1fr!important}
+  .mc:nth-child(n+3){display:none}
+  .mc:nth-child(1),.mc:nth-child(2){display:block!important}
+  .mc-score{font-size:24px}
+  .mc-tname{font-size:10px}
+}
+@media(max-width:360px){
+  .match-cards{grid-template-columns:1fr!important}
+  .mc:nth-child(n+2){display:none}
+  .mc:nth-child(1){display:block!important}
+}
+
+/* 10. FIX PROFESSIONAL VISUAL STRUCTURE */
+/* Remove section-level overflow that clips content */
+.sec.active{overflow:visible}
+/* Consistent card hover states */
+.nc,.hcard,.opin-card,.card{will-change:transform}
+/* Fix news-grid-3 on tablet */
+@media(max-width:860px){
+  .news-grid-3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:580px){
+  .news-grid-3{grid-template-columns:1fr}
+  .ng2{grid-template-columns:1fr}
+}
+/* Smooth section transitions */
+.sec.active{
+  animation:secIn .25s cubic-bezier(.25,.46,.45,.94) both
+}
+/* Copa groups mobile */
+@media(max-width:580px){
+  .copa-groups-grid{grid-template-columns:1fr!important;gap:10px}
+  .copa-tbl td,.copa-tbl th{padding:7px 5px;font-size:11px}
+  .copa-tbl td:first-child{padding-left:8px}
+}
+/* Prevent overflow in team cells */
+.tc{overflow:hidden;min-width:0}
+.tc img,.tc span{flex-shrink:0}
+/* Fix mc-card (fixture) team name alignment */
+.mc-home-name,.mc-away-name{
+  overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;max-width:90px
+}
+
 </style>
 
 <script type="application/ld+json">
