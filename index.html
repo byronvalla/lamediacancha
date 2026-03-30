@@ -422,41 +422,50 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .fx-body{display:none}
 .fx-body.active{display:block}
 .fx-empty{padding:20px;text-align:center;color:var(--muted);font-size:12px;font-family:var(--fh)}
-/* ═══ FECHA PICKER — campeonatochileno.cl style ═══ */
-.fecha-picker-wrap{display:flex;align-items:center;gap:4px;padding:10px 10px;background:#f7f8fa;border-bottom:1px solid var(--line)}
-.fecha-nav-arr{width:30px;height:30px;border:1.5px solid var(--line);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);flex-shrink:0;transition:.15s;line-height:1;padding:0}
-.fecha-nav-arr:hover{background:var(--lc);color:#fff;border-color:var(--lc)}
-.fecha-circles{display:flex;gap:5px;overflow-x:auto;padding:2px 4px;-webkit-overflow-scrolling:touch;flex:1}
+/* ═══ FECHA PICKER — estilo profesional ═══ */
+.fx-panel{border-radius:0 0 12px 12px;overflow:hidden;border:1px solid var(--line);border-top:none}
+.fecha-picker-wrap{display:flex;align-items:center;gap:6px;padding:10px 12px;background:linear-gradient(180deg,#f8f9fb,#f2f3f6);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}
+.fecha-nav-arr{width:32px;height:32px;border:1.5px solid var(--line);border-radius:50%;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--muted);flex-shrink:0;transition:.15s;line-height:1;padding:0;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.fecha-nav-arr:hover{background:var(--lc);color:#fff;border-color:var(--lc);box-shadow:0 2px 8px rgba(212,0,32,.25)}
+.fecha-circles{display:flex;gap:6px;overflow-x:auto;padding:3px 4px;-webkit-overflow-scrolling:touch;flex:1;scrollbar-width:none}
 .fecha-circles::-webkit-scrollbar{display:none}
-.fecha-circle{min-width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:12px;font-weight:700;color:var(--muted);transition:.15s;flex-shrink:0;padding:0 6px}
-.fecha-circle:hover{border-color:var(--lc);color:var(--lc)}
-.fecha-circle.active{background:var(--lc);border-color:var(--lc);color:#fff}
+.fecha-circle{min-width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--muted);transition:.15s;flex-shrink:0;padding:0 8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.fecha-circle:hover{border-color:var(--lc);color:var(--lc);transform:scale(1.08)}
+.fecha-circle.active{background:var(--lc);border-color:var(--lc);color:#fff;box-shadow:0 2px 10px rgba(212,0,32,.3)}
 .fecha-circle.has-live{border-color:var(--r);color:var(--r)}
 .fecha-circle.active.has-live{background:var(--r);border-color:var(--r)}
-/* ═══ MATCH CARDS ═══ */
+/* ═══ MATCH CARDS — diseño premium ═══ */
 .mc-wrap{padding:0}
-.mc-fecha-title{padding:8px 14px 4px;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
-.mc-card{display:grid;grid-template-columns:66px 1fr auto 1fr;align-items:center;padding:11px 14px 7px;border-bottom:1px solid var(--line)}
+.fx-body{display:none}.fx-body.active{display:block}
+.mc-fecha-title{padding:8px 16px 6px;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:linear-gradient(90deg,rgba(212,0,32,.04),transparent);border-bottom:1px solid var(--line)}
+.mc-card{display:grid;grid-template-columns:62px 1fr auto 1fr;align-items:center;padding:10px 14px 8px;border-bottom:1px solid #f0f0f2;transition:background .15s;cursor:default;position:relative}
 .mc-card:last-child{border-bottom:none}
-.mc-date{text-align:center;padding-right:12px;border-right:1.5px solid var(--line);margin-right:4px}
-.mc-date-d{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--ink);line-height:1}
-.mc-date-m{font-size:9px;color:var(--muted);font-family:var(--fh);text-transform:uppercase;margin-top:1px}
-.mc-date-h{font-family:var(--fd);font-size:11px;color:var(--lc);margin-top:4px;font-weight:700}
-.mc-home{display:flex;align-items:center;justify-content:flex-end;gap:7px;padding:0 8px;min-width:0}
-.mc-away{display:flex;align-items:center;justify-content:flex-start;gap:7px;padding:0 8px;min-width:0}
-.mc-tname{font-size:12px;font-weight:700;color:var(--ink);font-family:var(--fh);letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mc-tlogo{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.mc-scores{display:flex;gap:4px;align-items:center;justify-content:center;flex-shrink:0}
-.mc-sbox{width:32px;height:32px;border-radius:7px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:17px;font-weight:900;color:var(--ink);background:#fff}
-.mc-sbox.live{border-color:var(--r);color:var(--r)}
-.mc-sbox.prog{color:var(--muted);font-size:14px;letter-spacing:0}
-.mc-info{grid-column:1/-1;padding:2px 14px 5px;font-size:10px;color:var(--muted);font-family:var(--fh)}
+.mc-card:hover{background:rgba(212,0,32,.025)}
+.mc-date{text-align:center;padding-right:12px;border-right:2px solid #eee;margin-right:4px;min-width:50px}
+.mc-date-d{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--ink);line-height:1}
+.mc-date-m{font-size:9px;color:var(--muted);font-family:var(--fh);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+.mc-date-h{font-family:var(--fh);font-size:10px;color:var(--lc);margin-top:4px;font-weight:700;letter-spacing:.3px}
+.mc-home{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:0 8px;min-width:0}
+.mc-away{display:flex;align-items:center;justify-content:flex-start;gap:8px;padding:0 8px;min-width:0}
+.mc-tname{font-size:12px;font-weight:700;color:var(--ink);font-family:var(--fh);letter-spacing:.1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
+.mc-tlogo{width:30px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#f5f5f7;overflow:hidden}
+.mc-tlogo .tlog{width:30px!important;height:30px!important;border-radius:50%!important}
+.mc-scores{display:flex;gap:3px;align-items:center;justify-content:center;flex-shrink:0}
+.mc-sbox{width:34px;height:34px;border-radius:8px;border:1.5px solid #e8e8ec;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:18px;font-weight:900;color:var(--ink);background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.mc-sbox.live{border-color:var(--r);color:var(--r);background:rgba(212,0,32,.04);animation:livePulseBox .9s infinite alternate}
+@keyframes livePulseBox{from{box-shadow:0 0 0 rgba(212,0,32,0)}to{box-shadow:0 0 8px rgba(212,0,32,.35)}}
+.mc-sbox.prog{color:var(--muted2);font-size:18px;letter-spacing:0;background:#fafafa}
+.mc-sbox.fin{color:var(--ink);background:#fafafa}
+.mc-sbox-sep{font-family:var(--fd);font-size:14px;color:var(--muted2);margin:0 1px}
+.mc-info{grid-column:1/-1;padding:2px 16px 6px;font-size:10px;color:var(--muted);font-family:var(--fh);letter-spacing:.2px}
 @media(max-width:640px){
-  .mc-card{grid-template-columns:54px 1fr auto 1fr;padding:9px 10px 6px}
-  .mc-tname{font-size:10px}
-  .mc-sbox{width:27px;height:27px;font-size:14px}
-  .mc-tlogo{width:22px;height:22px}
-  .mc-date-d{font-size:17px}
+  .mc-card{grid-template-columns:52px 1fr auto 1fr;padding:8px 10px 6px}
+  .mc-tname{font-size:10.5px}
+  .mc-sbox{width:29px;height:29px;font-size:15px}
+  .mc-tlogo{width:24px;height:24px}
+  .mc-tlogo .tlog{width:24px!important;height:24px!important}
+  .mc-date-d{font-size:18px}
+  .mc-date{padding-right:8px;min-width:42px}
 }
 .prox-vs{font-family:var(--fh);font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prox-liga{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
@@ -1309,8 +1318,43 @@ html{scroll-behavior:smooth}
   .logo-grid{grid-template-columns:repeat(2,1fr)}
 }.match-cards{grid-template-columns:1fr 1fr}.tg{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr}.tab{padding:7px 10px;font-size:11px}.news-grid-3{grid-template-columns:1fr 1fr}.art-related-grid{grid-template-columns:1fr}.af-2col,.af-3col{grid-template-columns:1fr}.logo-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}}
 /* ═══════════════════════════════════════
-   PROFESSIONAL DESIGN ENHANCEMENTS
+   MEJORAS DE DISEÑO PROFESIONAL — PREMIUM
    ═══════════════════════════════════════ */
+
+/* Copa group tables - better spacing */
+.copa-tbl{width:100%;border-collapse:collapse}
+.copa-tbl th{font-family:var(--fh);font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.8);padding:8px 10px;text-align:center}
+.copa-tbl th:nth-child(2){text-align:left}
+.copa-tbl td{font-family:var(--fh);font-size:12px;padding:9px 10px;text-align:center;border-bottom:1px solid #f0f0f2;color:var(--ink3)}
+.copa-tbl td:nth-child(2){text-align:left;font-weight:700;color:var(--ink)}
+.copa-tbl tbody tr:last-child td{border-bottom:none}
+.copa-tbl tbody tr:hover td{background:rgba(26,107,90,.04)}
+.copa-tbl .copa-pts{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--lc)}
+.copa-team-cell{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.copa-logo{width:22px;height:22px;border-radius:50%;object-fit:contain;flex-shrink:0}
+.copa-pos{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-family:var(--fd);font-size:13px;font-weight:700;background:#f0f0f2;color:var(--muted)}
+.copa-pos.p1{background:linear-gradient(135deg,#1a6b5a,#22896f);color:#fff}
+.copa-group-card{background:#fff;border:1px solid #e8e8ec;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.copa-group-hdr{background:linear-gradient(135deg,#1a6b5a,#0d4a3a);color:#fff;font-family:var(--fd);font-size:15px;letter-spacing:2px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.copa-group-hdr-sub{font-family:var(--fh);font-size:10px;letter-spacing:.5px;opacity:.75;font-weight:700}
+.copa-groups-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:640px){.copa-groups-grid{grid-template-columns:1fr}}
+.copa-leader td{background:rgba(26,107,90,.04)}
+
+/* Fixture panel container styling */
+.fx-panel-wrap{border:1px solid #e8e8ec;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.fx-panel{border:none!important;border-radius:0!important}
+
+/* Section header with bold left accent */
+.sh{border-bottom:none;padding-bottom:0;margin-bottom:14px}
+.st{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-size:clamp(17px,2.5vw,24px);letter-spacing:2px;color:var(--ink)}
+.st::before{content:'';display:inline-block;width:4px;height:20px;border-radius:2px;flex-shrink:0;background:var(--lc)}
+.st img{width:26px;height:26px;object-fit:contain;flex-shrink:0;border-radius:4px}
+.sbadge{display:inline-flex;align-items:center;font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:rgba(212,0,32,.08);color:var(--lc);padding:4px 10px;border-radius:20px;border:1px solid rgba(212,0,32,.15)}
+
+/* Live dot on match card */
+.mc-live-dot{width:6px;height:6px;border-radius:50%;background:var(--r);animation:livePulse .8s infinite alternate;display:inline-block;margin-right:3px;flex-shrink:0}
+@keyframes livePulse{from{opacity:1;transform:scale(1)}to{opacity:.4;transform:scale(.7)}}
 
 /* Variable overrides (cascade over initial :root) */
 :root {
@@ -2163,73 +2207,7 @@ nav::before{background:linear-gradient(90deg,#0055a4 33%,rgba(255,255,255,.5) 33
   <button class="lit-tab" onclick="litTab('copa','info',this)">ℹ️ Grupos & Info</button>
 </div>
 <div class="lit-panel active" id="litp-copa-partidos">
-
-  <!-- SECTION HEADER -->
-  <div class="sh">
-    <div class="st">
-      <img src="https://media.redgol.cl/wp-content/uploads/sites/8/2026/03/04165227/copa-de-la-liga-logo-1024x921.webp" alt="" loading="lazy" style="width:24px;height:24px;object-fit:contain;border-radius:4px" onerror="this.remove()"/>
-      Copa de la Liga 2026
-    </div>
-    <span class="sbadge">&#127942; Temporada 2026</span>
-  </div>
-
-  <!-- FIXTURE + INFO -->
-  <div class="p2c">
-    <div>
-      <div class="sh"><div class="st" style="font-size:18px">Fixture</div></div>
-      <div class="rg rg-copa" style="margin-bottom:14px">
-        <div class="rg-h"><div class="rg-h-inner">&#x2705; Fecha 1 &mdash; 20-23 Marzo 2026</div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">20 Mar &middot; 18:00</div></div><div class="r-hr">2 - 2</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Uni&oacute;n La Calera</div><div class="r-m">20 Mar &middot; 20:30</div></div><div class="r-hr">0 - 1</div><div class="r-aw"><div class="r-t">Audax Italiano</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">21 Mar &middot; 12:00</div></div><div class="r-hr">2 - 2</div><div class="r-aw"><div class="r-t">Deportes Concepci&oacute;n</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Colo Colo</div><div class="r-m">21 Mar &middot; 18:00</div></div><div class="r-hr">1 - 0</div><div class="r-aw"><div class="r-t">Coquimbo Unido</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Cobresal</div><div class="r-m">21 Mar &middot; 20:30</div></div><div class="r-hr">0 - 1</div><div class="r-aw"><div class="r-t">&Ntilde;ublense</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad Cat&oacute;lica</div><div class="r-m">22 Mar &middot; 18:00</div></div><div class="r-hr">1 - 0</div><div class="r-aw"><div class="r-t">U. de Concepci&oacute;n</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">O&apos;Higgins</div><div class="r-m">22 Mar &middot; 20:30</div></div><div class="r-hr">2 - 1</div><div class="r-aw"><div class="r-t">Deportes Limache</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Palestino</div><div class="r-m">23 Mar &middot; 20:30</div></div><div class="r-hr">1 - 1</div><div class="r-aw"><div class="r-t">Everton</div></div></div>
-      </div>
-      <div class="rg rg-copa">
-        <div class="rg-h"><div class="rg-h-inner">&#x1F4C5; Fecha 2 &mdash; 24-26 Marzo 2026</div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">24 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Uni&oacute;n La Calera</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Deportes Concepci&oacute;n</div><div class="r-m">24 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Colo Colo</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">&Ntilde;ublense</div><div class="r-m">25 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Universidad Cat&oacute;lica</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">25 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Coquimbo Unido</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Audax Italiano</div><div class="r-m">25 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Deportes Limache</div><div class="r-m">26 Mar &middot; 18:00</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Palestino</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">U. de Concepci&oacute;n</div><div class="r-m">26 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Cobresal</div></div></div>
-        <div class="r-row"><div class="r-hm"><div class="r-t">Everton</div><div class="r-m">26 Mar &middot; 20:30</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">O&apos;Higgins</div></div></div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:16px">
-      <div class="card">
-        <div class="card-head"><div class="card-title">&#127942; Premio</div></div>
-        <div style="padding:16px;font-size:13px;color:var(--ink3);line-height:1.8">
-          El campe&oacute;n clasifica al <b>Chile 3 Copa Libertadores 2027</b> y a la <b>Supercopa 2027</b>.<br/><br/>
-          Logo dise&ntilde;ado con inspiraci&oacute;n en la <b>Cordillera de los Andes</b>.<br/><br/>
-          Torneo creado para agregar partidos al calendario y cumplir contrato con <b>TNT Sports</b>.
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-head"><div class="card-title">&#128337; Formato</div></div>
-        <div style="padding:16px;font-size:13px;color:var(--ink3);line-height:1.8">
-          <b>Fase de grupos:</b> 4 grupos de 4, todos contra todos, ida y vuelta.<br/>
-          <b>Semifinales:</b> 1&deg; vs 4&deg; y 2&deg; vs 3&deg; del ranking 2025, ida y vuelta.<br/>
-          <b>Final:</b> Partido &uacute;nico o ida y vuelta (por confirmar).
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="rg rg-copa" style="margin-bottom:14px">
-    <div class="rg-h"><div class="rg-h-inner">&#x1F4C5; Fecha 3 &mdash; Abril 2026</div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">Colo Colo</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">U. de Concepci&oacute;n</div></div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">Universidad Cat&oacute;lica</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes La Serena</div></div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">Universidad de Chile</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes Limache</div></div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">O&apos;Higgins</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Audax Italiano</div></div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">&Ntilde;ublense</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Everton</div></div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">Cobresal</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Uni&oacute;n La Calera</div></div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">Huachipato</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Coquimbo Unido</div></div></div>
-    <div class="r-row"><div class="r-hm"><div class="r-t">Palestino</div><div class="r-m">Abr &middot; Por confirmar</div></div><div class="r-hr">vs</div><div class="r-aw"><div class="r-t">Deportes Concepci&oacute;n</div></div></div>
-  </div>
+  <!-- Copa fixture renderizada dinámicamente por renderFxPanel — sin filas estáticas -->
   <div id="fxP-copa"></div>
 </div>
 <div class="lit-panel" id="litp-copa-info">
@@ -4280,21 +4258,24 @@ function renderFxPanel(panelId, ligas, label, accent){
     bodiesHtml += '<div class="mc-fecha-title">'+escH(g.label)+'</div>';
     g.matches.forEach(function(m){
       var isL=m.status==="live", isF=m.status==="fin";
-      var sboxCls = isL ? " live" : (isF ? "" : " prog");
+      var sboxCls = isL ? " live" : (isF ? " fin" : " prog");
       var sc1, sc2;
       if(isF||isL){ sc1=escH(m.hs||"0"); sc2=escH(m.as_||"0"); }
-      else { sc1="&#x2022;"; sc2="&#x2022;"; }
+      else { sc1="-"; sc2="-"; }
       // Parse date parts
       var dParts=(m.fecha||"").split(/\s+/);
       var dd=dParts[0]||"", dm=dParts[1]||"";
-      var timeDisp=isL?'<span style="color:var(--r)">&#9679;</span> '+(m.hora||""):escH(m.hora||"--:--");
-      var stadiumHtml=m.estadio?'<div class="mc-info">&#128205; '+escH(m.estadio)+(m.arbitro?' &middot; '+escH(m.arbitro):'')+'</div>':'';
+      var liveHtml=isL?'<span class="mc-live-dot"></span>':'';
+      var timeDisp=isL?(liveHtml+(m.hora||"EN VIVO")):escH(m.hora||"--:--");
+      var statusBadge=isF?'<span style="font-family:var(--fh);font-size:9px;color:var(--green);font-weight:700;letter-spacing:.5px;display:block;margin-top:2px">FIN</span>':'';
+      var stadiumHtml=m.estadio?'<div class="mc-info">📍 '+escH(m.estadio)+(m.arbitro?' · '+escH(m.arbitro):'')+'</div>':'';
       bodiesHtml +=
         '<div class="mc-card">' +
           '<div class="mc-date">' +
             '<div class="mc-date-d">'+escH(dd)+'</div>' +
             '<div class="mc-date-m">'+escH(dm)+'</div>' +
             '<div class="mc-date-h">'+timeDisp+'</div>' +
+            statusBadge +
           '</div>' +
           '<div class="mc-home">' +
             '<span class="mc-tname">'+escH(m.home)+'</span>' +
@@ -4315,13 +4296,15 @@ function renderFxPanel(panelId, ligas, label, accent){
   });
 
   c.innerHTML =
+    '<div class="fx-panel-wrap">' +
     '<div class="fx-panel">' +
       '<div class="fecha-picker-wrap">' +
-        '<button class="fecha-nav-arr" onclick="fxNavFecha(\''+pid+'\',-1)">&#8249;</button>' +
+        '<button class="fecha-nav-arr" onclick="fxNavFecha(\''+pid+'\',-1)" title="Fecha anterior">&#8249;</button>' +
         '<div class="fecha-circles" id="'+pid+'circles">'+circlesHtml+'</div>' +
-        '<button class="fecha-nav-arr" onclick="fxNavFecha(\''+pid+'\',1)">&#8250;</button>' +
+        '<button class="fecha-nav-arr" onclick="fxNavFecha(\''+pid+'\',1)" title="Fecha siguiente">&#8250;</button>' +
       '</div>' +
       bodiesHtml +
+    '</div>' +
     '</div>';
 
   var activeCircle=c.querySelector(".fecha-circle.active");
@@ -4354,7 +4337,8 @@ function injectFxCardLogos(container){
     el.setAttribute("data-logo-done","1");
     var team = el.getAttribute("data-team");
     var logo = mkLogo(team, true);
-    logo.style.cssText = "width:28px;height:28px;border-radius:50%;object-fit:contain;background:#f5f5f7;padding:2px;flex-shrink:0";
+    // Override tlog size to match mc-tlogo container
+    logo.style.cssText = "width:30px!important;height:30px!important;border-radius:50%!important;flex-shrink:0;overflow:hidden";
     el.appendChild(logo);
   });
 }
@@ -4450,7 +4434,7 @@ function renderAll(){
   renderFxPanel("fxP-copa",      ["Copa de la Liga","Copa Chile"],               "Fixture — Copa de la Liga",  "#1a6b5a");
   renderFxPanel("fxP-seleccion", ["Selección Chilena","Chile"],                  "Fixture — La Roja",          "var(--r)");
   setTimeout(injectFixtureLogos, 80);
-  setTimeout(function(){ injectFxCardLogos(document); }, 100);
+  setTimeout(injectCopaGroupLogos, 120);
   var t=new Date(); var h=t.getHours().toString().padStart(2,"0");
   var m=t.getMinutes().toString().padStart(2,"0");
   var upd=gel("apiLastUpdate"); if(upd) upd.textContent="Act. "+h+":"+m;
@@ -6078,19 +6062,37 @@ function refreshReveal(){
 }
 
 function injectCopaGroupLogos(){
-  // Inject logos into copa-team-cell elements in group standings
+  // Map of short/display names used in static HTML → full names in LOGOS map
+  var nameMap = {
+    "D. Concepci\u00F3n": "Deportes Concepci\u00F3n",
+    "D. La Serena":       "Deportes La Serena",
+    "D. Limache":         "Deportes Limache",
+    "D. Iquique":         "Deportes Iquique",
+    "U. de Chile":        "Universidad de Chile",
+    "U. Cat\u00F3lica":   "Universidad Cat\u00F3lica",
+    "U. de Concepci\u00F3n": "Universidad de Concepci\u00F3n",
+    "Uni\u00F3n Calera":  "Uni\u00F3n La Calera"
+  };
   document.querySelectorAll(".copa-team-cell").forEach(function(cell){
+    if(cell.getAttribute("data-clogo-done")) return;
+    cell.setAttribute("data-clogo-done","1");
     var img = cell.querySelector(".copa-logo");
-    if(!img) return;
-    // Team name is text of cell (excluding img)
-    var name = cell.textContent.trim();
+    // Get team name text (textContent ignores img elements)
+    var rawName = cell.textContent.trim();
+    var name = nameMap[rawName] || rawName;
     var url = getLogo(name);
-    if(url){
+    if(url && img){
       img.src = url;
       img.referrerPolicy = "no-referrer";
+      img.style.cssText = "width:22px;height:22px;border-radius:50%;object-fit:contain;margin-right:6px;flex-shrink:0";
       img.style.display = "";
-      img.onerror = function(){ this.style.display="none"; };
-    } else {
+      img.onerror = function(){
+        // Try local SVG fallback
+        var local = "logos/"+name.toLowerCase().replace(/[\s''\u2019\u2018]+/g,"-").replace(/[^a-z0-9\-]/g,"").replace(/-+/g,"-").replace(/^-|-$/g,"")+".svg";
+        this.onerror = function(){ this.style.display="none"; };
+        this.src = local;
+      };
+    } else if(img){
       img.style.display = "none";
     }
   });
