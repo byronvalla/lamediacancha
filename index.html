@@ -556,62 +556,132 @@ nav::before{content:'';position:absolute;top:-4px;left:0;right:0;height:4px;back
 .art-related-title::before{content:'';width:5px;height:22px;background:var(--r);border-radius:3px;flex-shrink:0}
 .art-related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 
-/* ═══ ADMIN PANEL ═══ */
-.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;backdrop-filter:blur(4px)}
-.admin-overlay.open{display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
-.admin-panel{background:#fff;border-radius:16px;width:100%;max-width:960px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3);margin:auto}
-.admin-header{background:linear-gradient(135deg,#0a0a0a,#1a2a1a);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--r)}
-.admin-title{font-family:var(--fd);font-size:24px;letter-spacing:2px;color:#fff;display:flex;align-items:center;gap:10px}
-.admin-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:36px;height:36px;border-radius:8px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s}
-.admin-close:hover{background:rgba(255,255,255,.2)}
-.admin-tabs{display:flex;border-bottom:2px solid var(--line);background:var(--w2)}
-.admin-tab{padding:12px 16px;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.12s;flex-shrink:0;white-space:nowrap}
-.admin-tab.active{color:var(--r);border-bottom-color:var(--r)}
-.admin-body{padding:24px;max-height:75vh;overflow-y:auto}
-.admin-section{display:none}.admin-section.active{display:block}
-.admin-list{list-style:none;margin-bottom:20px}
-.admin-item{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:8px}
-.admin-item-img{width:70px;height:48px;border-radius:6px;background-size:cover;background-position:center;flex-shrink:0;background-color:var(--w3);border:1px solid var(--line)}
-.admin-item-logo{width:48px;height:48px;border-radius:50%;background-size:contain;background-position:center;background-repeat:no-repeat;flex-shrink:0;background-color:var(--w3);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px}
+/* ═══ ADMIN PANEL v2.0 — PROFESSIONAL SIDEBAR DESIGN ═══ */
+/* LOGIN SCREEN */
+#adminScreen{display:none;position:fixed;inset:0;z-index:500;background:linear-gradient(135deg,#060810 0%,#0d1117 55%,#0c1628 100%);align-items:center;justify-content:center;overflow:auto;padding:20px}
+#adminScreen.open{display:flex}
+.adm-login-card{background:#111827;border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:44px 40px;width:100%;max-width:400px;box-shadow:0 32px 80px rgba(0,0,0,.7);animation:admIn .3s cubic-bezier(.25,.46,.45,.94) both}
+@keyframes admIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.adm-login-logo{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+.adm-login-icon{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--r),#8c0014);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 4px 20px rgba(200,0,28,.45)}
+.adm-brand{font-family:var(--fd);font-size:20px;letter-spacing:2px;color:#fff;line-height:1.1}
+.adm-brand span{color:var(--r)}
+.adm-brand-tag{font-family:var(--fh);font-size:9px;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.adm-login-h{font-family:var(--fh);font-size:20px;font-weight:700;color:#fff;margin-bottom:3px}
+.adm-login-sub{font-size:12px;color:rgba(255,255,255,.35);margin-bottom:26px;font-family:var(--fh)}
+.adm-input-wrap{margin-bottom:14px}
+.adm-label{display:block;font-family:var(--fh);font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:7px}
+.adm-input{width:100%;padding:11px 14px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.1);border-radius:9px;font-family:var(--f);font-size:14px;color:#fff;outline:none;transition:border-color .15s,box-shadow .15s;box-sizing:border-box}
+.adm-input::placeholder{color:rgba(255,255,255,.2)}
+.adm-input:focus{border-color:var(--r);box-shadow:0 0 0 3px rgba(200,0,28,.15)}
+.adm-input-pw{position:relative}
+.adm-input-pw .adm-input{padding-right:44px}
+.adm-pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:15px;padding:4px;transition:color .12s}
+.adm-pw-toggle:hover{color:rgba(255,255,255,.7)}
+.adm-login-err{background:rgba(200,0,28,.15);border:1px solid rgba(200,0,28,.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-family:var(--fh);font-size:12px;color:#ff8080;display:none;animation:admShake .4s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes admShake{0%,100%{transform:none}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.adm-btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,#c8001c,#9a0016);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:var(--fh);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;box-shadow:0 4px 20px rgba(200,0,28,.4);transition:all .2s;margin-top:6px}
+.adm-btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(200,0,28,.55)}
+.adm-btn-primary:active{transform:none;box-shadow:0 2px 10px rgba(200,0,28,.3)}
+.adm-login-footer{margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);text-align:center}
+/* DASHBOARD */
+#adminDashboard{display:none;position:fixed;inset:0;z-index:500;flex-direction:row;background:#f0f1f4;overflow:hidden}
+#adminDashboard.open{display:flex}
+/* Sidebar */
+.adm-sidebar{width:230px;flex-shrink:0;background:#0d1117;display:flex;flex-direction:column;height:100%;overflow:hidden;border-right:1px solid rgba(255,255,255,.06);transition:width .2s}
+.adm-sb-top{display:flex;align-items:center;gap:10px;padding:20px 16px 16px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.adm-sb-logoico{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--r),#8c0014);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.adm-sb-title{font-family:var(--fd);font-size:16px;letter-spacing:2px;color:#fff;line-height:1.1}
+.adm-sb-title span{color:var(--r)}
+.adm-sb-subtitle{font-family:var(--fh);font-size:8.5px;color:rgba(255,255,255,.22);letter-spacing:1.5px;text-transform:uppercase}
+.adm-nav{flex:1;padding:8px 8px;overflow-y:auto;overflow-x:hidden}
+.adm-nav::-webkit-scrollbar{display:none}
+.adm-nav-lbl{font-family:var(--fh);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18);padding:12px 10px 5px;display:block}
+.adm-nav-btn{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border-radius:8px;border:none;background:none;font-family:var(--fh);font-size:12px;font-weight:700;letter-spacing:.3px;color:rgba(255,255,255,.42);cursor:pointer;transition:all .12s;text-align:left;-webkit-tap-highlight-color:transparent;white-space:nowrap;overflow:hidden}
+.adm-nav-btn:hover{color:rgba(255,255,255,.88);background:rgba(255,255,255,.07)}
+.adm-nav-btn.active{color:#fff;background:rgba(200,0,28,.22);border-left:2px solid var(--r);padding-left:8px}
+.adm-nav-ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+/* Sidebar user footer */
+.adm-sb-user{padding:12px 14px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:9px;flex-shrink:0}
+.adm-sb-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#c8001c,#6b0010);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:14px;color:#fff;flex-shrink:0}
+.adm-sb-uname{font-family:var(--fh);font-size:12px;font-weight:700;color:#fff;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm-sb-urole{font-size:9.5px;color:rgba(255,255,255,.28);letter-spacing:.5px;text-transform:uppercase;font-family:var(--fh)}
+.adm-sb-x{margin-left:auto;background:rgba(255,255,255,.06);border:none;color:rgba(255,255,255,.35);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.12s;flex-shrink:0}
+.adm-sb-x:hover{background:rgba(200,0,28,.3);color:#ff8888}
+/* Main content area */
+.adm-main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.adm-topbar{background:#fff;border-bottom:1.5px solid #e2e5ea;padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.adm-topbar-left{display:flex;align-items:center;gap:8px;font-family:var(--fh);font-size:13.5px;font-weight:700;letter-spacing:.3px;color:var(--ink)}
+.adm-topbar-ico{font-size:17px}
+.adm-topbar-right{display:flex;align-items:center;gap:8px}
+.adm-topbar-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:7px;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .12s;border:1.5px solid}
+.adm-topbar-btn-sync{background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.3);color:#1a8f3f}
+.adm-topbar-btn-sync:hover{background:rgba(29,185,84,.15);border-color:#1db954}
+.adm-topbar-btn-close{background:rgba(200,0,28,.07);border-color:rgba(200,0,28,.2);color:var(--r)}
+.adm-topbar-btn-close:hover{background:rgba(200,0,28,.14);border-color:var(--r)}
+.adm-body{flex:1;overflow-y:auto;padding:20px;overflow-x:hidden}
+.adm-body::-webkit-scrollbar{width:5px}
+.adm-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.14);border-radius:99px}
+/* Section visibility */
+.admin-section{display:none}
+.admin-section.active{display:block;animation:admIn .2s ease both}
+/* Content cards */
+.admin-card{background:#fff;border:1.5px solid #e2e5ea;border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.admin-card-head{padding:12px 16px;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;background:#fafbfc}
+.admin-card-title{font-family:var(--fh);font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--ink)}
+.admin-card-body{padding:16px}
+/* Keep old overlay hidden (compat) */
+.admin-overlay{display:none!important}
+/* Items list */
+.admin-list{list-style:none;margin-bottom:16px}
+.admin-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid #e8eaed;border-radius:10px;margin-bottom:7px;background:#fff;transition:border-color .12s,box-shadow .12s}
+.admin-item:hover{border-color:rgba(200,0,28,.2);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.admin-item-img{width:66px;height:44px;border-radius:6px;background-size:cover;background-position:center;flex-shrink:0;background-color:#f0f1f3;border:1px solid #eee}
+.admin-item-logo{width:40px;height:40px;border-radius:50%;background-size:contain;background-position:center;background-repeat:no-repeat;flex-shrink:0;background-color:#f4f5f7;border:1.5px solid #eee;display:flex;align-items:center;justify-content:center;font-size:18px}
 .admin-item-info{flex:1;min-width:0}
 .admin-item-tag{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--r);margin-bottom:2px}
 .admin-item-title{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .admin-item-date{font-size:11px;color:var(--muted);margin-top:1px}
 .admin-item-acts{display:flex;gap:6px;flex-shrink:0}
-.admin-btn{padding:6px 12px;border-radius:6px;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border:1.5px solid;transition:.12s}
-.admin-btn-edit{color:var(--blue);border-color:var(--blue)}.admin-btn-edit:hover{background:var(--blue);color:#fff}
-.admin-btn-del{color:var(--r);border-color:var(--r)}.admin-btn-del:hover{background:var(--r);color:#fff}
-.admin-btn-new{background:var(--r);color:#fff;border-color:var(--r);padding:10px 20px;font-size:12px;border-radius:8px}
-.admin-btn-new:hover{background:var(--r2)}
-.admin-btn-save{background:var(--green);color:#fff;border-color:var(--green);padding:10px 24px;font-size:12px;border-radius:8px;margin-top:14px}
-.admin-btn-save:hover{background:#007030}
-.admin-form{display:none;border:1.5px solid var(--line);border-radius:10px;padding:20px;margin-bottom:20px;background:var(--w2)}
-.admin-form.open{display:block}
+/* Buttons */
+.admin-btn{display:inline-flex;align-items:center;gap:4px;padding:6px 12px;border-radius:7px;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border:1.5px solid;transition:all .12s}
+.admin-btn-edit{color:#1a73e8;border-color:#1a73e8;background:#fff}.admin-btn-edit:hover{background:#1a73e8;color:#fff}
+.admin-btn-del{color:var(--r);border-color:var(--r);background:#fff}.admin-btn-del:hover{background:var(--r);color:#fff}
+.admin-btn-new{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#c8001c,#a00017);color:#fff;border-color:transparent;padding:8px 16px;font-size:12px;border-radius:8px;box-shadow:0 2px 8px rgba(200,0,28,.22)}
+.admin-btn-new:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(200,0,28,.38)}
+.admin-btn-save{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#1db954,#16a348);color:#fff;border-color:transparent;padding:8px 20px;font-size:12px;border-radius:8px;margin-top:12px;box-shadow:0 2px 8px rgba(29,185,84,.22)}
+.admin-btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,185,84,.38)}
+/* Forms */
+.admin-form{display:none;border:1.5px solid #e2e5ea;border-radius:12px;padding:18px;margin-bottom:16px;background:#f8f9fb}
+.admin-form.open{display:block;animation:admIn .2s ease both}
 .af-row{margin-bottom:14px}
-.af-label{display:block;font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.af-input,.af-select{width:100%;padding:10px 12px;border:1.5px solid var(--line2);border-radius:7px;font-family:var(--f);font-size:13px;color:var(--ink);outline:none;background:#fff;transition:.15s}
-.af-input:focus,.af-select:focus{border-color:var(--r);box-shadow:0 0 0 3px rgba(212,0,32,.09)}
-.af-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line2);border-radius:7px;font-family:var(--f);font-size:13px;color:var(--ink);outline:none;background:#fff;min-height:120px;resize:vertical;transition:.15s;line-height:1.6}
-.af-textarea:focus{border-color:var(--r);box-shadow:0 0 0 3px rgba(212,0,32,.09)}
+.af-label{display:block;font-family:var(--fh);font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.af-input,.af-select{width:100%;padding:10px 13px;border:1.5px solid #d1d5db;border-radius:8px;font-family:var(--f);font-size:13px;color:var(--ink);outline:none;background:#fff;transition:.15s;box-sizing:border-box}
+.af-input:focus,.af-select:focus{border-color:var(--r);box-shadow:0 0 0 3px rgba(200,0,28,.08)}
+.af-textarea{width:100%;padding:10px 13px;border:1.5px solid #d1d5db;border-radius:8px;font-family:var(--f);font-size:13px;color:var(--ink);outline:none;background:#fff;min-height:120px;resize:vertical;transition:.15s;line-height:1.6;box-sizing:border-box}
+.af-textarea:focus{border-color:var(--r);box-shadow:0 0 0 3px rgba(200,0,28,.08)}
 .af-textarea-lg{min-height:200px}
 .af-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .af-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .af-hint{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
-/* Image preview */
-.img-preview{width:100%;height:140px;border-radius:8px;background-size:cover;background-position:center;background-color:var(--w3);border:1.5px dashed var(--line2);margin-top:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:11px;color:var(--muted2);transition:.2s}
-.img-preview.has-img{border-style:solid;border-color:var(--line)}
-.logo-preview{width:80px;height:80px;border-radius:50%;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--w3);border:1.5px dashed var(--line2);margin-top:8px;display:flex;align-items:center;justify-content:center;font-size:28px;transition:.2s}
-.logo-preview.has-img{border-style:solid;border-color:var(--line)}
-/* Logo manager grid */
-.logo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px}
-.logo-card{background:var(--w2);border:1.5px solid var(--line);border-radius:10px;padding:12px;text-align:center;transition:.12s}
-.logo-card:hover{border-color:var(--r);background:#fff}
-.logo-card-img{width:52px;height:52px;border-radius:50%;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:var(--w3);border:1.5px solid var(--line);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer}
+/* Previews */
+.img-preview{width:100%;height:140px;border-radius:10px;background-size:cover;background-position:center;background-color:#f0f1f3;border:2px dashed #d1d5db;margin-top:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:11px;color:#9ca3af;transition:.2s}
+.img-preview.has-img{border-style:solid;border-color:#d1d5db}
+.logo-preview{width:78px;height:78px;border-radius:50%;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#f0f1f3;border:2px dashed #d1d5db;margin-top:8px;display:flex;align-items:center;justify-content:center;font-size:26px;transition:.2s}
+.logo-preview.has-img{border-style:solid}
+/* Logo grid */
+.logo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;margin-bottom:16px}
+.logo-card{background:#f8f9fb;border:1.5px solid #e2e5ea;border-radius:10px;padding:12px;text-align:center;transition:.15s}
+.logo-card:hover{border-color:var(--r);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.logo-card-img{width:46px;height:46px;border-radius:50%;background-size:contain;background-position:center;background-repeat:no-repeat;background-color:#fff;border:1.5px solid #eee;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer}
 .logo-card-name{font-family:var(--fh);font-size:11px;font-weight:700;color:var(--ink);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.logo-card-edit{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--blue);cursor:pointer;border:1px solid var(--blue);border-radius:4px;padding:3px 8px;display:inline-block;transition:.12s}
-.logo-card-edit:hover{background:var(--blue);color:#fff}
-/* Admin login */
-.admin-login-box{padding:40px;text-align:center}
+.logo-card-edit{font-family:var(--fh);font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#1a73e8;cursor:pointer;border:1px solid #1a73e8;border-radius:5px;padding:3px 8px;display:inline-block;transition:.12s}
+.logo-card-edit:hover{background:#1a73e8;color:#fff}
+/* Sync status */
+#syncStatus{border-radius:9px;padding:12px 14px;font-family:var(--fh);font-size:12px;margin-bottom:14px;border:1.5px solid #e2e5ea;background:#f8f9fb;line-height:1.5}
+/* Mobile */
+@media(max-width:700px){.adm-sidebar{width:200px}}
+@media(max-width:580px){.adm-sidebar{position:fixed;left:-220px;z-index:10;transition:left .22s ease}.adm-sidebar.mob-open{left:0}.adm-main{width:100%}.adm-body{padding:14px}.adm-topbar{padding:0 14px}}
 
 
 /* NEWS GRID */
@@ -2162,7 +2232,7 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
   <div style="margin-top:24px;padding:16px 20px;background:var(--w2);border-radius:12px;border:1.5px solid var(--line);display:flex;align-items:center;gap:12px" class="reveal">
     <span style="font-size:20px">&#128161;</span>
     <div style="font-size:12px;color:var(--muted);font-family:var(--fh);line-height:1.7">
-      <b style="color:var(--ink)">Actualizar traspasos:</b> Ingresa al panel admin (escribe <b>pasajeuno</b> en el buscador) &rarr; pesta&ntilde;a <b>Traspasos</b> para agregar movimientos.
+      <b style="color:var(--ink)">Actualizar traspasos:</b> Ingresa al panel admin (presiona <b>Ctrl+Shift+A</b>) &rarr; pesta&ntilde;a <b>Traspasos</b> para agregar movimientos.
     </div>
   </div>
 
@@ -2419,67 +2489,93 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
   </div>
 </footer>
 
-<!-- admin: ctrl x5 -->
-
-<!-- ADMIN OVERLAY -->
-<div class="admin-overlay" id="adminOverlay" onclick="if(event.target===this)closeAdmin()">
-  <div class="admin-panel">
-    <div class="admin-header"><div class="admin-title">&#9881; Panel Admin &#8212; La Media Cancha</div><button class="admin-close" onclick="closeAdmin()">&#10005;</button></div>
-    <div class="admin-tabs">
-      <div class="admin-tab active" onclick="adminTabSwitch('news',this)">&#128240; Noticias</div>
-      <div class="admin-tab" onclick="adminTabSwitch('opin',this)">&#128172; Opini&#xF3;n</div>
-      <div class="admin-tab" onclick="adminTabSwitch('logos',this)">&#127973; Logos</div>
-      <div class="admin-tab" onclick="adminTabSwitch('tablas',this)">&#128202; Tablas</div>
-      <div class="admin-tab" id="adminUserTab" style="display:none" onclick="adminTabSwitch('usuarios',this)">&#128101; Usuarios</div>
-      <div class="admin-tab" onclick="adminTabSwitch('resultados',this)">&#9917; Resultados</div>
-      <div class="admin-tab" onclick="adminTabSwitch('traspasos',this)">&#128257; Traspasos</div>
-      <div class="admin-tab" onclick="adminTabSwitch('jugadores',this)">&#128248; Jugadores</div>
-      <div class="admin-tab" onclick="adminTabSwitch('sync',this)">&#9729; Sincronizar</div>
-    </div>
-    <div class="admin-body">
-
-      <!-- LOGIN -->
-<div id="adminLoginBox" style="display:block">
-  <!-- Login form -->
-  <div id="adminLoginForm" style="padding:36px 28px;text-align:center">
-    <div style="width:56px;height:56px;background:var(--r);border-radius:14px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 16px rgba(212,0,32,.4)">&#128274;</div>
-    <div style="font-family:var(--fd);font-size:24px;letter-spacing:2px;margin-bottom:4px;color:var(--ink)">ACCESO RESTRINGIDO</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:24px;font-family:var(--fh);letter-spacing:.5px">Solo personal autorizado de La Media Cancha</div>
-    <div style="text-align:left;max-width:320px;margin:0 auto">
-      <div class="af-row">
-        <label class="af-label">Email</label>
-        <input type="email" id="adminEmailInput" class="af-input" placeholder="tu@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')gel('adminPwInput').focus()"/>
+<!-- ADMIN LOGIN SCREEN -->
+<div id="adminScreen">
+  <div class="adm-login-card">
+    <div class="adm-login-logo">
+      <div class="adm-login-icon">&#9917;</div>
+      <div>
+        <div class="adm-brand">LA MEDIA<span>CANCHA</span></div>
+        <div class="adm-brand-tag">Panel de Administraci&oacute;n</div>
       </div>
-      <div class="af-row">
-        <label class="af-label">Contrase&#xF1;a</label>
-        <div style="position:relative">
-          <input type="password" id="adminPwInput" class="af-input" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryAdminLogin()" style="padding-right:40px"/>
-          <button onclick="togglePwVisible()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px" id="pwToggleBtn">&#128065;</button>
-        </div>
-      </div>
-      <div id="adminLoginErr" style="display:none;background:rgba(212,0,32,.08);border:1px solid rgba(212,0,32,.2);border-radius:7px;padding:10px 14px;font-family:var(--fh);font-size:12px;color:var(--r);margin-bottom:12px;text-align:left"></div>
-      <button class="admin-btn admin-btn-new" onclick="tryAdminLogin()" style="width:100%;padding:12px;font-size:14px;border-radius:8px;margin-top:4px">Iniciar sesi&#xF3;n</button>
     </div>
-    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:center;gap:16px">
-      <button onclick="showChangePw()" style="background:none;border:none;font-family:var(--fh);font-size:11px;color:var(--muted);cursor:pointer;letter-spacing:.5px">&#128273; Cambiar contrase&#xF1;a</button>
+    <div class="adm-login-h">Iniciar sesi&oacute;n</div>
+    <div class="adm-login-sub">Solo personal autorizado</div>
+    <div class="adm-input-wrap">
+      <label class="adm-label">Email</label>
+      <input type="email" id="adminEmailInput" class="adm-input" placeholder="tu@email.com" autocomplete="email" onkeydown="if(event.key==='Enter')gel('adminPwInput').focus()"/>
+    </div>
+    <div class="adm-input-wrap">
+      <label class="adm-label">Contrase&ntilde;a</label>
+      <div class="adm-input-pw">
+        <input type="password" id="adminPwInput" class="adm-input" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryAdminLogin()"/>
+        <button onclick="togglePwVisible()" class="adm-pw-toggle" id="pwToggleBtn">&#128065;</button>
+      </div>
+    </div>
+    <div class="adm-login-err" id="adminLoginErr"></div>
+    <button class="adm-btn-primary" onclick="tryAdminLogin()">Iniciar sesi&oacute;n &rarr;</button>
+    <div class="adm-login-footer">
+      <button onclick="showChangePw()" style="background:none;border:none;font-family:var(--fh);font-size:11px;color:rgba(255,255,255,.28);cursor:pointer;letter-spacing:.5px;transition:color .12s" onmouseover="this.style.color='rgba(255,255,255,.65)'" onmouseout="this.style.color='rgba(255,255,255,.28)'">&#128273; Cambiar contrase&ntilde;a</button>
     </div>
     <!-- Change password panel -->
-    <div id="changePwPanel" style="display:none;margin-top:16px;text-align:left;background:var(--w2);border-radius:10px;padding:16px;max-width:320px;margin-left:auto;margin-right:auto">
-      <div style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">&#128273; Cambiar Contrase&#xF1;a</div>
+    <div id="changePwPanel" style="display:none;margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:16px">
+      <div style="font-family:var(--fh);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:12px">&#128273; Cambiar Contrase&ntilde;a</div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6">Solo puedes cambiar la contrase&#xF1;a de tu propio email registrado.</div>
       <input type="email" id="cpEmail" class="af-input" placeholder="Tu email registrado..." style="margin-bottom:8px"/>
-      <input type="password" id="cpNewPw" class="af-input" placeholder="Nueva contrase&#xF1;a (m&#xED;n. 8 caracteres)..." style="margin-bottom:8px"/>
-      <input type="password" id="cpNewPw2" class="af-input" placeholder="Repetir nueva contrase&#xF1;a..." style="margin-bottom:10px"/>
+      <input type="password" id="cpNewPw" class="adm-input" placeholder="Nueva contrase&ntilde;a (m&iacute;n. 8 caracteres)..." style="margin-bottom:8px"/>
+      <input type="password" id="cpNewPw2" class="adm-input" placeholder="Repetir nueva contrase&ntilde;a..." style="margin-bottom:10px"/>
       <div style="display:flex;gap:8px">
-        <button class="admin-btn admin-btn-new" onclick="doChangePw()">Cambiar</button>
-        <button class="admin-btn" style="color:var(--muted);border-color:var(--line2);padding:8px 14px;margin-top:0" onclick="gel('changePwPanel').style.display='none'">Cancelar</button>
+        <button class="adm-btn-primary" style="padding:9px 16px;font-size:11px;flex:1;margin-top:0" onclick="doChangePw()">Cambiar</button>
+        <button class="adm-btn-primary" style="padding:9px 16px;font-size:11px;flex:1;margin-top:0;background:rgba(255,255,255,.1);box-shadow:none" onclick="gel('changePwPanel').style.display='none'">Cancelar</button>
       </div>
-      <div id="cpMsg" style="display:none;font-family:var(--fh);font-size:12px;margin-top:10px;padding:8px 12px;border-radius:6px"></div>
+      <div id="cpMsg" style="display:none;font-family:var(--fh);font-size:12px;margin-top:10px;padding:8px 12px;border-radius:6px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7)"></div>
     </div>
   </div>
 </div>
 
-<!-- LOGGED IN -->
+<!-- ADMIN DASHBOARD -->
+<div id="adminDashboard">
+  <aside class="adm-sidebar">
+    <div class="adm-sb-top">
+      <div class="adm-sb-logoico">&#9917;</div>
+      <div>
+        <div class="adm-sb-title">LA MEDIA<span>CANCHA</span></div>
+        <div class="adm-sb-subtitle">Admin Panel</div>
+      </div>
+    </div>
+    <nav class="adm-nav">
+      <span class="adm-nav-lbl">Contenido</span>
+      <button class="adm-nav-btn active" onclick="adminTabSwitch('news',this)"><span class="adm-nav-ico">&#128240;</span>Noticias</button>
+      <button class="adm-nav-btn" onclick="adminTabSwitch('opin',this)"><span class="adm-nav-ico">&#128172;</span>Opini&oacute;n</button>
+      <span class="adm-nav-lbl">F&uacute;tbol</span>
+      <button class="adm-nav-btn" onclick="adminTabSwitch('resultados',this)"><span class="adm-nav-ico">&#9917;</span>Resultados</button>
+      <button class="adm-nav-btn" onclick="adminTabSwitch('tablas',this)"><span class="adm-nav-ico">&#128202;</span>Tablas &amp; Goles</button>
+      <button class="adm-nav-btn" onclick="adminTabSwitch('traspasos',this)"><span class="adm-nav-ico">&#128257;</span>Traspasos</button>
+      <button class="adm-nav-btn" onclick="adminTabSwitch('jugadores',this)"><span class="adm-nav-ico">&#128248;</span>Jugadores</button>
+      <span class="adm-nav-lbl">Sistema</span>
+      <button class="adm-nav-btn" id="adminNavLogos" style="display:none" onclick="adminTabSwitch('logos',this)"><span class="adm-nav-ico">&#127973;</span>Logos</button>
+      <button class="adm-nav-btn" id="adminNavUsuarios" style="display:none" onclick="adminTabSwitch('usuarios',this)"><span class="adm-nav-ico">&#128101;</span>Usuarios</button>
+      <button class="adm-nav-btn" onclick="adminTabSwitch('sync',this)"><span class="adm-nav-ico">&#9729;</span>Sincronizar</button>
+    </nav>
+    <div class="adm-sb-user">
+      <div class="adm-sb-av" id="adminSbAvatar">B</div>
+      <div style="flex:1;min-width:0">
+        <div class="adm-sb-uname" id="adminSbName">Byron</div>
+        <div class="adm-sb-urole" id="adminSbRole">Superadmin</div>
+      </div>
+      <button class="adm-sb-x" onclick="closeAdmin()" title="Cerrar panel">&#10005;</button>
+    </div>
+  </aside>
+  <div class="adm-main">
+    <div class="adm-topbar">
+      <div class="adm-topbar-left"><span class="adm-topbar-ico" id="adminTopIcon">&#128240;</span><span id="adminTopTitle">Noticias</span></div>
+      <div class="adm-topbar-right">
+        <span id="adminUserBadge" style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.3px;margin-right:4px"></span>
+        <button class="adm-topbar-btn adm-topbar-btn-sync" onclick="syncPushNow()" title="Guardar y sincronizar todo">&#8593; Sync</button>
+        <button class="adm-topbar-btn adm-topbar-btn-close" onclick="closeAdmin()">&#10005; Cerrar</button>
+      </div>
+    </div>
+    <div class="adm-body">
       <div id="adminLoggedBox">
 
         <!-- NOTICIAS -->
@@ -2786,9 +2882,9 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
         </div>
 
       </div><!-- /adminLoggedBox -->
-    </div>
-  </div>
-</div>
+    </div><!-- /adm-body -->
+  </div><!-- /adm-main -->
+</div><!-- /adminDashboard -->
 
 <script>
 // ══════════════════════════════════════════════════════
@@ -4682,40 +4778,47 @@ function togglePwVisible(){
 }
 
 function openAdmin(){
-  var ov=gel("adminOverlay"); if(!ov) return;
-  ov.classList.add("open");
   if(!adminOK) showAdminLogin(); else showAdminLogged();
 }
 function closeAdmin(){
-  var ov=gel("adminOverlay"); if(ov) ov.classList.remove("open");
+  var s=gel("adminScreen"),d=gel("adminDashboard");
+  if(s){s.classList.remove("open");s.style.display="none";}
+  if(d){d.classList.remove("open");d.style.display="none";}
+  document.body.style.overflow="";
+  try{if(history.replaceState)history.replaceState(null,null,location.pathname+location.search);}catch(e){}
 }
 function showAdminLogin(){
-  var lb=gel("adminLoginBox"),lg=gel("adminLoggedBox");
-  if(lb)lb.style.display="block"; if(lg)lg.style.display="none";
+  var s=gel("adminScreen"),d=gel("adminDashboard");
+  if(d){d.classList.remove("open");d.style.display="none";}
+  if(s){s.style.display="flex";s.classList.add("open");}
+  document.body.style.overflow="hidden";
   var cp=gel("changePwPanel"); if(cp)cp.style.display="none";
-  gel("adminLoginErr") && (gel("adminLoginErr").style.display="none");
+  var err=gel("adminLoginErr"); if(err){err.style.display="none";err.textContent="";}
+  setTimeout(function(){var e=gel("adminEmailInput");if(e&&!e.value)e.focus();},180);
 }
 function showAdminLogged(){
-  var lb=gel("adminLoginBox"),lg=gel("adminLoggedBox");
-  if(lb)lb.style.display="none"; if(lg)lg.style.display="block";
-  var badge=gel("adminUserBadge");
-  if(badge&&currentAdminUser){
-    var roleLabel=currentAdminUser.role==="superadmin"?" &#128081;":" &#9998;";
-    badge.innerHTML=currentAdminUser.name+roleLabel;
+  var s=gel("adminScreen"),d=gel("adminDashboard");
+  if(s){s.classList.remove("open");s.style.display="none";}
+  if(d){d.style.display="flex";d.classList.add("open");}
+  document.body.style.overflow="hidden";
+  if(currentAdminUser){
+    var isSA=currentAdminUser.role==="superadmin";
+    // Sidebar user info
+    var av=gel("adminSbAvatar"),nm=gel("adminSbName"),rl=gel("adminSbRole");
+    if(av) av.textContent=(currentAdminUser.name||"?")[0].toUpperCase();
+    if(nm) nm.textContent=currentAdminUser.name;
+    if(rl) rl.textContent=isSA?"Superadmin":"Editor";
+    // Topbar badge
+    var badge=gel("adminUserBadge");
+    if(badge) badge.innerHTML=currentAdminUser.name+(isSA?" &#128081;":" &#9998;");
+    // Show/hide superadmin-only nav items
+    var logosNav=gel("adminNavLogos"),usrNav=gel("adminNavUsuarios");
+    if(logosNav) logosNav.style.display=isSA?"flex":"none";
+    if(usrNav) usrNav.style.display=isSA?"flex":"none";
+    if(isSA){renderAdminLogos();renderAdminUsers();}
   }
-  // Show/hide superadmin-only tabs
-  var userTab=gel("adminUserTab");
-  if(userTab) userTab.style.display=currentAdminUser&&currentAdminUser.role==="superadmin"?"block":"none";
   renderAdminNews(); renderAdminOpin();
   initDataPriority();
-
-  // Restrict certain tabs to superadmin
-  var logoTab = document.querySelector(".admin-tab[onclick*=\"logos\"]");
-  var isSuperAdmin = currentAdminUser && currentAdminUser.role === "superadmin";
-  // Logos: superadmin only. Tablas: everyone can edit
-  if(logoTab) logoTab.style.display = isSuperAdmin ? "block" : "none";
-  if(isSuperAdmin) renderAdminLogos();
-  if(currentAdminUser&&currentAdminUser.role==="superadmin") renderAdminUsers();
 }
 
 function tryAdminLogin(){
@@ -4765,9 +4868,8 @@ function showLoginErr(msg){
   if(!el) return;
   el.style.display="block";
   el.textContent=msg;
-  // Shake animation
   el.style.animation="none";
-  setTimeout(function(){el.style.animation="shake .4s ease";},10);
+  setTimeout(function(){el.style.animation="admShake .4s ease";},10);
 }
 
 // ── USER MANAGEMENT (superadmin only) ──
@@ -5546,9 +5648,15 @@ function initDataPriority(){
 
 function adminTabSwitch(tab,btn){
   document.querySelectorAll(".admin-section").forEach(function(s){s.classList.remove("active");});
-  document.querySelectorAll(".admin-tab").forEach(function(b){b.classList.remove("active");});
+  document.querySelectorAll(".adm-nav-btn").forEach(function(b){b.classList.remove("active");});
   var sec=gel("adminSec-"+tab); if(sec) sec.classList.add("active");
   if(btn) btn.classList.add("active");
+  // Update topbar title + icon
+  var icons={"news":"&#128240;","opin":"&#128172;","logos":"&#127973;","tablas":"&#128202;","usuarios":"&#128101;","resultados":"&#9917;","traspasos":"&#128257;","jugadores":"&#128248;","sync":"&#9729;"};
+  var titles={"news":"Noticias","opin":"Opini\u00f3n","logos":"Logos de Equipos","tablas":"Tablas & Goleadores","usuarios":"Gesti\u00f3n de Usuarios","resultados":"Resultados","traspasos":"Mercado de Pases","jugadores":"Fotos de Jugadores","sync":"Sincronizaci\u00f3n"};
+  var ti=gel("adminTopIcon"),tt=gel("adminTopTitle");
+  if(ti) ti.innerHTML=icons[tab]||"&#9881;";
+  if(tt) tt.textContent=titles[tab]||tab;
   if(tab==="usuarios") renderAdminUsers();
   if(tab==="tablas") renderAdminTableRows("p1");
   if(tab==="traspasos") renderAdminTraspasos();
@@ -6428,54 +6536,25 @@ function renderAdminJugadores(){
   mkLeagueSection("Primera B", D.golPrimeraB, "primerab");
 }
 
-// ── ADMIN TRIGGER: escribir "pasajeuno" en el buscador ──
+// ── ADMIN TRIGGER: Ctrl+Shift+A (teclado) o URL hash #admin ──
 (function(){
-  var SH="f960f1b48989f064b10086559c11dcd85967b524761aced9b763e61537550eff";
-  var buf="";
-  var timer=null;
-
-  function checkBuf(){
-    if(buf.length>=9 && sha256(buf.slice(-9))===SH){
-      buf="";
-      // Clear search inputs
-      document.querySelectorAll(".nav-search input,#mobSearch").forEach(function(i){i.value="";});
+  // Keyboard: Ctrl+Shift+A (or Cmd+Shift+A on Mac)
+  document.addEventListener("keydown",function(e){
+    if((e.ctrlKey||e.metaKey) && e.shiftKey && (e.key==="A"||e.key==="a")){
+      e.preventDefault();
       openAdmin();
     }
-  }
-
-  // Method 1: keyup anywhere on document
-  document.addEventListener("keyup",function(e){
-    if(e.key.length===1){
-      buf+=e.key.toLowerCase();
-      if(buf.length>20) buf=buf.slice(-20);
-      if(timer) clearTimeout(timer);
-      timer=setTimeout(function(){buf="";},4000);
-      checkBuf();
-    }
-    if(e.key==="Escape") buf="";
   });
 
-  // Method 2: watch search input value directly (works on mobile too)
-  function watchSearch(){
-    var inps=document.querySelectorAll(".nav-search input");
-    inps.forEach(function(inp){
-      if(inp._adminWatched) return;
-      inp._adminWatched=true;
-      inp.addEventListener("input",function(){
-        var val=inp.value.toLowerCase();
-        if(sha256(val)===SH){
-          inp.value="";
-          openAdmin();
-        }
-      });
-    });
+  // URL hash: navigate to site.html#admin to open panel
+  function checkHash(){
+    if(window.location.hash==="#admin"){ openAdmin(); }
   }
-  // Watch after DOM ready
+  window.addEventListener("hashchange",checkHash);
   if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",watchSearch);
+    document.addEventListener("DOMContentLoaded",function(){ setTimeout(checkHash,400); });
   } else {
-    watchSearch();
-    setTimeout(watchSearch,1000);
+    setTimeout(checkHash,400);
   }
 })();
 
