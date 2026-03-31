@@ -3888,8 +3888,9 @@ function renderProxima(id, arr){
     var row=document.createElement("div"); row.className="r-row";
     var hm=document.createElement("div"); hm.className="r-hm";
     var ht=document.createElement("div"); ht.className="r-t";
-    var logo=mkLogo(m.home,true); logo.style.cssText="width:22px;height:22px;border-radius:50%;flex-shrink:0";
-    ht.appendChild(logo); ht.appendChild(document.createTextNode(m.home));
+    // NOTE: no mkLogo here — injectFixtureLogos() handles logo injection for all .r-row elements
+    var htSpan=document.createElement("span"); htSpan.className="r-tname"; htSpan.textContent=m.home;
+    ht.appendChild(htSpan);
     hm.appendChild(ht);
     var sub=document.createElement("div"); sub.className="r-m";
     sub.textContent=(m.liga||"")+" \u00B7 "+m.fecha;
@@ -3900,8 +3901,8 @@ function renderProxima(id, arr){
     row.appendChild(hr);
     var aw=document.createElement("div"); aw.className="r-aw";
     var at=document.createElement("div"); at.className="r-t";
-    var alogo=mkLogo(m.away,true); alogo.style.cssText="width:22px;height:22px;border-radius:50%;flex-shrink:0";
-    at.appendChild(alogo); at.appendChild(document.createTextNode(m.away));
+    var atSpan=document.createElement("span"); atSpan.className="r-tname"; atSpan.textContent=m.away;
+    at.appendChild(atSpan);
     aw.appendChild(at); row.appendChild(aw);
     c.appendChild(row);
   });
@@ -6352,8 +6353,11 @@ function injectFixtureLogos(){
     var hmT = hmDiv.querySelector(".r-t");
     var awT = awDiv.querySelector(".r-t");
     if(!hmT || !awT) return;
-    var hmName = hmT.textContent.trim();
-    var awName = awT.textContent.trim();
+    // Use .r-tname span if present (renderProxima), fallback to full textContent
+    var hmNameEl = hmT.querySelector(".r-tname");
+    var awNameEl = awT.querySelector(".r-tname");
+    var hmName = (hmNameEl ? hmNameEl.textContent : hmT.textContent).trim();
+    var awName = (awNameEl ? awNameEl.textContent : awT.textContent).trim();
     // Home logo (appended — row-reverse puts it to right of name)
     var hmUrl = getLogo(hmName);
     if(hmUrl){
