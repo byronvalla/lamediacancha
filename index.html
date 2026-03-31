@@ -2817,6 +2817,7 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
             <button class="tab active" onclick="resultTab('primera',this)">Primera Div.</button>
             <button class="tab" onclick="resultTab('primerab',this)">Primera B</button>
             <button class="tab" onclick="resultTab('copa',this)">Copa de la Liga</button>
+            <button class="tab" onclick="resultTab('segunda',this)">Segunda Div.</button>
           </div>
           <div id="adminResultsList"></div>
           <!-- FORM -->
@@ -2845,6 +2846,7 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
                   <option value="Primera Divisi&#xF3;n">Primera Divisi&#xF3;n</option>
                   <option value="Primera B">Primera B</option>
                   <option value="Copa de la Liga">Copa de la Liga</option>
+                  <option value="Segunda Divisi&#xF3;n">Segunda Divisi&#xF3;n</option>
                 </select>
               </div>
             </div>
@@ -3005,7 +3007,22 @@ var LOGOS_DEFAULT = {
   "Uni\u00F3n Espa\u00F1ola":      _L+"union-espanola.svg",
   "Curi\u00F3 Unido":              _L+"curico-unido.svg",
   "Deportes Iquique":              _L+"deportes-iquique.svg",
-  "Deportes Antofagasta":          _L+"d-antofagasta.svg"
+  "Deportes Antofagasta":          _L+"d-antofagasta.svg",
+  // Segunda División 2025 (14 equipos oficiales ANFP)
+  "Deportes Melipilla":            _W+"Escudo_Deportes_Melipilla.png",
+  "San Antonio Unido":             _W+"San_Antonio_Unido_FC.png",
+  "Real San Joaqu\u00EDn":         _W+"Real_San_Joaqu%C3%ADn.png",
+  "Deportes Linares":              _W+"Deportes_Linares.png",
+  "Provincial Ovalle":             _W+"Provincial_Ovalle_2018.png",
+  "Conc\u00F3n National":          _W+"Conc%C3%B3n_National_FC.png",
+  "Deportes Puerto Montt":         _W+"Club_Deportes_Puerto_Montt.png",
+  "Provincial Osorno":             _W+"Club_Provincial_Osorno.png",
+  "Deportes Rengo":                _W+"Deportes_Rengo.png",
+  "General Vel\u00E1squez":        _W+"General_Vel%C3%A1squez.png",
+  "Santiago Morning":              _W+"Escudo_Santiago_Morning.png",
+  "Brujas de Salamanca":           _W+"Municipalidad_de_Salamanca.png",
+  "Trasandino":                    _W+"Club_Deportivo_Trasandino.png",
+  "Santiago City":                 _W+"Santiago_City_FC.png"
 };
 var LOGOS = Object.assign({}, LOGOS_DEFAULT);
 
@@ -3311,41 +3328,54 @@ var D = {
     {jornada:1,home:"Universidad Católica",hs:"1",as_:"0",away:"U. de Concepción",status:"fin",fecha:"22 Mar",hora:"18:00",liga:"Copa de la Liga"},
     {jornada:1,home:"O'Higgins",hs:"2",as_:"1",away:"Deportes Limache",status:"fin",fecha:"22 Mar",hora:"20:30",liga:"Copa de la Liga"},
     {jornada:1,home:"Palestino",hs:"1",as_:"1",away:"Everton",status:"fin",fecha:"23 Mar",hora:"20:30",liga:"Copa de la Liga"},
-    // Fecha 2 (24–26 Mar)
-    {jornada:2,home:"Universidad de Chile",away:"Unión La Calera",status:"prog",fecha:"24 Mar",hora:"18:00",liga:"Copa de la Liga"},
-    {jornada:2,home:"Deportes Concepción",away:"Colo Colo",status:"prog",fecha:"24 Mar",hora:"20:30",liga:"Copa de la Liga"},
-    {jornada:2,home:"Ñublense",away:"Universidad Católica",status:"prog",fecha:"25 Mar",hora:"18:00",liga:"Copa de la Liga"},
-    {jornada:2,home:"Huachipato",away:"Coquimbo Unido",status:"prog",fecha:"25 Mar",hora:"18:00",liga:"Copa de la Liga"},
-    {jornada:2,home:"Audax Italiano",away:"Deportes La Serena",status:"prog",fecha:"25 Mar",hora:"20:30",liga:"Copa de la Liga"},
-    {jornada:2,home:"Deportes Limache",away:"Palestino",status:"prog",fecha:"26 Mar",hora:"18:00",liga:"Copa de la Liga"},
-    {jornada:2,home:"U. de Concepción",away:"Cobresal",status:"prog",fecha:"26 Mar",hora:"20:30",liga:"Copa de la Liga"},
-    {jornada:2,home:"Everton",away:"O'Higgins",status:"prog",fecha:"26 Mar",hora:"20:30",liga:"Copa de la Liga"}
+    // Fecha 2 (24–26 Mar) — RESULTADOS FINALES
+    {jornada:2,home:"Universidad de Chile",hs:"0",as_:"1",away:"Uni\u00F3n La Calera",status:"fin",fecha:"24 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"Deportes Concepci\u00F3n",hs:"1",as_:"3",away:"Colo Colo",status:"fin",fecha:"24 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:2,home:"\u00D1ublense",hs:"1",as_:"0",away:"Universidad Cat\u00F3lica",status:"fin",fecha:"25 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"Huachipato",hs:"0",as_:"1",away:"Coquimbo Unido",status:"fin",fecha:"25 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"Audax Italiano",hs:"3",as_:"1",away:"Deportes La Serena",status:"fin",fecha:"25 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:2,home:"Deportes Limache",hs:"1",as_:"1",away:"Palestino",status:"fin",fecha:"26 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:2,home:"U. de Concepci\u00F3n",hs:"2",as_:"1",away:"Cobresal",status:"fin",fecha:"26 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:2,home:"Everton",hs:"1",as_:"2",away:"O\u2019Higgins",status:"fin",fecha:"26 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    // Fecha 3 (28–31 Mar) — RESULTADOS
+    {jornada:3,home:"Uni\u00F3n La Calera",hs:"2",as_:"1",away:"Deportes La Serena",status:"fin",fecha:"28 Mar",hora:"18:30",liga:"Copa de la Liga"},
+    {jornada:3,home:"Coquimbo Unido",hs:"2",as_:"1",away:"Deportes Concepci\u00F3n",status:"fin",fecha:"29 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:3,home:"Colo Colo",away:"Huachipato",status:"prog",fecha:"29 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:3,home:"Cobresal",hs:"1",as_:"3",away:"Universidad Cat\u00F3lica",status:"fin",fecha:"30 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:3,home:"U. de Concepci\u00F3n",hs:"0",as_:"2",away:"\u00D1ublense",status:"fin",fecha:"30 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:3,home:"Palestino",hs:"1",as_:"3",away:"O\u2019Higgins",status:"fin",fecha:"30 Mar",hora:"20:30",liga:"Copa de la Liga"},
+    {jornada:3,home:"Audax Italiano",hs:"0",as_:"3",away:"Universidad de Chile",status:"fin",fecha:"31 Mar",hora:"18:00",liga:"Copa de la Liga"},
+    {jornada:3,home:"Everton",away:"Deportes Limache",status:"live",min:"65",hs:"1",as_:"0",fecha:"31 Mar",hora:"20:30",liga:"Copa de la Liga"}
   ],
 
   copa:{
+    // Grupo A: Colo Colo, Coquimbo Unido, Huachipato, Deportes Concepción (tras J3, Colo Colo-Huachipato pend.)
     grupoA:[
-      {pos:1,team:"Colo Colo",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
-      {pos:2,team:"Universidad Cat\u00F3lica",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
-      {pos:3,team:"D. La Serena",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
-      {pos:4,team:"U. de Concepci\u00F3n",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""}
+      {pos:1,team:"Colo Colo",pj:2,pg:2,pe:0,pp:0,gf:4,gc:1,dif:3,pts:6,b:"b-cl"},
+      {pos:2,team:"Coquimbo Unido",pj:3,pg:2,pe:0,pp:1,gf:3,gc:2,dif:1,pts:6,b:""},
+      {pos:3,team:"Huachipato",pj:2,pg:0,pe:1,pp:1,gf:2,gc:3,dif:-1,pts:1,b:""},
+      {pos:4,team:"D. Concepci\u00F3n",pj:3,pg:0,pe:1,pp:2,gf:4,gc:7,dif:-3,pts:1,b:"b-el"}
     ],
+    // Grupo B: Universidad Católica, Cobresal, Ñublense, U. de Concepción
     grupoB:[
-      {pos:1,team:"O\u2019Higgins",pj:1,pg:1,pe:0,pp:0,gf:2,gc:1,dif:1,pts:3,b:""},
-      {pos:2,team:"Universidad de Chile",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
-      {pos:3,team:"Audax Italiano",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
-      {pos:4,team:"D. Limache",pj:1,pg:0,pe:0,pp:1,gf:1,gc:2,dif:-1,pts:0,b:""}
+      {pos:1,team:"\u00D1ublense",pj:3,pg:3,pe:0,pp:0,gf:4,gc:0,dif:4,pts:9,b:"b-cl"},
+      {pos:2,team:"Universidad Cat\u00F3lica",pj:3,pg:2,pe:0,pp:1,gf:4,gc:1,dif:3,pts:6,b:""},
+      {pos:3,team:"U. de Concepci\u00F3n",pj:3,pg:1,pe:0,pp:2,gf:2,gc:4,dif:-2,pts:3,b:""},
+      {pos:4,team:"Cobresal",pj:3,pg:0,pe:0,pp:3,gf:2,gc:7,dif:-5,pts:0,b:"b-el"}
     ],
+    // Grupo C: O'Higgins, Palestino, Deportes Limache, Everton
     grupoC:[
-      {pos:1,team:"\u00D1ublense",pj:1,pg:1,pe:0,pp:0,gf:1,gc:0,dif:1,pts:3,b:""},
-      {pos:2,team:"Uni\u00F3n La Calera",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""},
-      {pos:3,team:"Cobresal",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""},
-      {pos:4,team:"Everton",pj:1,pg:0,pe:1,pp:0,gf:1,gc:1,dif:0,pts:1,b:""}
+      {pos:1,team:"O\u2019Higgins",pj:3,pg:3,pe:0,pp:0,gf:7,gc:3,dif:4,pts:9,b:"b-cl"},
+      {pos:2,team:"Palestino",pj:3,pg:0,pe:2,pp:1,gf:3,gc:5,dif:-2,pts:2,b:""},
+      {pos:3,team:"Deportes Limache",pj:2,pg:0,pe:1,pp:1,gf:2,gc:3,dif:-1,pts:1,b:""},
+      {pos:4,team:"Everton",pj:2,pg:0,pe:1,pp:1,gf:2,gc:3,dif:-1,pts:1,b:"b-el"}
     ],
+    // Grupo D: U. de Chile, Audax Italiano, Unión La Calera, Deportes La Serena
     grupoD:[
-      {pos:1,team:"Palestino",pj:1,pg:0,pe:1,pp:0,gf:1,gc:1,dif:0,pts:1,b:""},
-      {pos:2,team:"Huachipato",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
-      {pos:3,team:"D. Concepci\u00F3n",pj:1,pg:0,pe:1,pp:0,gf:2,gc:2,dif:0,pts:1,b:""},
-      {pos:4,team:"Coquimbo Unido",pj:1,pg:0,pe:0,pp:1,gf:0,gc:1,dif:-1,pts:0,b:""}
+      {pos:1,team:"Audax Italiano",pj:3,pg:2,pe:0,pp:1,gf:4,gc:4,dif:0,pts:6,b:""},
+      {pos:2,team:"Uni\u00F3n La Calera",pj:3,pg:2,pe:0,pp:1,gf:3,gc:2,dif:1,pts:6,b:"b-cl"},
+      {pos:3,team:"Universidad de Chile",pj:3,pg:1,pe:1,pp:1,gf:5,gc:4,dif:1,pts:4,b:""},
+      {pos:4,team:"D. La Serena",pj:3,pg:0,pe:1,pp:2,gf:4,gc:6,dif:-2,pts:1,b:"b-el"}
     ]
   },
   proxima:[],
@@ -5272,6 +5302,11 @@ function renderAdminLogos() {
   Object.keys(LOGOS).forEach(addTeam);
   D.primera.rows.forEach(function(r){ addTeam(r.team); });
   D.primerab.rows.forEach(function(r){ addTeam(r.team); });
+  // Include official Segunda División 2025 teams
+  ["Deportes Melipilla","San Antonio Unido","Real San Joaqu\u00EDn","Deportes Linares",
+   "Provincial Ovalle","Conc\u00F3n National","Deportes Puerto Montt","Provincial Osorno",
+   "Deportes Rengo","General Vel\u00E1squez","Santiago Morning","Brujas de Salamanca",
+   "Trasandino","Santiago City"].forEach(addTeam);
   var overrides = loadSt("lmc_logos_override",{});
   Object.keys(overrides).forEach(addTeam);
   var teams = Object.keys(teamSet).sort(function(a,b){return a.localeCompare(b,"es");});
@@ -5979,7 +6014,7 @@ function resultTab(which,btn){
 
 function renderAdminResults(){
   var c=gel("adminResultsList"); if(!c) return; c.innerHTML="";
-  var ligaMap={primera:"Primera Divisi\u00F3n",primerab:"Primera B",copa:"Copa de la Liga"};
+  var ligaMap={primera:"Primera Divisi\u00F3n",primerab:"Primera B",copa:"Copa de la Liga",segunda:"Segunda Divisi\u00F3n"};
   var ligaName=ligaMap[_currentResultLiga];
   var all=(D.partidos||[]).concat(D.proxima||[]);
   var matches=all.filter(function(m){return m.liga===ligaName;});
@@ -6023,7 +6058,7 @@ function openAddResult(){
   ["rfHome","rfAway","rfFecha","rfHora"].forEach(function(id){gel(id).value="";});
   gel("rfHs").value="";gel("rfAs").value="";
   gel("rfStatus").value="fin";
-  var lm={primera:"Primera Divisi\u00F3n",primerab:"Primera B",copa:"Copa de la Liga"};
+  var lm={primera:"Primera Divisi\u00F3n",primerab:"Primera B",copa:"Copa de la Liga",segunda:"Segunda Divisi\u00F3n"};
   gel("rfLiga").value=lm[_currentResultLiga];
   gel("rfDeleteBtn").style.display="none";
   gel("resultEditForm").style.display="block";
