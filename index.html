@@ -2868,8 +2868,33 @@ button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 
         <!-- SYNC -->
         <div class="admin-section" id="adminSec-sync">
-          <div style="font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px">&#9729; Sincronizar Logos con JSONBin</div>
-          <p style="font-family:var(--fh);font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.6"><b>Todo lo que guardes en el admin</b> — logos, noticias, fotos de jugadores, tablas, traspasos, resultados — se sincroniza con <b>jsonbin.io</b> (servicio gratuito) para que <b>todos los visitantes</b> lo vean automáticamente.<br><br>&#10102; Crea cuenta gratis en <a href="https://jsonbin.io" target="_blank" style="color:var(--lc)">jsonbin.io</a> &nbsp;&#10103; Copia tu <b>Master Key</b> &nbsp;&#10104; Pégala abajo y haz click en <b>+ Crear Bin nuevo</b></p>
+          <div style="font-family:var(--fd);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px">&#9729; Datos en Vivo — API &amp; Sincronización</div>
+
+          <!-- API-Football section -->
+          <div style="background:var(--w3);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:18px">
+            <div style="font-family:var(--fh);font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:.5px">⚡ API-Football (auto-actualización de partidos)</div>
+            <p style="font-family:var(--fh);font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6">Los resultados y marcadores en vivo se obtienen de <b>API-Football</b> cada 60 segundos. Necesitas una key activa con acceso a las ligas chilenas. Consigue la tuya gratis en <a href="https://dashboard.api-football.com" target="_blank" style="color:var(--lc)">dashboard.api-football.com</a>.</p>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;margin-bottom:10px">
+              <div class="af-row" style="margin:0"><label class="af-label">API Key <span style="color:var(--muted);font-weight:400">(32 caracteres)</span></label><input class="af-input" id="afKeyInput" type="password" placeholder="a1dee041a6759781..." autocomplete="off"/></div>
+              <button class="af-btn" onclick="saveAfKey()" style="height:36px;white-space:nowrap">&#128190; Guardar key</button>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px">
+              <button class="af-btn" onclick="testAfKey()" style="background:#1a73e8">&#128202; Testear conexión</button>
+              <button class="af-btn" onclick="manualRefresh()" style="background:#333">&#8635; Actualizar ahora</button>
+              <span id="afTestResult" style="font-family:var(--fh);font-size:11px;color:var(--muted)"></span>
+            </div>
+            <!-- Data priority toggle -->
+            <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg);border-radius:8px;border:1px solid var(--line)">
+              <span style="font-family:var(--fh);font-size:11px;font-weight:700;color:var(--ink)">Prioridad de datos:</span>
+              <button id="prioBtnApi" onclick="setDataPriority('api')" style="font-family:var(--fh);font-size:11px;padding:4px 12px;border-radius:6px;border:1px solid var(--line);cursor:pointer;background:var(--lc);color:#fff">&#127760; API (auto)</button>
+              <button id="prioBtnManual" onclick="setDataPriority('manual')" style="font-family:var(--fh);font-size:11px;padding:4px 12px;border-radius:6px;border:1px solid var(--line);cursor:pointer;background:var(--w3);color:var(--ink)">&#9998; Manual (admin)</button>
+              <span id="prioStatusTxt" style="font-family:var(--fh);font-size:11px;color:var(--muted)"></span>
+            </div>
+          </div>
+
+          <!-- JSONBin section -->
+          <div style="font-family:var(--fh);font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:.5px">&#9729; JSONBin — Compartir datos del admin</div>
+          <p style="font-family:var(--fh);font-size:11px;color:var(--muted);margin-bottom:12px;line-height:1.6"><b>Todo lo que guardes en el admin</b> — logos, noticias, tablas, resultados — se sincroniza con <b>jsonbin.io</b> para que <b>todos los visitantes</b> lo vean.<br>&#10102; Crea cuenta gratis en <a href="https://jsonbin.io" target="_blank" style="color:var(--lc)">jsonbin.io</a> &nbsp;&#10103; Copia tu <b>Master Key</b> &nbsp;&#10104; Pégala abajo</p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
             <div class="af-row"><label class="af-label">Master Key <span style="color:var(--muted);font-weight:400">(solo para escribir)</span></label><input class="af-input" id="syncMasterKey" type="password" placeholder="\$2a\$10\$..." autocomplete="off"/></div>
             <div class="af-row"><label class="af-label">Bin ID</label><input class="af-input" id="syncBinId" placeholder="676abc123..." /></div>
@@ -2933,7 +2958,11 @@ function sha256(str){
 
 
 var _k1="a1dee041a6759781",_k2="8e963c9dea1fac1d";
-function _ak(){return _k1+_k2;}
+function _ak(){
+  // Admin can override the hardcoded key via localStorage
+  try{ var sk=localStorage.getItem("lmc_af_key"); if(sk&&sk.length>10) return sk; }catch(e){}
+  return _k1+_k2;
+}
 
 var ADMIN_USERS = {
   "byronbyn02@gmail.com": {name:"Byron", pw:"5067643ef9725333fd59ddf7f4b90ddde51382baf471987059cfe15b677b0b39", role:"superadmin"}
@@ -5670,8 +5699,50 @@ function fetchTopScorers() {
   }).catch(function(){ return []; });
 }
 
+function saveAfKey(){
+  var v=(gel("afKeyInput")||{}).value||"";
+  v=v.trim();
+  if(!v){ alert("Ingresa una API key válida."); return; }
+  try{ localStorage.setItem("lmc_af_key", v); }catch(e){}
+  var el=gel("afTestResult"); if(el) el.textContent="✓ Key guardada. Actualizando...";
+  manualRefresh();
+}
+
+function testAfKey(){
+  var el=gel("afTestResult"); if(el){ el.textContent="Testeando..."; el.style.color="var(--muted)"; }
+  fetch("https://v3.football.api-sports.io/status",{headers:{"x-apisports-key":_ak()}})
+    .then(function(r){return r.json();})
+    .then(function(j){
+      if(el){
+        if(j.response&&j.response.subscription){
+          var plan=j.response.subscription.plan||"";
+          var req=(j.response.requests||{});
+          el.textContent="✓ Key válida | Plan: "+plan+" | Requests hoy: "+(req.current||0)+"/"+(req.limit_day||"?");
+          el.style.color="var(--green)";
+        } else {
+          el.textContent="⚠ Key inválida o sin acceso.";
+          el.style.color="var(--r)";
+        }
+      }
+    })
+    .catch(function(){
+      if(el){ el.textContent="⚠ Error de conexión. Verifica la key."; el.style.color="var(--r)"; }
+    });
+}
+
+function updatePrioButtons(){
+  var mode=loadSt("lmc_data_priority","api");
+  var ba=gel("prioBtnApi"), bm=gel("prioBtnManual"), st=gel("prioStatusTxt");
+  if(ba) ba.style.background=mode==="api"?"var(--lc)":"var(--w3)";
+  if(ba) ba.style.color=mode==="api"?"#fff":"var(--ink)";
+  if(bm) bm.style.background=mode==="manual"?"var(--gold)":"var(--w3)";
+  if(bm) bm.style.color=mode==="manual"?"#000":"var(--ink)";
+  if(st) st.textContent=mode==="api"?"Modo activo: la API sobreescribe los datos automáticamente":"Modo activo: los datos manuales tienen prioridad (API desactivada)";
+}
+
 function setDataPriority(mode){
   saveSt("lmc_data_priority", mode);
+  updatePrioButtons();
   var st=gel("prioStatus");
   if(st){
     if(mode==="api"){ st.textContent="La API actualiza automáticamente. Tus cambios manuales se borran con cada refresh."; st.style.color="var(--green)"; }
@@ -5861,6 +5932,9 @@ function syncApplyData(d){
 }
 
 function renderAdminSync(){
+  // Populate API key field
+  try{ var ak=localStorage.getItem("lmc_af_key")||""; var aki=gel("afKeyInput"); if(aki) aki.value=ak; }catch(e){}
+  updatePrioButtons();
   var ki=gel("syncMasterKey"); if(ki) ki.value=syncGetKey();
   var bi=gel("syncBinId");     if(bi) bi.value=syncGetBin();
   var bin=syncGetBin();
