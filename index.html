@@ -3648,44 +3648,71 @@ function fetchNext(lid) {
 function fetchAll() {
   var priority = loadSt("lmc_data_priority","api");
   if(priority === "manual") return Promise.resolve(false);
-  return Promise.all([
-    fetchStandings(4627),   // Primera División table
-    fetchStandings(4899),   // Primera B table
-    fetchLast(4627),        // Primera últimos resultados
-    fetchLast(4899),        // Primera B últimos
-    fetchLast(9999),        // Copa de la Liga últimos
-    fetchNext(4627),        // Primera próximos
-    fetchNext(4899),        // Primera B próximos
-    fetchNext(9999),        // Copa próximos
-    fetchTopScorers()       // Goleadores
-  ]).then(function(r){
+
+  // ── Decide what to fetch based on cache age ──
+  var now = Date.now();
+  var lastFull  = parseInt(loadSt("lmc_api_ts_full",  "0")||"0", 10);
+  var lastFix   = parseInt(loadSt("lmc_api_ts_fix",   "0")||"0", 10);
+
+  // Heavy data (standings + topscorers): refresh once every 6 hours = 3 req/session
+  var needFull  = (now - lastFull)  > 6 * 3600 * 1000;
+  // Fixtures: refresh every 15 min normally, every 2 min if live
+  var liveNow   = D.partidos.filter(function(m){return m.status==="live";}).length > 0;
+  var fixDelay  = liveNow ? 2*60*1000 : 15*60*1000;
+  var needFix   = (now - lastFix)   > fixDelay;
+
+  if(!needFull && !needFix) return Promise.resolve(false);
+
+  var jobs = [];
+  if(needFull){
+    jobs.push(fetchStandings(4627));   // req 1 — Primera División table
+    jobs.push(fetchStandings(4899));   // req 2 — Primera B table
+    jobs.push(fetchTopScorers());      // req 3 — Goleadores
+  } else {
+    jobs.push(Promise.resolve(null));
+    jobs.push(Promise.resolve(null));
+    jobs.push(Promise.resolve(null));
+  }
+  if(needFix){
+    jobs.push(fetchLast(4627));        // req 4 — Primera últimos
+    jobs.push(fetchLast(4899));        // req 5 — Primera B últimos
+    jobs.push(fetchLast(9999));        // req 6 — Copa últimos
+    jobs.push(fetchNext(4627));        // req 7 — Primera próximos
+  } else {
+    for(var i=0;i<4;i++) jobs.push(Promise.resolve(null));
+  }
+
+  return Promise.all(jobs).then(function(r){
     var ok = false;
-    if(r[0]&&r[0].length){ D.primera.rows=r[0]; ok=true; }
-    if(r[1]&&r[1].length){ D.primerab.rows=r[1]; ok=true; }
-    // Merge all results — live games get priority (sorted first)
-    var all = (r[2]||[]).concat(r[3]||[]).concat(r[4]||[]);
-    if(all.length){
-      // Sort: live first, then by date desc
-      all.sort(function(a,b){
-        if(a.status==="live"&&b.status!=="live") return -1;
-        if(b.status==="live"&&a.status!=="live") return 1;
-        return 0;
-      });
-      D.partidos = all;
-      ok = true;
+    if(needFull){
+      if(r[0]&&r[0].length){ D.primera.rows=r[0]; ok=true; }
+      if(r[1]&&r[1].length){ D.primerab.rows=r[1]; ok=true; }
+      if(r[2]&&r[2].length){ D.golPrimera=r[2]; applyPlayerPhotos(D.golPrimera); ok=true; }
+      saveSt("lmc_api_ts_full", now);
     }
-    // Extract team logos from fixture data
-    var matchLogos={};
-    (r[2]||[]).concat(r[3]||[]).concat(r[4]||[]).forEach(function(m){
-      if(m._homeLogo&&m.home) matchLogos[m.home]=m._homeLogo;
-      if(m._awayLogo&&m.away) matchLogos[m.away]=m._awayLogo;
-    });
-    if(Object.keys(matchLogos).length) applyApiLogos(matchLogos);
-    // Merge upcoming
-    var nx = (r[5]||[]).concat(r[6]||[]).concat(r[7]||[]);
-    if(nx.length){ D.proxima = nx; ok=true; }
-    // Goleadores
-    if(r[8]&&r[8].length){ D.golPrimera=r[8]; applyPlayerPhotos(D.golPrimera); ok=true; }
+    if(needFix){
+      // Merge last results (Primera + Primera B + Copa)
+      var all = (r[3]||[]).concat(r[4]||[]).concat(r[5]||[]);
+      if(all.length){
+        all.sort(function(a,b){
+          if(a.status==="live"&&b.status!=="live") return -1;
+          if(b.status==="live"&&a.status!=="live") return 1;
+          return 0;
+        });
+        D.partidos = all;
+        ok = true;
+      }
+      // Team logos from fixture data
+      var matchLogos={};
+      (r[3]||[]).concat(r[4]||[]).concat(r[5]||[]).forEach(function(m){
+        if(m._homeLogo&&m.home) matchLogos[m.home]=m._homeLogo;
+        if(m._awayLogo&&m.away) matchLogos[m.away]=m._awayLogo;
+      });
+      if(Object.keys(matchLogos).length) applyApiLogos(matchLogos);
+      // Upcoming matches (just from Primera to keep request count low)
+      if(r[6]&&r[6].length){ D.proxima=r[6]; ok=true; }
+      saveSt("lmc_api_ts_fix", now);
+    }
     return ok;
   });
 }
@@ -5826,6 +5853,8 @@ function updateStatusBar(ok, liveCount, matchCount){
 function manualRefresh(){
   if(_refreshing) return;
   _refreshing = true;
+  // Force re-fetch by clearing cache timestamps
+  try{ localStorage.removeItem("lmc_api_ts_full"); localStorage.removeItem("lmc_api_ts_fix"); }catch(e){}
   var icon = gel("refreshIcon");
   var btn = gel("refreshBtn");
   if(icon) icon.className = "spinning";
@@ -6037,11 +6066,11 @@ function fetchRemoteLogos(){
 
 // ── Auto-refresh every 60s (not 3 min) for live games ──
 function startAutoRefresh(){
-  // Initial check
+  // Initial fetch on page load (800ms delay to let page render first)
   setTimeout(function(){
     fetchAll().then(function(ok){
-      var liveCount=D.partidos.filter(function(m){return m.status==="live";}).length;
-      updateStatusBar(ok, liveCount, D.partidos.length);
+      var lc=D.partidos.filter(function(m){return m.status==="live";}).length;
+      updateStatusBar(ok, lc, D.partidos.length);
       if(ok) renderAll();
     }).catch(function(err){
       console.warn("API error:", err&&err.message);
@@ -6049,21 +6078,19 @@ function startAutoRefresh(){
     });
   }, 800);
 
-  // Refresh: every 60s if live games, every 3 min otherwise
+  // Poll every 60s — fetchAll() internally decides whether to actually call the API
+  // based on cache timestamps (fixtures: 15min normal / 2min live; standings: 6h)
+  // Free tier budget: ~3-6 req/session startup + 3 req every 15min = ≤30 req/hour max
   setInterval(function(){
     var priority = loadSt("lmc_data_priority","api");
     if(priority==="manual") return;
-    var liveCount = D.partidos.filter(function(m){return m.status==="live";}).length;
-    var interval = liveCount > 0 ? 30 : 180;
-    if(!window._lastRefreshTime || (Date.now()-window._lastRefreshTime)/1000 >= interval){
-      window._lastRefreshTime = Date.now();
-      fetchAll().then(function(ok){
-        var lc = D.partidos.filter(function(m){return m.status==="live";}).length;
-        updateStatusBar(ok, lc, D.partidos.length);
-        if(ok) renderAll();
-      }).catch(function(){});
-    }
-  }, 30000); // check every 30s, refresh based on interval
+    fetchAll().then(function(ok){
+      if(!ok) return;
+      var lc = D.partidos.filter(function(m){return m.status==="live";}).length;
+      updateStatusBar(true, lc, D.partidos.length);
+      renderAll();
+    }).catch(function(){});
+  }, 60000); // check every 60s, cache logic inside fetchAll
 }
 
 
