@@ -2,8 +2,9 @@ name: Sync Chilean Football Data
 
 on:
   schedule:
-    # Every 2 hours = 12 runs/day × 2 req = 24 req/day (well within 100/day free limit)
-    - cron: '0 */2 * * *'
+    # Every 15 minutes = 96 runs/day × 1 req = 96 req/day (within 100/day free limit)
+    # Note: GitHub Actions cron has ~1-2 min delay, so actual interval is ~15-17 min
+    - cron: '*/15 * * * *'
   workflow_dispatch:  # Allow manual trigger from GitHub UI
 
 permissions:
@@ -29,18 +30,25 @@ jobs:
         run: |
           mkdir -p data
 
-          # Primera División (league 207) — last 30 fixtures
+          # Fetch Primera División (league 207) — last 30 fixtures (1 request)
+          # This is the main league and shares teams with Copa de la Liga
           curl -s -H "x-apisports-key: $AF_KEY" \
             "https://v3.football.api-sports.io/fixtures?league=207&season=2026&last=30" \
             -o data/raw_primera.json
 
-          # Primera B (league 208) — last 20 fixtures
-          curl -s -H "x-apisports-key: $AF_KEY" \
-            "https://v3.football.api-sports.io/fixtures?league=208&season=2026&last=20" \
-            -o data/raw_primerab.json
+          FIXTURES=$(cat data/raw_primera.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(len(d.get('response',[])))" 2>/dev/null || echo "0")
+          echo "Primera División fixtures fetched: $FIXTURES"
 
-          echo "Fetched raw data"
-          cat data/raw_primera.json | python3 -c "import sys,json; d=json.load(sys.stdin); print('Primera fixtures:', len(d.get('response',[])))"
+          # Primera B (league 208) — only fetch every 2h to save quota
+          # Check if file is older than 2h or doesn't exist
+          if [ ! -f data/raw_primerab.json ] || [ $(find data/raw_primerab.json -mmin +120 | wc -l) -gt 0 ]; then
+            curl -s -H "x-apisports-key: $AF_KEY" \
+              "https://v3.football.api-sports.io/fixtures?league=208&season=2026&last=20" \
+              -o data/raw_primerab.json
+            echo "Primera B fixtures refreshed"
+          else
+            echo "Primera B: using cached data (< 2h old)"
+          fi
 
       - name: Transform data
         run: node scripts/transform-api.js
@@ -50,7 +58,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/partidos.json data/standings.json
-          git diff --staged --quiet && echo "No changes" || (
+          git diff --staged --quiet && echo "No changes to commit" || (
             git commit -m "Auto-sync: $(date -u '+%Y-%m-%d %H:%M UTC')"
             git push
           )
