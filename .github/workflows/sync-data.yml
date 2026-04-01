@@ -1,0 +1,56 @@
+name: Sync Chilean Football Data
+
+on:
+  schedule:
+    # Every 2 hours = 12 runs/day × 2 req = 24 req/day (well within 100/day free limit)
+    - cron: '0 */2 * * *'
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch Chilean football data
+        env:
+          AF_KEY: ${{ secrets.AF_KEY }}
+        run: |
+          mkdir -p data
+
+          # Primera División (league 207) — last 30 fixtures
+          curl -s -H "x-apisports-key: $AF_KEY" \
+            "https://v3.football.api-sports.io/fixtures?league=207&season=2026&last=30" \
+            -o data/raw_primera.json
+
+          # Primera B (league 208) — last 20 fixtures
+          curl -s -H "x-apisports-key: $AF_KEY" \
+            "https://v3.football.api-sports.io/fixtures?league=208&season=2026&last=20" \
+            -o data/raw_primerab.json
+
+          echo "Fetched raw data"
+          cat data/raw_primera.json | python3 -c "import sys,json; d=json.load(sys.stdin); print('Primera fixtures:', len(d.get('response',[])))"
+
+      - name: Transform data
+        run: node scripts/transform-api.js
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/partidos.json data/standings.json
+          git diff --staged --quiet && echo "No changes" || (
+            git commit -m "Auto-sync: $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          )

@@ -3691,16 +3691,31 @@ function fetchAll() {
       saveSt("lmc_api_ts_full", now);
     }
     if(needFix){
-      // Merge last results (Primera + Primera B + Copa)
-      var all = (r[3]||[]).concat(r[4]||[]).concat(r[5]||[]);
-      if(all.length){
-        all.sort(function(a,b){
-          if(a.status==="live"&&b.status!=="live") return -1;
-          if(b.status==="live"&&a.status!=="live") return 1;
-          return 0;
+      // Merge last results — UPDATE existing records, don't replace
+      // This preserves jornada, grupo, Copa info from static/admin data
+      var apiMatches = (r[3]||[]).concat(r[4]||[]).concat(r[5]||[]);
+      if(apiMatches.length){
+        var updated = 0;
+        apiMatches.forEach(function(am){
+          // Find matching record in D.partidos by home+away (fuzzy match via nn)
+          var found = null;
+          for(var i=0; i<D.partidos.length; i++){
+            var p = D.partidos[i];
+            var ph = nn(p.home)||p.home, pa = nn(p.away)||p.away;
+            if(ph===am.home && pa===am.away){
+              found = p; break;
+            }
+          }
+          if(found){
+            // Only update live/result fields — keep jornada, liga, fecha etc.
+            if(am.status==="live"){ found.status="live"; found.min=am.min||""; found.hs=am.hs||""; found.as_=am.as_||""; }
+            else if(am.status==="fin"){ found.status="fin"; found.hs=am.hs||""; found.as_=am.as_||""; delete found.min; }
+            else if(am.status==="prog" && found.status==="prog"){ /* keep as is */ }
+            updated++;
+          }
+          // Don't add unknown fixtures — they lack jornada/liga metadata
         });
-        D.partidos = all;
-        ok = true;
+        if(updated > 0) ok = true;
       }
       // Team logos from fixture data
       var matchLogos={};
@@ -5889,6 +5904,35 @@ function showApiStatus(ok, msg){
 var JBIN_API = "https://api.jsonbin.io/v3/b";
 // Paste your JSONBin bin ID here so ALL visitors can load logos & data without needing admin access:
 var LMC_PUBLIC_BIN = "69c4ae52c3097a1dd55f09f6";
+
+// ── GitHub-hosted data (updated by GitHub Actions every 2h — zero API cost for visitors) ──
+// This is the "homemade API": GitHub Actions fetches from API-Football server-side and
+// commits the result to data/partidos.json. All visitors read from this cached file.
+var LMC_GITHUB_DATA = "https://raw.githubusercontent.com/byronvalla/lamediacancha/main/data/partidos.json";
+
+function fetchGithubData() {
+  return fetch(LMC_GITHUB_DATA + "?t=" + Math.floor(Date.now()/300000)) // 5-min browser cache
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(function(d){
+      if(!d.partidos || !d.partidos.length) return false;
+      // Merge: update existing D.partidos records by home+away match
+      var updated = 0;
+      d.partidos.forEach(function(am){
+        for(var i=0; i<D.partidos.length; i++){
+          var p = D.partidos[i];
+          if((nn(p.home)||p.home)===am.home && (nn(p.away)||p.away)===am.away){
+            if(am.status==="live"){   p.status="live"; p.min=am.min||""; p.hs=am.hs||""; p.as_=am.as_||""; }
+            else if(am.status==="fin"){ p.status="fin"; p.hs=am.hs||""; p.as_=am.as_||""; delete p.min; }
+            if(am._homeLogo) LOGOS[p.home]=am._homeLogo;
+            if(am._awayLogo) LOGOS[p.away]=am._awayLogo;
+            updated++; break;
+          }
+        }
+      });
+      return updated > 0;
+    })
+    .catch(function(){ return false; });
+}
 var _syncDebounceTimer = null;
 
 function syncGetKey(){ return localStorage.getItem("lmc_jbin_key")||""; }
@@ -6064,33 +6108,35 @@ function fetchRemoteLogos(){
     }).catch(function(){}); // Silent fail — fallback to defaults
 }
 
-// ── Auto-refresh every 60s (not 3 min) for live games ──
+// ── Auto-refresh: GitHub data (free, fast) + API-Football fallback ──
 function startAutoRefresh(){
-  // Initial fetch on page load (800ms delay to let page render first)
+  // 1. Initial load: try GitHub-hosted JSON first (no API cost), then API-Football fallback
   setTimeout(function(){
-    fetchAll().then(function(ok){
+    fetchGithubData().then(function(ok){
+      if(ok){ var lc=D.partidos.filter(function(m){return m.status==="live";}).length; updateStatusBar(true,lc,D.partidos.length); renderAll(); }
+      return fetchAll(); // also try direct API (respects cache, may or may not fire)
+    }).then(function(ok){
       var lc=D.partidos.filter(function(m){return m.status==="live";}).length;
       updateStatusBar(ok, lc, D.partidos.length);
       if(ok) renderAll();
-    }).catch(function(err){
-      console.warn("API error:", err&&err.message);
-      updateStatusBar(false,0,0);
-    });
+    }).catch(function(err){ console.warn("API error:", err&&err.message); updateStatusBar(false,0,0); });
   }, 800);
 
-  // Poll every 60s — fetchAll() internally decides whether to actually call the API
-  // based on cache timestamps (fixtures: 15min normal / 2min live; standings: 6h)
-  // Free tier budget: ~3-6 req/session startup + 3 req every 15min = ≤30 req/hour max
+  // 2. Periodic refresh: GitHub data every 5 min (browser-cached, zero API requests)
+  //    fetchAll() fires only when its internal cache expires (15min normal / 2min live)
   setInterval(function(){
     var priority = loadSt("lmc_data_priority","api");
     if(priority==="manual") return;
-    fetchAll().then(function(ok){
-      if(!ok) return;
-      var lc = D.partidos.filter(function(m){return m.status==="live";}).length;
-      updateStatusBar(true, lc, D.partidos.length);
-      renderAll();
+    fetchGithubData().then(function(ghOk){
+      return fetchAll().then(function(apiOk){
+        var ok = ghOk||apiOk;
+        if(!ok) return;
+        var lc = D.partidos.filter(function(m){return m.status==="live";}).length;
+        updateStatusBar(true, lc, D.partidos.length);
+        renderAll();
+      });
     }).catch(function(){});
-  }, 60000); // check every 60s, cache logic inside fetchAll
+  }, 5 * 60 * 1000); // every 5 min
 }
 
 
