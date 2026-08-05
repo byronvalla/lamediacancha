@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="Euroteckspa — Especialistas en reprogramación DPF y backup &amp; restore de mapas ECU. Diagnóstico computarizado para todas las marcas."/>
+<title>Euroteckspa — Reprogramación DPF &amp; Backup de Mapas ECU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;800&amp;family=Oswald:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#101215;--bg2:#17191d;--panel:#1b1d21;--panel2:#202226;
+    --line:rgba(255,255,255,.09);--line2:rgba(255,255,255,.15);
+    --ink:#f3f1ec;--muted:rgba(243,241,236,.62);--muted2:rgba(243,241,236,.4);
+    --accent:#e8531f;--accent2:#c22a10;--accent-soft:rgba(232,83,31,.13);
+    --fd:'Big Shoulders',sans-serif;--fh:'Oswald',sans-serif;--fm:'JetBrains Mono',monospace;--fb:'Inter',sans-serif;
+    --wrap:1120px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--fb);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .eyebrow{font-family:var(--fm);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);}
+  .h2{font-family:var(--fd);font-weight:800;font-size:clamp(30px,4vw,44px);letter-spacing:.5px;line-height:1.05;color:var(--ink);}
+  .lead{color:var(--muted);font-size:16px;max-width:640px;margin-top:14px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;font-family:var(--fh);font-size:13px;font-weight:600;
+    letter-spacing:.6px;text-transform:uppercase;text-decoration:none;padding:14px 26px;border-radius:9px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+    box-shadow:0 8px 22px rgba(232,83,31,.28);border:none;cursor:pointer;transition:transform .15s,box-shadow .15s;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(232,83,31,.38);}
+  .btn.ghost{background:none;box-shadow:none;border:1.5px solid var(--line2);color:var(--ink);}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent);transform:none;box-shadow:none;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:50;background:rgba(16,18,21,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;height:76px;}
+  .brand{font-family:var(--fd);font-weight:800;font-size:24px;letter-spacing:.5px;text-decoration:none;}
+  .brand b{color:var(--accent);font-weight:800;}
+  .navlinks{display:flex;align-items:center;gap:34px;}
+  .navlinks a{font-family:var(--fh);font-size:13px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color .15s;}
+  .navlinks a:hover{color:var(--ink);}
+  .navlinks .btn{padding:11px 20px;font-size:12px;}
+  .navToggle{display:none;background:none;border:1px solid var(--line2);border-radius:8px;width:42px;height:42px;color:var(--ink);font-size:18px;cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;overflow:hidden;padding:96px 0 108px;}
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(1100px 700px at 82% -10%,rgba(255,255,255,.05),transparent 55%),
+               linear-gradient(160deg,#191b1f 0%,#101214 48%,#0b0c0e 100%);
+    z-index:-2;
+  }
+  .hero-motif{position:absolute;top:-120px;right:-160px;width:640px;height:640px;z-index:-1;opacity:.9;}
+  .hero-sweep{position:absolute;left:0;right:0;bottom:0;height:1px;z-index:-1;
+    background:linear-gradient(90deg,transparent,var(--accent) 50%,transparent);
+    opacity:.55;
+  }
+  .hero .wrap{position:relative;}
+  .hero-tag{font-family:var(--fm);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);border:1px solid var(--line2);display:inline-block;padding:7px 14px;border-radius:20px;margin-bottom:26px;}
+  .hero h1{font-family:var(--fd);font-weight:800;font-size:clamp(46px,8vw,94px);line-height:.92;letter-spacing:.5px;max-width:780px;}
+  .hero h1 span{color:var(--accent);}
+  .hero-lead{color:var(--muted);font-size:18px;max-width:560px;margin:26px 0 38px;}
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;}
+  .hero-specs{display:flex;gap:38px;margin-top:64px;flex-wrap:wrap;}
+  .hero-specs div{font-family:var(--fm);font-size:12.5px;letter-spacing:1px;color:var(--muted2);}
+  .hero-specs b{display:block;font-family:var(--fd);font-weight:800;font-size:30px;color:var(--ink);letter-spacing:0;margin-bottom:2px;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:96px 0;}
+  .section-head{max-width:640px;margin-bottom:56px;}
+  .bg-alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+
+  /* ---------- SERVICES ---------- */
+  .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .svc-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px 24px;position:relative;overflow:hidden;
+    transition:border-color .15s,transform .15s;
+  }
+  .svc-card:hover{border-color:rgba(232,83,31,.4);transform:translateY(-3px);}
+  .svc-num{position:absolute;top:18px;right:20px;font-family:var(--fm);font-size:12px;color:var(--muted2);}
+  .svc-ico{width:46px;height:46px;border-radius:11px;background:var(--accent-soft);border:1.5px solid rgba(232,83,31,.4);display:flex;align-items:center;justify-content:center;margin-bottom:20px;}
+  .svc-ico svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.7;}
+  .svc-card h3{font-family:var(--fh);font-size:17px;font-weight:600;letter-spacing:.2px;margin-bottom:10px;}
+  .svc-card p{color:var(--muted);font-size:14px;line-height:1.65;}
+
+  /* ---------- WHY ---------- */
+  .why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .why-item{background:var(--panel);padding:32px 30px;}
+  .why-item .idx{font-family:var(--fm);font-size:12px;color:var(--accent);letter-spacing:1.5px;margin-bottom:10px;}
+  .why-item h4{font-family:var(--fh);font-size:18px;font-weight:600;margin-bottom:8px;}
+  .why-item p{color:var(--muted);font-size:14px;}
+
+  /* ---------- PROCESS ---------- */
+  .proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  .proc-grid::before{content:'';position:absolute;top:23px;left:6%;right:6%;height:1px;background:var(--line2);}
+  .proc-item{position:relative;padding:0 16px;text-align:left;}
+  .proc-dot{width:46px;height:46px;border-radius:50%;background:var(--bg2);border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:800;font-size:17px;color:var(--accent);margin-bottom:22px;position:relative;z-index:1;}
+  .proc-item h4{font-family:var(--fh);font-size:15.5px;font-weight:600;margin-bottom:8px;letter-spacing:.2px;}
+  .proc-item p{color:var(--muted);font-size:13.5px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact-panel{
+    background:linear-gradient(120deg,#1b1d21 0%,#232527 100%);border:1px solid var(--line);border-radius:18px;
+    padding:56px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;
+  }
+  .contact-panel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--accent),var(--accent2));}
+  .contact-panel h2{font-family:var(--fd);font-weight:800;font-size:clamp(28px,3.4vw,38px);max-width:480px;}
+  .contact-panel p{color:var(--muted);margin-top:10px;max-width:440px;font-size:14.5px;}
+  .contact-actions{display:flex;gap:14px;flex-wrap:wrap;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:40px 0;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+  .foot-brand{font-family:var(--fd);font-weight:800;font-size:18px;}
+  .foot-brand b{color:var(--accent);}
+  .foot-tag{font-family:var(--fm);font-size:12px;color:var(--muted2);letter-spacing:.5px;}
+
+  @media (max-width:920px){
+    .svc-grid{grid-template-columns:repeat(2,1fr);}
+    .why-grid{grid-template-columns:1fr;}
+    .proc-grid{grid-template-columns:repeat(2,1fr);row-gap:36px;}
+    .proc-grid::before{display:none;}
+  }
+  @media (max-width:720px){
+    .navlinks{position:fixed;top:76px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start;padding:22px 28px;gap:20px;display:none;}
+    .navlinks.open{display:flex;}
+    .navlinks .btn{width:100%;justify-content:center;}
+    .navToggle{display:block;}
+    .svc-grid{grid-template-columns:1fr;}
+    .proc-grid{grid-template-columns:1fr;}
+    .contact-panel{padding:36px 26px;}
+    .hero{padding:64px 0 80px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">EUROTECK<b>SPA</b></a>
+    <div class="navlinks" id="navlinks">
+      <a href="#servicios">Servicios</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#porque">Por qu&eacute; nosotros</a>
+      <a class="btn" href="#contacto">Cont&aacute;ctanos</a>
+    </div>
+    <button class="navToggle" id="navToggle" aria-label="Men&uacute;">&#9776;</button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <svg class="hero-motif" viewBox="0 0 640 640">
+      <g opacity="0.5" stroke="#e8531f" stroke-width="1" fill="none">
+        <circle cx="470" cy="220" r="70"/><circle cx="470" cy="220" r="118"/><circle cx="470" cy="220" r="166"/><circle cx="470" cy="220" r="214"/>
+      </g>
+      <g opacity="0.14" stroke="#e9e7e1" stroke-width="1" fill="none">
+        <circle cx="470" cy="220" r="90"/><circle cx="470" cy="220" r="138"/><circle cx="470" cy="220" r="186"/><circle cx="470" cy="220" r="260"/>
+      </g>
+      <g opacity="0.5" stroke="#8b8f96" stroke-width="1.3" fill="none" stroke-linecap="square">
+        <path d="M 260 60 h 90 v 60 h 70 v 40 h 90"/>
+        <path d="M 330 400 h -60 v -80 h -80"/>
+        <path d="M 560 180 h -40 v 90 h -60"/>
+      </g>
+      <g fill="#8b8f96" opacity="0.7">
+        <circle cx="260" cy="60" r="3.2"/><circle cx="420" cy="160" r="3.2"/><circle cx="330" cy="400" r="3.2"/><circle cx="560" cy="180" r="3.2"/>
+      </g>
+    </svg>
+    <div class="hero-sweep"></div>
+    <div class="wrap">
+      <div class="hero-tag">[ Sistema de rendimiento di&eacute;sel ]</div>
+      <h1>Reprograma el<br/>DPF. <span>Respalda</span><br/>el mapa ECU.</h1>
+      <p class="hero-lead">En Euroteckspa devolvemos potencia y confiabilidad a motores di&eacute;sel: reprogramaci&oacute;n de filtro de part&iacute;culas y backup &amp; restore de mapas ECU, con respaldo garantizado antes de cada intervenci&oacute;n.</p>
+      <div class="hero-ctas">
+        <a class="btn" href="#contacto">Agenda tu hora &#8594;</a>
+        <a class="btn ghost" href="#servicios">Ver servicios</a>
+      </div>
+      <div class="hero-specs">
+        <div><b>100%</b>Mapa original respaldado</div>
+        <div><b>4</b>Servicios especializados</div>
+        <div><b>&#8734;</b>Todas las marcas di&eacute;sel</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">// Servicios</div>
+        <h2 class="h2" style="margin-top:10px">Lo que hacemos</h2>
+        <p class="lead">Cuatro servicios enfocados exclusivamente en el rendimiento y la salud electr&oacute;nica de motores di&eacute;sel.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card">
+          <div class="svc-num">01</div>
+          <div class="svc-ico"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 1 5.4-5.4l-2.8 2.8-2-2 2.8-2.8Z"/></svg></div>
+          <h3>Reprogramaci&oacute;n DPF</h3>
+          <p>Optimizamos la gesti&oacute;n del filtro de part&iacute;culas para recuperar potencia y evitar fallas recurrentes de regeneraci&oacute;n.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">02</div>
+          <div class="svc-ico"><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></div>
+          <h3>Backup &amp; Restore de Mapas ECU</h3>
+          <p>Guardamos el mapa original de tu unidad de control antes de intervenir, con un camino de vuelta seguro en cualquier momento.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">03</div>
+          <div class="svc-ico"><svg viewBox="0 0 24 24"><path d="M3 13h4l2 6 4-14 2 8h6"/></svg></div>
+          <h3>Diagn&oacute;stico Computarizado</h3>
+          <p>Escaneo completo de fallas y par&aacute;metros en tiempo real con equipos profesionales antes de cualquier intervenci&oacute;n.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">04</div>
+          <div class="svc-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.4"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg></div>
+          <h3>Todas las Marcas</h3>
+          <p>Trabajamos con veh&iacute;culos livianos, camionetas y maquinaria di&eacute;sel de las principales marcas europeas y asi&aacute;ticas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUE NOSOTROS -->
+  <section id="porque" class="bg-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">// Por qu&eacute; Euroteckspa</div>
+        <h2 class="h2" style="margin-top:10px">Precisi&oacute;n antes que velocidad</h2>
+        <p class="lead">Cada intervenci&oacute;n sigue el mismo est&aacute;ndar: diagn&oacute;stico primero, respaldo siempre, resultados verificados.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="idx">[ 01 ]</div>
+          <h4>Respaldo garantizado</h4>
+          <p>Nunca tocamos tu ECU sin guardar antes una copia del mapa original.</p>
+        </div>
+        <div class="why-item">
+          <div class="idx">[ 02 ]</div>
+          <h4>Equipos profesionales</h4>
+          <p>Diagn&oacute;stico y programaci&oacute;n con herramientas de nivel taller especializado.</p>
+        </div>
+        <div class="why-item">
+          <div class="idx">[ 03 ]</div>
+          <h4>Foco exclusivo en di&eacute;sel</h4>
+          <p>Experiencia concentrada en sistemas DPF y unidades de control electr&oacute;nico.</p>
+        </div>
+        <div class="why-item">
+          <div class="idx">[ 04 ]</div>
+          <h4>Transparencia total</h4>
+          <p>Te explicamos qu&eacute; se hizo, por qu&eacute;, y qu&eacute; esperar del veh&iacute;culo despu&eacute;s.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section id="proceso">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">// C&oacute;mo trabajamos</div>
+        <h2 class="h2" style="margin-top:10px">Proceso de 4 pasos</h2>
+      </div>
+      <div class="proc-grid">
+        <div class="proc-item"><div class="proc-dot">01</div><h4>Diagn&oacute;stico inicial</h4><p>Escaneo completo del veh&iacute;culo y evaluaci&oacute;n de s&iacute;ntomas.</p></div>
+        <div class="proc-item"><div class="proc-dot">02</div><h4>Respaldo del mapa</h4><p>Copia de seguridad del ECU antes de cualquier cambio.</p></div>
+        <div class="proc-item"><div class="proc-dot">03</div><h4>Reprogramaci&oacute;n</h4><p>Aplicamos la soluci&oacute;n DPF o el ajuste correspondiente.</p></div>
+        <div class="proc-item"><div class="proc-dot">04</div><h4>Verificaci&oacute;n final</h4><p>Probamos el veh&iacute;culo y confirmamos el resultado.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <!-- Reemplazar el botón/enlace de contacto por el canal real de Euroteckspa (WhatsApp, teléfono, formulario, etc.) -->
+  <section id="contacto" class="bg-alt">
+    <div class="wrap">
+      <div class="contact-panel">
+        <div>
+          <h2>&#191;Listo para recuperar el rendimiento de tu motor?</h2>
+          <p>Escr&iacute;benos y agenda una hora de diagn&oacute;stico. Respaldamos tu ECU antes de cualquier intervenci&oacute;n.</p>
+        </div>
+        <div class="contact-actions">
+          <a class="btn" href="#">Cont&aacute;ctanos &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">EUROTECK<b>SPA</b></div>
+    <div class="foot-tag">POWERTRAIN SPECIALISTS &mdash; CHILE</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('navlinks').classList.toggle('open');
+  });
+  document.querySelectorAll('.navlinks a').forEach(function(a){
+    a.addEventListener('click', function(){ document.getElementById('navlinks').classList.remove('open'); });
+  });
+</script>
+
+</body>
+</html>
